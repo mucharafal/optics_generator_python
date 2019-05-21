@@ -81,7 +81,7 @@ def generate_configuration_file(path_to_configuration, configuration_file_name):
 
     sourcePath = path_to_configuration + "/" + configuration['base_mad_conf_file']
     sourceFile = open(sourcePath, 'r')
-    
+
     destinyFile = open(sourcePath + "_processed", "w")
 
     token = get_tokens(configuration, places)
