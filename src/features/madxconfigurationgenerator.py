@@ -67,11 +67,25 @@ def get_tokens(conf, places):
     tokens["beam_bv"] = "-1" if conf["beam"] == "lhcb2" else "+1"
     return tokens
 
-def generate_configuration_file(path_to_configuration, configuration_file_name):
+def generate_configuration_file(path_to_configuration, xml_configuration_file_name):
+    """
+    Generate configuration file for madx using configuration in xml file.
 
-    configuration_file_path = path_to_configuration + "/" + configuration_file_name
+    File is generated in folder with configuration.
 
-    tree = ET.parse(configuration_file_path)
+    Parameters
+    ----------
+    path_to_configuration- path to folder with configuration files- xml and rest files needed to create configuration- check xml file.
+
+    xml_configuration_file_name- name of file with configuration to create madx script.
+
+    Returns
+    -------
+    Path to generated file.
+    """
+    xml_configuration_file_path = path_to_configuration + "/" + xml_configuration_file_name
+
+    tree = ET.parse(xml_configuration_file_path)        #load configuration from xml file
     root = tree.getroot()
 
     places = map(lambda x: x.attrib, list(root[0]))
@@ -80,20 +94,17 @@ def generate_configuration_file(path_to_configuration, configuration_file_name):
     configuration = root[0].attrib
 
     sourcePath = path_to_configuration + "/" + configuration['base_mad_conf_file']
-    sourceFile = open(sourcePath, 'r')
-
     destinyPath = path_to_configuration + "/" + configuration['processed_mad_conf_file']
-    destinyFile = open(destinyPath, "w")
 
-    token = get_tokens(configuration, places)
+    with open(sourcePath, 'r') as sourceFile:
+        with open(destinyPath, "w") as destinyFile:
+            token_dict = get_tokens(configuration, places)
 
-    for line in sourceFile:
-        tokens = re.findall("#[a-z_A-Z0-9]*#", line)
-        for i in tokens:
-            index = i.replace("#", "")
-            line = line.replace(i, token[index])
-        destinyFile.write(line)
+            for line in sourceFile:
+                tokens_in_line = re.findall("#[a-z_A-Z0-9]*#", line)
+                for i in tokens_in_line:
+                    index = i.replace("#", "")
+                    line = line.replace(i, token_dict[index])
+                destinyFile.write(line)
 
-    destinyFile.close()
-    sourceFile.close()
     return destinyPath
