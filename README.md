@@ -3,6 +3,16 @@ Optics generator
 
 Description here
 
+How to:
+    Run madx_runner
+    command: python3 madx_runner.py path_to_folder_with_configuration configuration_file_name.xml
+    needed: 
+    1. madx in PATH
+        - you can download it from: http://madx.web.cern.ch/madx/
+        - add to PATH folder with madx: export PATH=$PATH:/absolute/path/to/folder/with/madx in terminal
+        - later in the same terminal you can run this file
+        when you quit terminal, changes in PATH are lost
+
 Project Organization
 ------------
 
