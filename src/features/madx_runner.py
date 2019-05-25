@@ -74,10 +74,8 @@ def generate_particles(configuration):
         keys = configuration.keys()
         pattern = re.compile("\w+(?=_min)")     # extract from pattern with suffix _min
         # get parameters from configuration
-        parameters = map(lambda x: pattern.search(x), keys)
-        parameters = filter(lambda x: x is not None, parameters)
-        parameters = map(lambda x: x.group(0), parameters)
-        parameters = list(parameters)
+        extract_parameters = [pattern.search(x) for x in keys]
+        parameters = [x.group(0) for x in extract_parameters if x is not None]
         number_of_parameters = len(parameters)
         # print(list(parameters))
         max_vector = np.zeros((1, number_of_parameters))
