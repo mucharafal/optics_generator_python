@@ -99,15 +99,12 @@ def generate_configuration_file(path_to_configuration, xml_configuration_file_na
 
     configuration = root[0].attrib
 
-<<<<<<< HEAD:src/features/MadxConfigurationGenerator.py
     sourcePath = path_to_configuration + "/" + configuration['base_mad_conf_file']
     sourceFile = open(sourcePath, 'r')
 
     destinyFile = open(sourcePath + "_processed", "w")
-=======
     source_path = path_to_configuration + "/" + configuration['base_mad_conf_file']
     destiny_path = path_to_configuration + "/" + configuration['processed_mad_conf_file']
->>>>>>> 11b7b4d57952d59532a5dde85a4155e5e9300067:src/features/madxconfigurationgenerator.py
 
     with open(source_path, 'r') as sourceFile:
         with open(destiny_path, "w") as destinyFile:
@@ -120,9 +117,6 @@ def generate_configuration_file(path_to_configuration, xml_configuration_file_na
                     line = line.replace(i, token_dict[index])
                 destinyFile.write(line)
 
-<<<<<<< HEAD:src/features/MadxConfigurationGenerator.py
     destinyFile.close()
     sourceFile.close()
-=======
     return destiny_path
->>>>>>> 11b7b4d57952d59532a5dde85a4155e5e9300067:src/features/madxconfigurationgenerator.py
