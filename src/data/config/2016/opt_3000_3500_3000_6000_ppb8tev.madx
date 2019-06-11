@@ -1,0 +1,4 @@
+call, file="/afs/cern.ch/eng/lhc/optics/runII/2016/IR1/ir1_3000.madx";
+call, file="/afs/cern.ch/eng/lhc/optics/runII/2016/IR5/ir5_3000.madx";
+call, file="/afs/cern.ch/eng/lhc/optics/runII/2016/IR2/ir2_3500_889.madx";
+call, file="/afs/cern.ch/eng/lhc/optics/runII/2016/IR8/ir8_6000_895.madx";

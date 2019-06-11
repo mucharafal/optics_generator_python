@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<config>
+  <item id="1" 
+    base_mad_conf_file="conf_b1"
+    processed_mad_conf_file="conf_b1_processed"
+    beam="lhcb1"
+    nominal_beam_energy="6500"
+    from_marker_name="ip5"
+    from_marker_s_pos="0.0"
+    define_from="0"
+    to_marker_name="beg_150_station"
+    to_marker_s_pos="202.769"
+    define_to="1"
+    aperture_limit="0"
+    tot_entries_number="10000"
+
+    number_of_part_per_sample="12000"
+    x_min="-0.008"
+    x_max="0.008"
+    theta_x_min="-0.0013"
+    theta_x_max="0.0013"
+    y_min="0.008"
+    y_max="-0.008"
+    theta_y_min="-0.0013"
+    theta_y_max="0.0013"
+    ksi_min="-0.35"
+    ksi_max="0.01"
+
+    samples_train_root_file_name="samples_beam_1_ip_150.root"
+    samples_test_root_file_name="samples_beam_1_ip_150_test.root"
+    samples_aperture_test_file_name="samples_beam_1_ip_150_aperture.root"
+    destination_branch_prefix="def"
+
+    polynomials_type="kMonomials"
+    terms_selelection_mode="AUTOMATIC"
+    max_degree_x="7"
+    max_degree_tx="7"
+    max_degree_y="7"
+    max_degree_ty="7"
+    precision_x="0.5e-6"
+    precision_tx="0.5e-9"
+    precision_y="0.5e-6"
+    precision_ty="0.5e-9"
+    common_terms="1"
+    approximation_error_histogram_file="approx_test_hists.root"
+
+    lost_particles_tree_filename="lost_particles_tree_file_beam_1_ip_150.root"
+    lost_particles_hist_filename="lost_particles_histograms_beam_1_ip_150.root"
+
+    optics_parametrisation_file="parametrization_6500GeV_90p0_50urad_transp.root"
+    optics_parametrisation_name="ip5_to_beg_150_station_lhcb1">
+    <subitem id="1"
+        to_marker_name="mqxb.b2r5"
+	ap_type="RECTELLIPSE"
+	rect_rx="0.028900"
+	rect_ry="0.024000"
+	el_rx="0.028900"
+	el_ry="0.030025"
+    >
+    </subitem>
+    <subitem id="2"
+        to_marker_name="mcbxh.3r5"
+	ap_type="RECTELLIPSE"
+	rect_rx="0.028900"
+	rect_ry="0.024000"
+	el_rx="0.028900"
+	el_ry="0.028900"
+    >
+    </subitem>
+    <subitem id="3"
+        to_marker_name="tanc.4r5"
+	ap_type="RECTELLIPSE"
+	rect_rx="0.026000"
+	rect_ry="0.026000"
+	el_rx="0.026000"
+	el_ry="0.026000"
+    >
+    </subitem>
+    <subitem id="4"
+        to_marker_name="mcbxh.2r5"
+	ap_type="RECTELLIPSE"
+	rect_rx="0.028900"
+	rect_ry="0.024000"
+	el_rx="0.028900"
+	el_ry="0.028900"
+    >
+    </subitem>
+    <subitem id="5"
+        to_marker_name="mqxa.3r5"
+	ap_type="RECTELLIPSE"
+	rect_rx="0.028900"
+	rect_ry="0.024000"
+	el_rx="0.028900"
+	el_ry="0.028900"
+    >
+    </subitem>
+    <subitem id="6"
+        to_marker_name="mqml.5r5.b1"
+	ap_type="RECTELLIPSE"
+	rect_rx="0.022550"
+	rect_ry="0.017650"
+	el_rx="0.022550"
+	el_ry="0.022550"
+    >
+    </subitem>
+    <subitem id="7"
+        to_marker_name="mcbch.5r5.b1"
+	ap_type="RECTELLIPSE"
+	rect_rx="0.022550"
+	rect_ry="0.017650"
+	el_rx="0.022550"
+	el_ry="0.022550"
+    >
+    </subitem>
+    <subitem id="8"
+        to_marker_name="mcbyv.b4r5.b1"
+	ap_type="RECTELLIPSE"
+	rect_rx="0.028900"
+	rect_ry="0.024000"
+	el_rx="0.028900"
+	el_ry="0.028900"
+    >
+    </subitem>
+  </item>
+</config>
+

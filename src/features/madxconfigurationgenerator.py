@@ -76,16 +76,12 @@ def get_tokens(conf, places):
 def generate_configuration_file(path_to_configuration, xml_configuration_file_name):
     """
     Generate configuration file for madx using configuration in xml file.
-
     File is generated in folder with configuration.
-
     Parameters
     ----------
     path_to_configuration- path to folder with configuration files- xml and rest files needed to create configuration-
     check xml file.
-
     xml_configuration_file_name- name of file with configuration to create madx script.
-
     Returns
     -------
     Path to generated file.
@@ -99,6 +95,10 @@ def generate_configuration_file(path_to_configuration, xml_configuration_file_na
 
     configuration = root[0].attrib
 
+    sourcePath = path_to_configuration + "/" + configuration['base_mad_conf_file']
+    sourceFile = open(sourcePath, 'r')
+
+    destinyFile = open(sourcePath + "_processed", "w")
     source_path = path_to_configuration + "/" + configuration['base_mad_conf_file']
     destiny_path = path_to_configuration + "/" + configuration['processed_mad_conf_file']
 
@@ -113,4 +113,6 @@ def generate_configuration_file(path_to_configuration, xml_configuration_file_na
                     line = line.replace(i, token_dict[index])
                 destinyFile.write(line)
 
+    destinyFile.close()
+    sourceFile.close()
     return destiny_path
