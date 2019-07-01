@@ -6,11 +6,15 @@ import xml.etree.ElementTree as ET
 import re
 import numpy as np
 import shutil
+import threading
+import time
+from concurrent.futures import ThreadPoolExecutor,wait,ALL_COMPLETED
 # todo
-# read file trackone
-# run madx until number of particles on last station will statisfy configuration minimum
 # run madx concurrently
 
+executor=ThreadPoolExecutor(max_workers=10)
+lock=threading.Lock()
+die=False
 
 def run_madx(path_to_madx_configuration_file):
     """Run madx"""
@@ -31,7 +35,7 @@ def generate_particles_trajectory(configuration_path, configuration_file_name):
     configuration = root[0].attrib
     for type in root.findall('item'): target=type.get('tot_entries_number')
     # generate part.in file for input madx
-    generate_particles(configuration)
+    generate_particles(configuration,"")
     # run madx in current working directory
     print("Generated, start processing...")
     run_madx(ready_config_path)
@@ -70,8 +74,8 @@ def read_in_segment(header, input_file, columns_number):
     return segment_name, matrix
 
 
-def generate_particles(configuration):
-    with open("part.in", "w") as output:
+def generate_particles(configuration,path):
+    with open(path+"part.in", "w") as output:
         number_of_particles = int(configuration['number_of_part_per_sample'])
         keys = configuration.keys()
         pattern = re.compile("\w+(?=_min)")     # extract from pattern with suffix _min
@@ -106,21 +110,80 @@ def generate_particles(configuration):
             line += "\n"
             output.write(line)
 
-def resupply(target,ready_config_path,segments,configuration):
-    generate_particles(configuration)
-    run_madx(ready_config_path)
-    s=read_in_madx_output_file("trackone")
-    print(len(segments['end']))
+def resupply(target,ready_config_path,segments,configuration,dir):
+    global lock
+    global die
+    while not die:
+        if not os.path.exists(config_path+"/"+dir): os.mkdir(config_path+"/"+dir)
+        work=os.getcwd()
+        path=os.path.dirname(config_path+"/"+dir)+"/"+dir
+        generate_particles(configuration,path+"/")
 
-    for key in segments:
-        if key in s: segments[key]=np.concatenate((segments[key],s[key]),axis=0)
+        lock.acquire()
+        shutil.copy(work+"/conf_b1_processed",path)
+        lock.release()
 
-    for key in s:
-        if key not in segments: segments[key]=s[key]
-    #result={key: s.get(key,[])+segments.get(key,[])
-    #for key in set(s) | set(segments)}
-    return segments
+        lock.acquire()
+        os.chdir(path)
+        run_madx(path+"/conf_b1_processed")
+        os.chdir(work)
+        lock.release()
 
+    #shutil.copy(path+"/trackone",work)
+    #s=read_in_madx_output_file("trackone")
+
+    #lock.acquire()
+    #output_len+=len(s['end'])
+    #print(output_len)
+    #lock.release()
+    #if output_len<target: executor.submit(resupply,target,ready_config_path,s,configuration,dir)
+    #for key in segments:
+    #    if key in s: segments[key]=np.concatenate((segments[key],s[key]),axis=0)
+
+    #for key in s:
+    #    if key not in segments: segments[key]=s[key]
+    #return segments
+
+def merge_all(segments,target):
+    global die
+    while True:
+        for i in range(10):
+            dir="dir"+str(i)
+            path=os.path.dirname(config_path+"/"+dir)+"/"+dir
+
+            if os.path.isfile(path+"/trackone"):
+                s=read_in_madx_output_file(path+"/trackone")
+                os.remove(path+"/trackone")
+
+                for key in segments:
+                    if key in s: segments[key]=np.concatenate((segments[key],s[key]),axis=0)
+
+                for key in s:
+                    if key not in segments: segments[key]=s[key]
+            print(len(segments['end']))
+            if len(segments['end'])>=target:
+                die=True
+                return segments
+            else: time.sleep(1)
+
+
+#def run_paralell(output,target,ready_config_path,configuration):
+#    futures=[]
+#    while len(output['end'])<target:
+#        print(len(output['end']))
+#        for i in range(5):
+#            futures.append(executor.submit(resupply,target,ready_config_path,output,configuration,"dir"+str(i)))
+#        wait(futures,timeout=None,return_when=ALL_COMPLETED)
+#        output=merge_all(output)
+#    return output
+
+def run_paralell(output,target,ready_config_path,configuration):
+    futures=[]
+    for i in range(5): futures.append(executor.submit(resupply,target,ready_config_path,output,configuration,"dir"+str(i)))
+    futures.append(executor.submit(merge_all,output,target))
+    output=futures[-1].result()
+    for i in futures: i.cancel()
+    return output
 
 def write_header(file_object):
     file_object.write('@ NAME             %07s "PARTICLES"\n')
@@ -134,7 +197,7 @@ def write_header(file_object):
 if __name__ == "__main__":
     """
     command: python3 madx_runner.py path_to_folder_with_configuration configuration_file_name.xml
-    needed:
+    needed:"optics_generator_python/src/features"+dir
     1. madx in PATH
         - you can download it from: http://madx.web.cern.ch/madx/
         - add to PATH folder with madx: export PATH=$PATH:/absolute/path/to/folder/with/madx in terminal
@@ -145,6 +208,14 @@ if __name__ == "__main__":
     file_config = sys.argv[2]
     (output,target,ready_config_path,configuration) = generate_particles_trajectory(config_path, file_config)
 
-    while(len(output['end'])<int(target)): output=resupply(int(target),ready_config_path,output,configuration)
+    output=run_paralell(output,int(target),ready_config_path,configuration)
+    #    for future in as_completed(futures):
+    #        print(future.result())
+
+    #i=0
+    #while(len(output['end'])<int(target)):
+    #    output=resupply(int(target),ready_config_path,output,configuration,"dir"+str(i))
+    #    i+=1
+
 print(output['end'])
 print(len(output['end']))
