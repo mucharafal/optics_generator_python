@@ -3,9 +3,9 @@ import os
 import subprocess
 import sys
 import xml.etree.ElementTree as ET
-import re
 import numpy as np
 import shutil
+import particles_generator as pg
 from concurrent.futures import ProcessPoolExecutor
 
 
@@ -74,59 +74,37 @@ def read_in_segment(header, input_file, columns_number):
 def generate_particles(configuration, path):
     """
     Function to generate file part.in. Parameters of particles are taken from configuration. Every parameter whose
-    values should be generated is describe by keys in configuration: parameter_name_min and parameter_name_max
+    values should be generated is describe by keys in configuration: parameter_name_min and parameter_name_max.
+    Warn- non thread safe. Changes working directory.
     :param configuration: dictionary with needed parameters
     :param path: path to directory, where file part.in should be generated
     :return:
     """
-    path_to_generated_file = os.path.join(path, "part.in")
-    with open(path_to_generated_file, "w") as output:
-        number_of_particles = int(configuration['number_of_part_per_sample'])
-        keys = configuration.keys()
-        pattern = re.compile("\w+(?=_min)")     # extract from pattern with suffix _min
-        # get parameters from configuration
-        extract_parameters = [pattern.search(x) for x in keys]
-        parameters = [x.group(0) for x in extract_parameters if x is not None]
-        number_of_parameters = len(parameters)
-        # print(list(parameters))
-        max_vector = np.zeros((1, number_of_parameters))
-        min_vector = np.zeros((1, number_of_parameters))
-        for i in range(number_of_parameters):
-            max_vector[0][i] = float(configuration[parameters[i] + "_max"])
-            min_vector[0][i] = float(configuration[parameters[i] + "_min"])
+    # Save current path.
+    previous_path = os.getcwd()
+    # Change for specified.
+    os.chdir(path)
 
-        matrix = (max_vector - min_vector) * np.random.random_sample((number_of_particles, number_of_parameters)) \
-            + min_vector
+    # Get parameters from configuration
+    number_of_particles = int(configuration['number_of_part_per_sample'])
+    x_min = float(configuration['x_min'])
+    x_max = float(configuration['x_max'])
+    theta_x_min = float(configuration['px_min'])
+    theta_x_max = float(configuration['px_max'])
+    y_min = float(configuration['y_min'])
+    y_max = float(configuration['y_max'])
+    theta_y_min = float(configuration['py_min'])
+    theta_y_max = float(configuration['py_max'])
+    t_min = float(configuration['t_min'])
+    t_max = float(configuration['t_max'])
+    pt_min = float(configuration['pt_min'])
+    pt_max = float(configuration['pt_max'])
 
-        write_header(output)
-        # disclaimer: trx = x ; trpx = px ; try = y ...
-        output.write('* mken ')
-        for parameter in parameters:
-            output.write("tr" + parameter + " ")
-        output.write("\n")
-        output.write('$ %s ')
-        for i in range(number_of_parameters):
-            output.write('%le ')
-        output.write("\n")
-        for i in range(number_of_particles):
-            line = '"' + str(i+1) + '" '
-            for n in matrix[i]:
-                line += str(n) + " "
-            line += "\n"
-            output.write(line)
+    pg.generate_random_particles(x_min, x_max, theta_x_min, theta_x_max, y_min, y_max, theta_y_min, theta_y_max,
+                                 t_min, t_max, pt_min, pt_max, number_of_particles)
 
-
-def write_header(file_object):
-    """
-    Write a header in madx format to file object given as parameter. Helper function for generate_particles
-    :param file_object: file to which header would be added
-    """
-    file_object.write('@ NAME             %07s "PARTICLES"\n')
-    file_object.write('@ TYPE             %04s "USER"\n')
-    file_object.write('@ TITLE            %34s "EVENT"\n')
-    file_object.write('@ ORIGIN           %19s "MAD-X 3.00.03 Linux"\n')
-    file_object.write('@ DATE             %08s "22/02/06"\n')      # todo add current date
-    file_object.write('@ TIME             %08s "11.11.11"\n')
+    # Recover previous working path.
+    os.chdir(previous_path)
 
 
 def merge_segments(destiny_segments, source_segments):
@@ -246,7 +224,7 @@ def __run_test():
 if __name__ == "__main__":
     """
     command: python3 madx_runner.py path_to_folder_with_configuration configuration_file_name.xml
-    needed:"optics_generator_python/src/features"+dir
+    needed:"optics_generator_python/src/approximator"+dir
     1. madx in PATH
         - you can download it from: http://madx.web.cern.ch/madx/
         - add to PATH folder with madx: export PATH=$PATH:/absolute/path/to/folder/with/madx in terminal
