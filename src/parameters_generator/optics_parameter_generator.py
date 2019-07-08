@@ -19,9 +19,41 @@ def compute_l_y(x, theta_x, y, theta_y, ksi, delta_theta=0.000001):
 def compute_l_x(x, theta_x, y, theta_y, ksi, delta_theta=0.000001):
     particle1 = get_one_particle(x, theta_x, y, theta_y, ksi)
     particle1_attributes = process_row(particle1)
-    particle2 = get_one_particle(x, theta_x, y, theta_y + delta_theta, ksi)
+    particle2 = get_one_particle(x, theta_x + delta_theta, y, theta_y, ksi)
     particle2_attributes = process_row(particle2)
-    return (particle2_attributes["y"] - particle1_attributes["y"]) / delta_theta
+    return (particle2_attributes["x"] - particle1_attributes["x"]) / delta_theta
+
+
+def compute_v_x(x, theta_x, y, theta_y, ksi, delta_x):
+    particle1 = get_one_particle(x, theta_x, y, theta_y, ksi)
+    particle1_attributes = process_row(particle1)
+    particle2 = get_one_particle(x + delta_x, theta_x, y, theta_y, ksi)
+    particle2_attributes = process_row(particle2)
+    return (particle2_attributes["x"] - particle1_attributes["x"]) / delta_x
+
+
+def compute_v_y(x, theta_x, y, theta_y, ksi, delta_y):
+    particle1 = get_one_particle(x, theta_x, y, theta_y, ksi)
+    particle1_attributes = process_row(particle1)
+    particle2 = get_one_particle(x, theta_x, y + delta_y, theta_y, ksi)
+    particle2_attributes = process_row(particle2)
+    return (particle2_attributes["y"] - particle1_attributes["y"]) / delta_y
+
+
+def compute_d_x(x, theta_x, y, theta_y, ksi, delta_ksi):
+    particle1 = get_one_particle(x, theta_x, y, theta_y, ksi)
+    particle1_attributes = process_row(particle1)
+    particle2 = get_one_particle(x, theta_x, y, theta_y, ksi + delta_ksi)
+    particle2_attributes = process_row(particle2)
+    return (particle2_attributes["x"] - particle1_attributes["x"]) / delta_ksi
+
+
+def compute_d_y(x, theta_x, y, theta_y, ksi, delta_ksi):
+    particle1 = get_one_particle(x, theta_x, y, theta_y, ksi)
+    particle1_attributes = process_row(particle1)
+    particle2 = get_one_particle(x, theta_x, y, theta_y, ksi + delta_ksi)
+    particle2_attributes = process_row(particle2)
+    return (particle2_attributes["y"] - particle1_attributes["y"]) / delta_ksi
 
 
 def get_one_particle(x, theta_x, y, theta_y, ksi):
