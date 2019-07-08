@@ -60,7 +60,6 @@ def get_one_particle(x, theta_x, y, theta_y, ksi):
     bunch_size = 1
     current_path = os.getcwd()
     folder_name = "kali1234"
-    # os.rmdir(folder_name)
     os.mkdir(folder_name)
     os.chdir(folder_name)
 
@@ -72,7 +71,7 @@ def get_one_particle(x, theta_x, y, theta_y, ksi):
             for i in input_file:
                 output_file.write(i)
 
-    pg.generate_from_range(x, x, bunch_size,
+    pg.generate_from_range(x, x, bunch_size + 1,
                            theta_x, theta_x, 1,
                            y, y, 1,
                            theta_y, theta_y, 1,
@@ -82,10 +81,12 @@ def get_one_particle(x, theta_x, y, theta_y, ksi):
     mr.run_madx("ready_config")
     segments = mr.read_in_madx_output_file("trackone")
 
-    matrix = segments["end"]
-
-    os.chdir(current_path)
-    shutil.rmtree(folder_name)
+    if "end" in segments.keys():
+        matrix = segments["end"]
+    else:
+        os.chdir(current_path)
+        shutil.rmtree(folder_name)
+        raise ParticleNotArrivedError()
 
     return matrix[0]
 
@@ -104,4 +105,8 @@ def process_row(row):
         "e"     : row[9]
     }
     return mapping
+
+
+class ParticleNotArrivedError(Exception):
+    pass
 
