@@ -99,7 +99,7 @@ def write_specification_of_row(names, types, file_object):
     # Write names of columns
     file_object.write("*")
     for name in names:
-        file_object.write("\t"+name)
+        file_object.write(" "+name)
     file_object.write("\n")
 
     # todo complete this map
@@ -111,16 +111,22 @@ def write_specification_of_row(names, types, file_object):
     # Write names of types
     file_object.write("$")
     for column_type in types:
-        file_object.write("\t"+type_names[column_type])
+        file_object.write(" "+type_names[column_type])
     file_object.write("\n")
 
 
 def save_matrix_to_file(matrix, file_object):
     grid_size = len(matrix)
-    for i in range(grid_size):
+    for i in range(grid_size - 1):
         line = '"' + str(i + 1) + '" '
         for n in matrix[i]:
             line += str(n) + " "
         line += "\n"
         file_object.write(line)
+
+    i = grid_size - 1
+    line = '"' + str(i + 1) + '" '
+    for n in matrix[i]:
+        line += str(n) + " "
+    file_object.write(line)
 
