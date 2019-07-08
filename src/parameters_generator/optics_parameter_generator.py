@@ -5,67 +5,68 @@ import shutil
 """
 Module include functions to obtain parameters of optics such like dispersion or magnetism.
 They are calculated using madx to obtain particle trajectory and then they are obtained using numerical derivative.
+None of them is thread safe.
 """
 
 
 def compute_l_y(x, theta_x, y, theta_y, ksi, delta_theta=0.000001):
     particle1 = get_one_particle(x, theta_x, y, theta_y, ksi)
-    particle1_attributes = process_row(particle1)
     particle2 = get_one_particle(x, theta_x, y, theta_y + delta_theta, ksi)
-    particle2_attributes = process_row(particle2)
-    return (particle2_attributes["y"] - particle1_attributes["y"]) / delta_theta
+    return (particle2["y"] - particle1["y"]) / delta_theta
 
 
 def compute_l_x(x, theta_x, y, theta_y, ksi, delta_theta=0.000001):
     particle1 = get_one_particle(x, theta_x, y, theta_y, ksi)
-    particle1_attributes = process_row(particle1)
     particle2 = get_one_particle(x, theta_x + delta_theta, y, theta_y, ksi)
-    particle2_attributes = process_row(particle2)
-    return (particle2_attributes["x"] - particle1_attributes["x"]) / delta_theta
+    return (particle2["x"] - particle1["x"]) / delta_theta
 
 
 def compute_v_x(x, theta_x, y, theta_y, ksi, delta_x):
     particle1 = get_one_particle(x, theta_x, y, theta_y, ksi)
-    particle1_attributes = process_row(particle1)
     particle2 = get_one_particle(x + delta_x, theta_x, y, theta_y, ksi)
-    particle2_attributes = process_row(particle2)
-    return (particle2_attributes["x"] - particle1_attributes["x"]) / delta_x
+    return (particle2["x"] - particle1["x"]) / delta_x
 
 
 def compute_v_y(x, theta_x, y, theta_y, ksi, delta_y):
     particle1 = get_one_particle(x, theta_x, y, theta_y, ksi)
-    particle1_attributes = process_row(particle1)
     particle2 = get_one_particle(x, theta_x, y + delta_y, theta_y, ksi)
-    particle2_attributes = process_row(particle2)
-    return (particle2_attributes["y"] - particle1_attributes["y"]) / delta_y
+    return (particle2["y"] - particle1["y"]) / delta_y
 
 
 def compute_d_x(x, theta_x, y, theta_y, ksi, delta_ksi):
     particle1 = get_one_particle(x, theta_x, y, theta_y, ksi)
-    particle1_attributes = process_row(particle1)
     particle2 = get_one_particle(x, theta_x, y, theta_y, ksi + delta_ksi)
-    particle2_attributes = process_row(particle2)
-    return (particle2_attributes["x"] - particle1_attributes["x"]) / delta_ksi
+    return (particle2["x"] - particle1["x"]) / delta_ksi
 
 
 def compute_d_y(x, theta_x, y, theta_y, ksi, delta_ksi):
     particle1 = get_one_particle(x, theta_x, y, theta_y, ksi)
-    particle1_attributes = process_row(particle1)
     particle2 = get_one_particle(x, theta_x, y, theta_y, ksi + delta_ksi)
-    particle2_attributes = process_row(particle2)
-    return (particle2_attributes["y"] - particle1_attributes["y"]) / delta_ksi
+    return (particle2["y"] - particle1["y"]) / delta_ksi
 
 
 def get_one_particle(x, theta_x, y, theta_y, ksi):
+    """
+    Transport particle with given parameter.
+    Generate input file for madx, invoke it and read in its input.
+    Raise error ParticleNotArrivedError if particle do not arrive at the end station.
+    :param x:
+    :param theta_x:
+    :param y:
+    :param theta_y:
+    :param ksi:
+    :return:
+    """
     bunch_size = 1
     current_path = os.getcwd()
     folder_name = "kali1234"
     os.mkdir(folder_name)
     os.chdir(folder_name)
 
+    path_to_madx_script = "./configuration.madx"
+
     with open("ready_config", "w") as output_file:
-        with open(
-                "/home/rafalmucha/Pobrane/optic/optics_generator_python/src/parameters_generator/configuration.madx") as input_file:
+        with open(path_to_madx_script) as input_file:
             output_file.write("bunch_size = " + str(bunch_size) + ";\n")
             output_file.write("DELTA_AP = " + str(ksi) + ";\n")
             for i in input_file:
@@ -88,7 +89,7 @@ def get_one_particle(x, theta_x, y, theta_y, ksi):
         shutil.rmtree(folder_name)
         raise ParticleNotArrivedError()
 
-    return matrix[0]
+    return process_row(matrix[0])
 
 
 def process_row(row):
