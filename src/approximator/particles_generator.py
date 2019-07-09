@@ -39,9 +39,11 @@ def generate_from_range(x_min, x_max, number_of_x_in_grid,
         grid = np.array(np.meshgrid(x_vector, theta_x_vector, y_vector, theta_y_vector, t_vector, pt_vector))\
             .T.reshape(-1, 6)
 
-        print(grid)
+        # print(grid)
 
         save_matrix_to_file(grid, output_file)
+
+        return grid
 
 
 def generate_particles_randomly(x_min, x_max,

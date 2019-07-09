@@ -76,7 +76,7 @@ def get_one_particle(x, theta_x, y, theta_y, ksi, path_to_configuration):
                            y, y, 1,
                            theta_y, theta_y, 1,
                            0, 0, 1,
-                           ksi, ksi, 1)
+                           0, 0, 1)
 
     mr.run_madx(name_of_configuration_file)
     segments = mr.read_in_madx_output_file("trackone")
@@ -87,6 +87,9 @@ def get_one_particle(x, theta_x, y, theta_y, ksi, path_to_configuration):
         os.chdir(current_path)
         shutil.rmtree(folder_name)
         raise ParticleNotArrivedError()
+
+    os.chdir(current_path)
+    shutil.rmtree(folder_name)
 
     return process_row(matrix[0])
 
