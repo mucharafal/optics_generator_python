@@ -1,11 +1,11 @@
-import madxconfigurationgenerator as mc
+import approximator.madxconfigurationgenerator as mc
 import os
 import subprocess
 import sys
 import xml.etree.ElementTree as ET
 import numpy as np
 import shutil
-import particles_generator as pg
+import approximator.particles_generator as pg
 from concurrent.futures import ProcessPoolExecutor
 
 

@@ -1,8 +1,8 @@
-import madx_runner as mr
-import particles_generator as pg
+import approximator.madx_runner as mr
+import approximator.particles_generator as pg
 import os
 import shutil
-import optics_parameter_generator as opg
+import parameters_generator.optics_parameter_generator as opg
 import numpy as np
 
 
