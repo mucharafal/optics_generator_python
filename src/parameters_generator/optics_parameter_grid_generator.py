@@ -14,6 +14,7 @@ def compute_l_y(x_min, x_max, number_of_x_values,
                 ksi_min, ksi_max, number_of_ksi_values,
                 path_to_configuration, delta_theta_multiplier=0.000001, number_of_processes=4):
     delta_theta = (theta_y_max - theta_y_min) * delta_theta_multiplier
+    delta_theta = delta_theta if delta_theta != 0 else delta_theta_multiplier
     particles1 = get_grid_of_particles(x_min, x_max, number_of_x_values,
                                        theta_x_min, theta_x_max, number_of_theta_x_values,
                                        y_min, y_max, number_of_y_values,
@@ -39,6 +40,7 @@ def compute_l_x(x_min, x_max, number_of_x_values,
                 ksi_min, ksi_max, number_of_ksi_values,
                 path_to_configuration, delta_theta_multiplier=0.000001, number_of_processes=4):
     delta_theta = (theta_x_max - theta_x_min) * delta_theta_multiplier
+    delta_theta = delta_theta if delta_theta != 0 else delta_theta_multiplier
     particles1 = get_grid_of_particles(x_min, x_max, number_of_x_values,
                                        theta_x_min, theta_x_max, number_of_theta_x_values,
                                        y_min, y_max, number_of_y_values,
@@ -64,6 +66,7 @@ def compute_v_y(x_min, x_max, number_of_x_values,
                 ksi_min, ksi_max, number_of_ksi_values,
                 path_to_configuration, delta_y_multiplier=0.000001, number_of_processes=4):
     delta_y = (y_max - y_min) * delta_y_multiplier
+    delta_y = delta_y if delta_y != 0 else delta_y_multiplier
     particles1 = get_grid_of_particles(x_min, x_max, number_of_x_values,
                                        theta_x_min, theta_x_max, number_of_theta_x_values,
                                        y_min, y_max, number_of_y_values,
@@ -89,6 +92,7 @@ def compute_v_x(x_min, x_max, number_of_x_values,
                 ksi_min, ksi_max, number_of_ksi_values,
                 path_to_configuration, delta_x_multiplier=0.000001, number_of_processes=4):
     delta_x = (x_max - x_min) * delta_x_multiplier
+    delta_x = delta_x if delta_x != 0 else delta_x_multiplier
     particles1 = get_grid_of_particles(x_min, x_max, number_of_x_values,
                                        theta_x_min, theta_x_max, number_of_theta_x_values,
                                        y_min, y_max, number_of_y_values,
@@ -114,6 +118,7 @@ def compute_d_y(x_min, x_max, number_of_x_values,
                 ksi_min, ksi_max, number_of_ksi_values,
                 path_to_configuration, delta_ksi_multiplier=0.000001, number_of_processes=4):
     delta_ksi = (ksi_max - ksi_min) * delta_ksi_multiplier
+    delta_ksi = delta_ksi if delta_ksi != 0 else delta_ksi_multiplier
     particles1 = get_grid_of_particles(x_min, x_max, number_of_x_values,
                                        theta_x_min, theta_x_max, number_of_theta_x_values,
                                        y_min, y_max, number_of_y_values,
@@ -139,6 +144,7 @@ def compute_d_x(x_min, x_max, number_of_x_values,
                 ksi_min, ksi_max, number_of_ksi_values,
                 path_to_configuration, delta_ksi_multiplier=0.000001, number_of_processes=4):
     delta_ksi = (ksi_max - ksi_min) * delta_ksi_multiplier
+    delta_ksi = delta_ksi if delta_ksi > 0 else delta_ksi_multiplier
     particles1 = get_grid_of_particles(x_min, x_max, number_of_x_values,
                                        theta_x_min, theta_x_max, number_of_theta_x_values,
                                        y_min, y_max, number_of_y_values,
