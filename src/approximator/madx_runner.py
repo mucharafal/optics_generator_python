@@ -100,8 +100,8 @@ def generate_particles(configuration, path):
     pt_min = float(configuration['pt_min'])
     pt_max = float(configuration['pt_max'])
 
-    pg.generate_random_particles(x_min, x_max, theta_x_min, theta_x_max, y_min, y_max, theta_y_min, theta_y_max,
-                                 t_min, t_max, pt_min, pt_max, number_of_particles)
+    pg.generate_particles_randomly(x_min, x_max, theta_x_min, theta_x_max, y_min, y_max, theta_y_min, theta_y_max,
+                                   t_min, t_max, pt_min, pt_max, number_of_particles)
 
     # Recover previous working path.
     os.chdir(previous_path)
