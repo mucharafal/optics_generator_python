@@ -1,8 +1,8 @@
-import approximator.madx_runner as mr
-import approximator.particles_generator as pg
+import data.madx_runner as mr
+import data.particles_generator as pg
 import os
 import shutil
-import parameters_generator.optics_parameter_generator as opg
+import data.madxconfigurationgenerator as mcg
 import numpy as np
 from concurrent.futures import ProcessPoolExecutor
 
@@ -216,7 +216,7 @@ def worker(x_min, x_max, number_of_x_values,
     os.chdir(folder_name)
     input_matrix = np.empty(shape=(0, 7))
 
-    name_of_configuration_file = opg.create_madx_configuration_file(path_to_configuration, ksi, bunch_size)
+    name_of_configuration_file = mcg.generate_configuration_file(path_to_configuration, ksi, bunch_size)
 
     generated_matrix = pg.generate_from_range(x_min, x_max, number_of_x_values,
                                               theta_x_min, theta_x_max, number_of_theta_x_values,
@@ -230,8 +230,8 @@ def worker(x_min, x_max, number_of_x_values,
 
     input_matrix = np.append(input_matrix, supplied_input_matrix, axis=0)
 
-    mr.run_madx(name_of_configuration_file)
-    segments = mr.read_in_madx_output_file("trackone")
+    mr.__run_madx(name_of_configuration_file)
+    segments = mr.__read_in_madx_output_file("trackone")
 
     output_matrix = np.empty(shape=(0, 17))
 
