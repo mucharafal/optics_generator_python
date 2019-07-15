@@ -3,17 +3,18 @@ import subprocess
 import numpy as np
 import shutil
 from concurrent.futures import ProcessPoolExecutor
+import data.madxconfigurationgenerator as mcg
 
 
-def compute_trajectory(particles, path_to_madx_script, number_of_workers):
+def compute_trajectory(particles, path_to_accelerator_configuration, number_of_workers):
     """
     Compute trajectory for particles in matrix
     :param particles: numpy matrix with parameters of particles. Rows of matrix: x, theta x, y, theta y, t, pt
-    :param path_to_madx_script path to ready madx script which will be used by workers
+    :param path_to_accelerator_configuration: path to configuration of accelerator
     :param number_of_workers: number of processes use in computing
     :return: dict with matrix for every point in script
     """
-    trajectory_matrix = __run_parallel(particles, path_to_madx_script, number_of_workers)
+    trajectory_matrix = __run_parallel(particles, path_to_accelerator_configuration, number_of_workers)
     return trajectory_matrix
 
 
@@ -105,14 +106,15 @@ def __merge_output_from_workers(futures):
     return segments
 
 
-def __run_worker(path_to_config_file, particles, working_directory_name):
+def __run_worker(particles, working_directory_name, path_to_accelerator_configuration, shift):
     """
     Function of worker which run madx. It prepare working directory, run madx,
     read in result and return it. It must be another process not thread because it changes working directory
     of interpreter.
-    :param path_to_config_file: path to file with ready script for madx
     :param particles: matrix with parameters of particles
     :param working_directory_name: name of directory in which process should work
+    :param path_to_accelerator_configuration: path to configuration of accelerator
+    :param shift: shift of ordinal numbers of particles
     :return:
     """
     directory_before = os.getcwd()
@@ -123,15 +125,22 @@ def __run_worker(path_to_config_file, particles, working_directory_name):
     os.chdir(path_to_working_directory)
 
     __save_particles(particles)
-    configuration_file_name = "processed_mad_conf_file"
-    shutil.copy(path_to_config_file, configuration_file_name)
+
+    number_of_particles = particles.shape[0]
+    configuration_file_name = mcg.generate_configuration_file(path_to_accelerator_configuration, 0,
+                                                              number_of_particles)
 
     __run_madx(configuration_file_name)
 
     segments = __read_in_madx_output_file("trackone")
 
+    # print(working_directory_name)
+    # print(segments["start"])
+
     os.chdir(directory_before)
     shutil.rmtree(path_to_working_directory)
+
+    segments = shift_ordinal_number_in_segments(segments, shift)
 
     return segments
 
@@ -228,33 +237,47 @@ def __save_matrix_to_file(matrix, file_object):
     file_object.write(line)
 
 
-def __run_parallel(particles, ready_config_path, number_of_workers=4):
+def __run_parallel(particles, path_to_accelerator_configuration, number_of_workers=4):
     """
     Execute parallel threads which every:
     - create its own working directory
     - copy configuration file from to its working directory
     - generate particles trajectory and return it
     :param particles: matrix with particles' parameters
-    :param ready_config_path: path to ready configuration file
+    :param path_to_accelerator_configuration: path to configuration of accelerator
     :param number_of_workers: max number of workers
     :return: dictionary with segments- every segment is one matrix with particles
     """
     parts = []
+    particles = particles.T
     part_size = int(particles.shape[0]/number_of_workers)
     for index in range(number_of_workers-1):
         begin = index * part_size
         end = begin + part_size
-        parts.append(particles[begin:end])
+        part = particles[begin:end]
+        parts.append(part)
 
     parts.append(particles[(number_of_workers-1)*part_size:])
+    # print("Parts")
+    # print(parts)
 
     with ProcessPoolExecutor(number_of_workers) as executor:
         segments = {}
         futures = []
         for worker_number in range(number_of_workers):
             worker_directory_name = "dir" + str(worker_number)
+            shift = part_size * worker_number
             futures.append(executor.submit(__run_worker,
-                                           ready_config_path, parts[worker_number], worker_directory_name))
+                                           parts[worker_number], worker_directory_name,
+                                           path_to_accelerator_configuration, shift))
         new_particles = __merge_output_from_workers(futures)
-        segments = __merge_segments(segments, new_particles)
+        segments = merge_segments(segments, new_particles)
         return segments
+
+
+def shift_ordinal_number_in_segments(segments, shift):
+    for segment_name in segments.keys():
+        segment = segments[segment_name]
+        segment.T[0] = segment.T[0] + shift
+        segments[segment_name] = segment
+    return segments

@@ -1,6 +1,6 @@
 import data.particles_generator as pg
-import data.madxconfigurationgenerator as mcg
 import data.madx_runner as mr
+import numpy as np
 
 
 def generate_particles(beam_configuration, angles_ranges, path_to_accelerator_configuration,
@@ -16,10 +16,16 @@ def generate_particles(beam_configuration, angles_ranges, path_to_accelerator_co
     :return: dict with numpy matrix of particles' parameters on stations.
     """
     segments = {}
+    counter = 0
 
     while len(segments.keys()) == 0 or len(segments["end"]) <= target:
         new_particles = __generate_particles(beam_configuration, angles_ranges, path_to_accelerator_configuration,
                                              number_of_particles_in_one_run)
+
+        shift = counter * number_of_particles_in_one_run
+        counter += 1
+        new_particles = mr.shift_ordinal_number_in_segments(new_particles, shift)
+
         segments = mr.merge_segments(segments, new_particles)
 
     return segments
@@ -46,13 +52,21 @@ def __generate_particles(beam_configuration, angles_ranges, path_to_accelerator_
                                               angles_ranges["y_min"], angles_ranges["y_max"],
                                               number_of_particles_in_one_run)
 
-    path_to_madx_script = mcg.generate_configuration_file(path_to_accelerator_configuration, 0,
-                                                          number_of_particles_in_one_run)
-
     # take only x, theta x, y, theta y, t and pt, angles are omitted
     matrix_for_madx = particles.T[:6]
+    angles = particles.T[6:]
 
-    segments = mr.compute_trajectory(matrix_for_madx, path_to_madx_script, 4)
+    number_of_processes = 4
+    segments = mr.compute_trajectory(matrix_for_madx, path_to_accelerator_configuration, number_of_processes)
+
+    for segment_name in segments.keys():
+        segment = segments[segment_name]
+        indexes = segment.T[0].astype(int)
+        indexes -= 1
+        angles_of_segment = angles.T[indexes]
+        segment = np.append(segment, angles_of_segment, axis=1)
+        segments[segment_name] = segment
+
     return segments
 
 
