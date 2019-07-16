@@ -127,7 +127,8 @@ def __run_worker(particles, working_directory_name, path_to_accelerator_configur
     __save_particles(particles)
 
     number_of_particles = particles.shape[0]
-    configuration_file_name = mcg.generate_configuration_file(path_to_accelerator_configuration, 0,
+    ksi = 0
+    configuration_file_name = mcg.generate_configuration_file(path_to_accelerator_configuration, ksi,
                                                               number_of_particles)
 
     __run_madx(configuration_file_name)

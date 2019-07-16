@@ -18,7 +18,7 @@ def generate_particles(beam_configuration, angles_ranges, path_to_accelerator_co
     segments = {}
     counter = 0
 
-    while len(segments.keys()) == 0 or len(segments["end"]) <= target:
+    while ("end" not in segments.keys()) or ("end" in segments.keys() and len(segments["end"]) <= target):
         new_particles = __generate_particles(beam_configuration, angles_ranges, path_to_accelerator_configuration,
                                              number_of_particles_in_one_run)
 
@@ -27,6 +27,11 @@ def generate_particles(beam_configuration, angles_ranges, path_to_accelerator_co
         new_particles = mr.shift_ordinal_number_in_segments(new_particles, shift)
 
         segments = mr.merge_segments(segments, new_particles)
+
+        if "end" not in segments.keys():
+            print("0")
+        else:
+            print(len(segments["end"]))
 
     return segments
 
