@@ -169,6 +169,27 @@ def get_grid_of_particles(x_min, x_max, number_of_x_values,
                           theta_y_min, theta_y_max, number_of_theta_y_values,
                           ksi_min, ksi_max, number_of_ksi_values,
                           path_to_configuration, number_of_processes):
+    """
+    Generate grid of particles with calculated position before and after passing optics.
+    :param x_min:
+    :param x_max:
+    :param number_of_x_values:
+    :param theta_x_min:
+    :param theta_x_max:
+    :param number_of_theta_x_values:
+    :param y_min:
+    :param y_max:
+    :param number_of_y_values:
+    :param theta_y_min:
+    :param theta_y_max:
+    :param number_of_theta_y_values:
+    :param ksi_min:
+    :param ksi_max:
+    :param number_of_ksi_values:
+    :param path_to_configuration:
+    :param number_of_processes:
+    :return:
+    """
     bunch_size = number_of_x_values * number_of_theta_x_values * number_of_y_values * number_of_theta_y_values
 
     current_path = os.getcwd()
