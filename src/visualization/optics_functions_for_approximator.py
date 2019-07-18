@@ -1,6 +1,7 @@
 import ROOT
 import data.particles_generator as pg
 import numpy as np
+import approximator.run_approximator as ra
 
 
 def compute_v_x(approximator,
@@ -20,8 +21,8 @@ def compute_v_x(approximator,
                                                   theta_y, theta_y, 1,
                                                   t, t, 1,
                                                   pt, pt, 1)
-    end_positions = transport_particles(approximator, begin_positions)
-    shifted_end_positions = transport_particles(approximator, shifted_begin_positions)
+    end_positions = ra.transport(approximator, begin_positions)
+    shifted_end_positions = ra.transport(approximator, shifted_begin_positions)
 
     x_end_positions = get_vector_of("x", end_positions)
     x_shifted_end_positions = get_vector_of("x", shifted_end_positions)
@@ -34,11 +35,3 @@ def compute_v_x(approximator,
 
 def get_vector_of(column_name, matrix):
     pass
-
-
-def transport_particles(approximator, begin_positions):
-    end_positions = list()
-    for row in begin_positions:
-        end_position = approximator.Transport(row)
-        end_positions.append(end_position)
-    return np.array(end_positions)
