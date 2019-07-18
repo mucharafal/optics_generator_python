@@ -18,7 +18,7 @@ def generate_particles(beam_configuration, angles_ranges, path_to_accelerator_co
     segments = {}
     counter = 0
 
-    while ("end" not in segments.keys()) or ("end" in segments.keys() and len(segments["end"]) <= target):
+    while ("end" not in segments.keys()) or ("end" in segments.keys() and len(segments["end"]) < target):
         new_particles = __generate_particles(beam_configuration, angles_ranges, path_to_accelerator_configuration,
                                              number_of_particles_in_one_run)
 
