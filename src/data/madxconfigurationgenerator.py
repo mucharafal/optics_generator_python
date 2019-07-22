@@ -137,12 +137,13 @@ getpart(nx): macro = {
 }
 
 
-set,format="4.12e";''')
-        configuration_file.write('call, file = "' + path_to_configuration + '/2016/lhc_as-built.seq";')
-        configuration_file.write('call, file = "' + path_to_configuration + '/2016/opt_inj_colltunes.madx";')
-        configuration_file.write("DELTA_AP = " + str(ksi) + ";")
-        configuration_file.write("bunch_size = " + str(number_of_particles_on_input) + ";")
-        configuration_file.write('''on_sep5=0;
+set,format="4.12e";\n''')
+        configuration_file.write('call, file = "' + path_to_configuration + '/2016/lhc_as-built.seq";\n')
+        configuration_file.write('call, file = "' + path_to_configuration + '/2016/opt_inj_colltunes.madx";\n')
+        configuration_file.write("DELTA_AP = " + str(ksi) + ";\n")
+        configuration_file.write("bunch_size = " + str(number_of_particles_on_input) + ";\n")
+        configuration_file.write('''
+on_sep5=0;
 px.ip5=185e-6;
 !y.ip5=5.500000000000000e-04;
 beta.ip5=0.400 ;
@@ -155,8 +156,8 @@ beam, sequence=lhcb2, bv=-1, energy=6500,  particle=proton,
 
 use,sequence=lhcb1;
 ''')
-        configuration_file.write('call, file="' + path_to_configuration + 'temporary_perturbation.madx";')
-        configuration_file.write('call, file="' + path_to_configuration + 'temporary_perturbation_b1.madx";')
+        configuration_file.write('call, file="' + path_to_configuration + 'temporary_perturbation.madx";\n')
+        configuration_file.write('call, file="' + path_to_configuration + 'temporary_perturbation_b1.madx";\n')
 
         configuration_file.write('''
 
@@ -216,8 +217,9 @@ select,flag=error, pattern=MQML.5R5.B1;
 ealign, dpsi= PERTDPSIMQML.5R5.B1 + DPSIMQML.5R5.B1   ;
 MCBCH.5R5.B1, KICK := (LSA.MCBCH.5R5.B1*(1.0 + 0)) * (1), polarity=1;
 
-! Matching part end''')
-        configuration_file.write('call, file="' + path_to_configuration + 'LSA.str";')
+! Matching part end
+''')
+        configuration_file.write('call, file="' + path_to_configuration + 'LSA.str";\n')
         configuration_file.write('''! Cycle
 seqedit,sequence=lhcb1;flatten;cycle,start=IP5;endedit;
 
@@ -237,9 +239,10 @@ seqedit, sequence=lhcb1;flatten;cycle, start=IP5;endedit;
 
 use,sequence=lhcb1;
 !use,period=lhcb1,range=ip5/MQML.6R5.B1;
-use,period=lhcb1,range=ip5/beg_150_station;''')
-        # Probably above line is redundant
-        configuration_file.write('call, file="' + path_to_configuration + 'temporary_perturbation_b1.madx";')
+use,period=lhcb1,range=ip5/beg_150_station;
+''')
+        # Probably below line is redundant
+        configuration_file.write('call, file="' + path_to_configuration + 'temporary_perturbation_b1.madx";\n')
 
         configuration_file.write('''readmytable,file=part.in,table=myevent;
 

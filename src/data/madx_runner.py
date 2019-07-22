@@ -135,9 +135,6 @@ def __run_worker(particles, working_directory_name, path_to_accelerator_configur
 
     segments = __read_in_madx_output_file("trackone")
 
-    # print(working_directory_name)
-    # print(segments["start"])
-
     os.chdir(directory_before)
     shutil.rmtree(path_to_working_directory)
 
@@ -259,8 +256,6 @@ def __run_parallel(particles, path_to_accelerator_configuration, number_of_worke
         parts.append(part)
 
     parts.append(particles[(number_of_workers-1)*part_size:])
-    # print("Parts")
-    # print(parts)
 
     with ProcessPoolExecutor(number_of_workers) as executor:
         segments = {}

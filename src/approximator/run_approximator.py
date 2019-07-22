@@ -1,51 +1,49 @@
 import ROOT
 from ROOT import gSystem, gInterpreter
 import numpy as np
-import sys
-import root_numpy as rn
-# before use you have to set LD_LIBRARY_PATH to folder root_libs!!!
+import os
 
 
-def get_approximator_from_file(file_name):
-    project_dir = "/home/rafalmucha/Pobrane/optic/optics_generator_python"
-
-    gInterpreter.ProcessLine(".include " + project_dir + "/src/root_classes/include")
+def get_approximator_from_file(path_to_project, path_to_file):
+    """
+    Get approximator from file. Use only once, since it initialize variables in ROOT, so with second use it is going
+    to explode. Sorry.
+    :param path_to_project: path to optics_generator_python. Needed files from it:
+    - properly initialized folder root_libs
+    - src/root_classes/include
+    :param path_to_file: path to file with serialized LHCOpticsApproximator object
+    :return: approximator object
+    """
+    os.environ['LD_LIBRARY_PATH'] = path_to_project + "/root_libs"
+    gInterpreter.ProcessLine(".include " + path_to_project + "/src/root_classes/include")
     gSystem.Load("LHCOpticsApproximator")
-    gInterpreter.ProcessLine('TFile *f=TFile::Open("/home/rafalmucha/Pobrane/optic/opticsGenerator/src/parametrization_6500GeV_0p4_185_transp.root ");')
+    gInterpreter.ProcessLine('TFile *f=TFile::Open("' + path_to_file + '");')
     gInterpreter.ProcessLine('std::auto_ptr<LHCOpticsApproximator> apr_near150 = std::auto_ptr<LHCOpticsApproximator>((LHCOpticsApproximator*) f->Get("ip5_to_beg_150_station_lhcb1"));')
     gInterpreter.ProcessLine("f->Close()")
+    gInterpreter.ProcessLine("double input[6];")
+    gInterpreter.ProcessLine("double output[5];")
     aperture = ROOT.apr_near150
     return aperture
 
 
 def transport(approximator, matrix):
-    end_positions = np.empty((matrix.shape[0], 5))
+    """
+    Transport particles described in matrix
+    :param approximator: LHCOpticsApproximator object
+    :param matrix: each row should contain begining position of particle- x, theta x, y, theta y, t, pt
+    :return: matrix with result of transport, where each row contain x, theta x, y, theta y, pt
+    """
+    # Using such containers is probably the easiest way to work with root objects
+    # It will contain input values and output values will be stored in them
+    input_container = ROOT.input
+    output_container = ROOT.output
+    end_positions = list()
     for index, row in enumerate(matrix):
-        approximator.Transport(row, end_positions[index])
-    return end_positions
-
-
-def dict_to_ttree(dictionary):
-    in_arr = dictionary["start"]
-    print(in_arr.shape)
-    names = ["number", "inout", "x_in", "theta_x_in", "y_in", "theta_y_in", "t", "ksi_in", "s_in", "e"]
-    formats = [np.float64, np.float64, np.float64, np.float64, np.float64, np.float64, np.float64, np.float64, np.float64, np.float64]
-    prefix = "def_"
-    out_names = ["number", "inout", "x_out", "theta_x_out", "y_out", "theta_y_out", "t", "ksi_out", "s_out", "e"]
-    better_out_names = [prefix + x for x in out_names]
-    out_arr = dictionary["end"]
-    print(out_arr.shape)
-    dtypes = np.dtype(list(zip(names, formats)))
-    in_arr = [tuple(row) for row in in_arr]
-    out_arr = [tuple(row) for row in out_arr]
-    out_arr = np.array(out_arr, dtype=np.dtype(list(zip(better_out_names, formats))))
-    in_arr = np.array(in_arr, dtype=dtypes)
-    in_tree = rn.array2tree(in_arr, "tree")
-    in_tree.Print()
-    out_tree = rn.array2tree(out_arr, "tree")
-    trees = ROOT.TList()
-    trees.Add(out_tree)
-    result_tree = in_tree.Merge(trees)
-    in_tree.Print()
-    return in_tree
-
+        for i, value in enumerate(row):
+            input_container[i] = value
+        approximator.Transport(input_container, output_container)
+        end_position = []
+        for i, value in enumerate(output_container):
+            end_position.append(value)
+        end_positions.append(end_position)
+    return np.array(end_positions)
