@@ -20,7 +20,7 @@ def get_approximator_from_file(path_to_project, path_to_file):
     gInterpreter.ProcessLine('TFile *f=TFile::Open("' + path_to_file + '");')
     gInterpreter.ProcessLine('std::auto_ptr<LHCOpticsApproximator> apr_near150 = std::auto_ptr<LHCOpticsApproximator>((LHCOpticsApproximator*) f->Get("ip5_to_beg_150_station_lhcb1"));')
     gInterpreter.ProcessLine("f->Close()")
-    gInterpreter.ProcessLine("double input[6];")
+    gInterpreter.ProcessLine("double input[5];")
     gInterpreter.ProcessLine("double output[5];")
     aperture = ROOT.apr_near150
     return aperture
@@ -30,8 +30,8 @@ def transport(approximator, matrix):
     """
     Transport particles described in matrix
     :param approximator: LHCOpticsApproximator object
-    :param matrix: each row should contain begining position of particle- x, theta x, y, theta y, t, pt
-    :return: matrix with result of transport, where each row contain x, theta x, y, theta y, pt
+    :param matrix: each row should contain begining position of particle- x, theta x, y, theta y, pt
+    :return: matrix with result of transport, where each row contain x, theta x, y, theta y, t, pt
     """
     # Using such containers is probably the easiest way to work with root objects
     # It will contain input values and output values will be stored in them
