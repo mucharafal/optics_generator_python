@@ -23,8 +23,10 @@ def compute_v_x(approximator,
                                                      theta_y_min, theta_y_max, number_of_theta_y_values,
                                                      pt_min, pt_max, number_of_pt_values,
                                                      0, 0, 1)
-    end_positions = ra.transport(approximator, begin_positions)
-    shifted_end_positions = ra.transport(approximator, shifted_begin_positions)
+    matrix_for_approximator = np.delete(begin_positions, 5, 1)
+    end_positions = ra.transport(approximator, matrix_for_approximator)
+    matrix_for_approximator = np.delete(shifted_begin_positions, 5, 1)
+    shifted_end_positions = ra.transport(approximator, matrix_for_approximator)
 
     x_end_positions = __get_vector_of_transported_matrix("x", end_positions)
     x_shifted_end_positions = __get_vector_of_transported_matrix("x", shifted_end_positions)
@@ -57,8 +59,10 @@ def compute_v_y(approximator,
                                                      theta_y_min, theta_y_max, number_of_theta_y_values,
                                                      pt_min, pt_max, number_of_pt_values,
                                                      0, 0, 1)
-    end_positions = ra.transport(approximator, begin_positions)
-    shifted_end_positions = ra.transport(approximator, shifted_begin_positions)
+    matrix_for_approximator = np.delete(begin_positions, 5, 1)
+    end_positions = ra.transport(approximator, matrix_for_approximator)
+    matrix_for_approximator = np.delete(shifted_begin_positions, 5, 1)
+    shifted_end_positions = ra.transport(approximator, matrix_for_approximator)
 
     y_end_positions = __get_vector_of_transported_matrix("y", end_positions)
     y_shifted_end_positions = __get_vector_of_transported_matrix("y", shifted_end_positions)
@@ -91,8 +95,10 @@ def compute_l_y(approximator,
                                                      theta_y_min + delta, theta_y_max + delta, number_of_theta_y_values,
                                                      pt_min, pt_max, number_of_pt_values,
                                                      0, 0, 1)
-    end_positions = ra.transport(approximator, begin_positions)
-    shifted_end_positions = ra.transport(approximator, shifted_begin_positions)
+    matrix_for_approximator = np.delete(begin_positions, 5, 1)
+    end_positions = ra.transport(approximator, matrix_for_approximator)
+    matrix_for_approximator = np.delete(shifted_begin_positions, 5, 1)
+    shifted_end_positions = ra.transport(approximator, matrix_for_approximator)
 
     y_end_positions = __get_vector_of_transported_matrix("y", end_positions)
     y_shifted_end_positions = __get_vector_of_transported_matrix("y", shifted_end_positions)
@@ -125,8 +131,10 @@ def compute_l_x(approximator,
                                                      theta_y_min, theta_y_max, number_of_theta_y_values,
                                                      pt_min, pt_max, number_of_pt_values,
                                                      0, 0, 1)
-    end_positions = ra.transport(approximator, begin_positions)
-    shifted_end_positions = ra.transport(approximator, shifted_begin_positions)
+    matrix_for_approximator = np.delete(begin_positions, 5, 1)
+    end_positions = ra.transport(approximator, matrix_for_approximator)
+    matrix_for_approximator = np.delete(shifted_begin_positions, 5, 1)
+    shifted_end_positions = ra.transport(approximator, matrix_for_approximator)
 
     x_end_positions = __get_vector_of_transported_matrix("x", end_positions)
     x_shifted_end_positions = __get_vector_of_transported_matrix("x", shifted_end_positions)
@@ -160,9 +168,9 @@ def compute_d_x(approximator,
                 pt_min + delta, pt_max + delta, number_of_pt_values,
                                                      0, 0, 1)
 
-    matrix_for_approximator = np.delete(begin_positions, 4, 1)
+    matrix_for_approximator = np.delete(begin_positions, 5, 1)
     end_positions = ra.transport(approximator, matrix_for_approximator)
-    matrix_for_approximator = np.delete(shifted_begin_positions, 4, 1)
+    matrix_for_approximator = np.delete(shifted_begin_positions, 5, 1)
     shifted_end_positions = ra.transport(approximator, matrix_for_approximator)
 
     x_end_positions = __get_vector_of_transported_matrix("x", end_positions)
@@ -196,9 +204,9 @@ def compute_d_y(approximator,
                 theta_y_min, theta_y_max, number_of_theta_y_values,
                 pt_min + delta, pt_max + delta, number_of_pt_values,
                                                      0, 0, 1)
-    matrix_for_approximator = np.delete(begin_positions, 4, 1)
+    matrix_for_approximator = np.delete(begin_positions, 5, 1)
     end_positions = ra.transport(approximator, matrix_for_approximator)
-    matrix_for_approximator = np.delete(shifted_begin_positions, 4, 1)
+    matrix_for_approximator = np.delete(shifted_begin_positions, 5, 1)
     shifted_end_positions = ra.transport(approximator, matrix_for_approximator)
 
     y_end_positions = __get_vector_of_transported_matrix("y", end_positions)

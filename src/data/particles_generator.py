@@ -17,7 +17,7 @@ def generate_from_range(x_min, x_max, number_of_x_in_grid,
     Generate carthesian product of parameters of given range.
     :param x_min: begin of x range
     :param x_max: end of x range
-    :param number_of_x_in_grid: todo
+    :param number_of_x_in_grid:
     :param theta_x_min: begin of theta x range
     :param theta_x_max: end of theta x range
     :param number_of_theta_x_in_grid:
@@ -60,8 +60,9 @@ def generate_particles_randomly_with_angle(x_min, x_max,
                                            y_angle_min, y_angle_max,
                                            number_of_particles):
     """
-    Generate file part.in and return generated matrix. WARNING- to file part.in are saved only parameters: x, theta x,
-    y, theta y, t, pt. Angles are only in returned matrix.
+    Deprecated. Remove t parameter. Angles in such form are useless for madx.
+    Generate matrix. WARNING- to file part.in are saved only parameters: x, theta x,
+    y, theta y, t, pt. Angles should be only in returned matrix.
     :param x_min: begin of x range
     :param x_max: end of x range
     :param theta_x_min: begin of theta x range

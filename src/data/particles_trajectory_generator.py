@@ -22,7 +22,7 @@ def generate_random_particles(beam_configuration, angles_ranges, path_to_acceler
 
     while ("end" not in segments.keys()) or ("end" in segments.keys() and len(segments["end"]) < target):
         new_particles = __generate_random_particles(beam_configuration, angles_ranges, path_to_accelerator_configuration,
-                                             number_of_particles_in_one_run)
+                                                    number_of_particles_in_one_run)
 
         shift = counter * number_of_particles_in_one_run
         counter += 1
