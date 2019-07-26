@@ -3,7 +3,7 @@ import subprocess
 import numpy as np
 import shutil
 from concurrent.futures import ProcessPoolExecutor
-import data.madxconfigurationgenerator as mcg
+import madx.madxconfigurationgenerator as mcg
 
 
 def compute_trajectory(particles, path_to_accelerator_configuration, number_of_workers):
@@ -135,9 +135,6 @@ def __run_worker(particles, working_directory_name, path_to_accelerator_configur
 
     segments = __read_in_madx_output_file("trackone")
 
-    # print(working_directory_name)
-    # print(segments["start"])
-
     os.chdir(directory_before)
     shutil.rmtree(path_to_working_directory)
 
@@ -153,7 +150,7 @@ def __save_particles(particles,
                      y_name="try",
                      theta_y_name="trpy",
                      t_name="tt",
-                     pt_name="tpt"):
+                     pt_name="trpt"):
     """
     Save particles in part.in file in madx format.
     :param particles: numpy matrix with particles parameters
@@ -259,8 +256,6 @@ def __run_parallel(particles, path_to_accelerator_configuration, number_of_worke
         parts.append(part)
 
     parts.append(particles[(number_of_workers-1)*part_size:])
-    # print("Parts")
-    # print(parts)
 
     with ProcessPoolExecutor(number_of_workers) as executor:
         segments = {}

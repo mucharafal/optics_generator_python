@@ -1,10 +1,11 @@
-import data.particles_trajectory_generator as ptg
-from data.matrix_indexes import index_map
+import madx.particles_trajectory_generator as ptg
+from madx.matrix_indexes import index_map
 import numpy as np
 from ROOT import TMultiDimFit
 
 
 def train():
+    # todo Outdate, WIP
     path_to_configuration = "/home/rafalmucha/Pobrane/optic/s/"
     # Parameters of bunch
 
@@ -18,9 +19,9 @@ def train():
     number_of_particles_in_one_run = 10000
     target = 10000
 
-    output = ptg.generate_particles(configuration, {"x_min": x_angle_min, "x_max": x_angle_max, "y_min": y_angle_min,
+    output = ptg.generate_random_particles(configuration, {"x_min": x_angle_min, "x_max": x_angle_max, "y_min": y_angle_min,
                                                     "y_max": y_angle_max}, path_to_configuration, target,
-                                    number_of_particles_in_one_run)
+                                           number_of_particles_in_one_run)
 
     input_parameters = ["x", "theta x", "y", "theta y"]
 
@@ -119,9 +120,9 @@ def __run_test(approximator):
     number_of_particles_in_one_run = 1000
     target = 1000
 
-    output = ptg.generate_particles(configuration, {"x_min": x_angle_min, "x_max": x_angle_max, "y_min": y_angle_min,
+    output = ptg.generate_random_particles(configuration, {"x_min": x_angle_min, "x_max": x_angle_max, "y_min": y_angle_min,
                                                     "y_max": y_angle_max}, path_to_configuration, target,
-                                    number_of_particles_in_one_run)
+                                           number_of_particles_in_one_run)
 
     input_parameters = ["x", "theta x", "y", "theta y"]
 
