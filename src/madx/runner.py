@@ -3,7 +3,7 @@ import subprocess
 import numpy as np
 import shutil
 from concurrent.futures import ProcessPoolExecutor
-import data.madxconfigurationgenerator as mcg
+import madx.madxconfigurationgenerator as mcg
 
 
 def compute_trajectory(particles, path_to_accelerator_configuration, number_of_workers):

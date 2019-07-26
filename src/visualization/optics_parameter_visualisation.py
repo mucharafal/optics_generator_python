@@ -6,31 +6,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 
-
-def get_approximator(path_to_project, path_to_file, approximator_name):
-    """
-    Get approximator from file. Use only once, since it initialize variables in ROOT, so with second use it is going
-    to explode. Sorry.
-    :param path_to_project: path to optics_generator_python. Needed files from it:
-    - properly initialized folder root_libs
-    - src/root_classes/include
-    :param path_to_file: path to file with serialized LHCOpticsApproximator object
-    :param approximator_name: name of approximator in ROOT file
-    :return: approximator object
-    """
-    os.environ['LD_LIBRARY_PATH'] = path_to_project + "/root_libs"
-    gInterpreter.ProcessLine(".include " + path_to_project + "/src/root_classes/include")
-    gSystem.Load("LHCOpticsApproximator")
-    gInterpreter.ProcessLine('TFile *f=TFile::Open("' + path_to_file + '");')
-    gInterpreter.ProcessLine(
-        'std::auto_ptr<LHCOpticsApproximator> apr = std::auto_ptr<LHCOpticsApproximator>((LHCOpticsApproximator*) f->Get("' + approximator_name + '"));')
-    gInterpreter.ProcessLine("f->Close()")
-    gInterpreter.ProcessLine("double input[5];")
-    gInterpreter.ProcessLine("double output[5];")
-    approximator = ROOT.apr
-    return approximator
-
-
 mapping = {
     "x": 0,
     "theta x": 1,
@@ -41,21 +16,21 @@ mapping = {
 }
 
 
-def plot_optical_function(approximator_configuration, optical_function, vector_x_name, optic_parameter_name, title,
-                          x_unit="", y_unit="",
+def plot_optical_function(approximator, bunch_configuration, optical_function, vector_x_name, optic_parameter_name, 
+                          title, x_unit="", y_unit="",
                           x_unit_multiplier=1, y_unit_multiplier=1, plot_size=5, grid_x_resolution=5,
                           grid_y_resolution=7):
-    result_matrix = optical_function(approximator_configuration.approximator,
-                                     approximator_configuration.x_min, approximator_configuration.x_max,
-                                     approximator_configuration.number_of_x_values,
-                                     approximator_configuration.theta_x_min, approximator_configuration.theta_x_max,
-                                     approximator_configuration.number_of_theta_x_values,
-                                     approximator_configuration.y_min, approximator_configuration.y_max,
-                                     approximator_configuration.number_of_y_values,
-                                     approximator_configuration.theta_y_min, approximator_configuration.theta_y_max,
-                                     approximator_configuration.number_of_theta_y_values,
-                                     approximator_configuration.pt_min, approximator_configuration.pt_max,
-                                     approximator_configuration.number_of_pt_values)
+    result_matrix = optical_function(approximator,
+                                     bunch_configuration.x_min, bunch_configuration.x_max,
+                                     bunch_configuration.number_of_x_values,
+                                     bunch_configuration.theta_x_min, bunch_configuration.theta_x_max,
+                                     bunch_configuration.number_of_theta_x_values,
+                                     bunch_configuration.y_min, bunch_configuration.y_max,
+                                     bunch_configuration.number_of_y_values,
+                                     bunch_configuration.theta_y_min, bunch_configuration.theta_y_max,
+                                     bunch_configuration.number_of_theta_y_values,
+                                     bunch_configuration.pt_min, bunch_configuration.pt_max,
+                                     bunch_configuration.number_of_pt_values)
     x_index = mapping[vector_x_name]
     y_index = mapping["result"]
 

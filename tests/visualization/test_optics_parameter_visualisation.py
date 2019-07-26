@@ -1,12 +1,12 @@
 from unittest import TestCase
 import numpy as np
+from data import bunch_configuration as buc
 import visualization.optics_parameter_visualisation as opv
 
 
 class TestPlot_optical_function(TestCase):
     @staticmethod
-    def get_simple_configuration():
-        approximator = None
+    def get_simple_bunch_configuration():
 
         x_mean = 0.0
         sigma_x = 0.0000
@@ -25,14 +25,13 @@ class TestPlot_optical_function(TestCase):
         number_of_theta_y_values = 1
         number_of_pt_values = 100
 
-        configuration = opv.ApproximatorAndBunchConfiguration.get_using_sigma(approximator,
-                                                                              x_mean, sigma_x, number_of_x_values,
-                                                                              theta_x_mean, sigma_theta_x,
-                                                                              number_of_theta_x_values,
-                                                                              y_mean, sigma_y, number_of_y_values,
-                                                                              theta_y_mean, sigma_theta_y,
-                                                                              number_of_theta_y_values,
-                                                                              pt_mean, sigma_pt, number_of_pt_values)
+        configuration = buc.BunchConfiguration.from_sigma(x_mean, sigma_x, number_of_x_values,
+                                                          theta_x_mean, sigma_theta_x,
+                                                          number_of_theta_x_values,
+                                                          y_mean, sigma_y, number_of_y_values,
+                                                          theta_y_mean, sigma_theta_y,
+                                                          number_of_theta_y_values,
+                                                          pt_mean, sigma_pt, number_of_pt_values)
         return configuration
 
     @staticmethod
@@ -52,5 +51,5 @@ class TestPlot_optical_function(TestCase):
         return np.random.rand(6, number_of_particles)
 
     def test_simple_run(self):
-        basic_configuration = self.get_simple_configuration()
-        opv.plot_optical_function(basic_configuration, self.mock_optical_function, "x", "D x", "title")
+        basic_configuration = self.get_simple_bunch_configuration()
+        opv.plot_optical_function(None, basic_configuration, self.mock_optical_function, "x", "D x", "title")
