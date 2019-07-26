@@ -4,26 +4,28 @@ import numpy as np
 import os
 
 
-def get_approximator_from_file(path_to_project, path_to_file):
+def get_approximator(path_to_project, path_to_file, approximator_name):
     """
-    Get approximator from file. Use only once, since it initialize variables in ROOT, so with second use it is going
+    Get approximator_test from file. Use only once, since it initialize variables in ROOT, so with second use it is going
     to explode. Sorry.
     :param path_to_project: path to optics_generator_python. Needed files from it:
     - properly initialized folder root_libs
     - src/root_classes/include
     :param path_to_file: path to file with serialized LHCOpticsApproximator object
-    :return: approximator object
+    :param approximator_name: name of approximator_test in ROOT file
+    :return: approximator_test object
     """
     os.environ['LD_LIBRARY_PATH'] = path_to_project + "/root_libs"
     gInterpreter.ProcessLine(".include " + path_to_project + "/src/root_classes/include")
     gSystem.Load("LHCOpticsApproximator")
     gInterpreter.ProcessLine('TFile *f=TFile::Open("' + path_to_file + '");')
-    gInterpreter.ProcessLine('std::auto_ptr<LHCOpticsApproximator> apr_near150 = std::auto_ptr<LHCOpticsApproximator>((LHCOpticsApproximator*) f->Get("ip5_to_beg_150_station_lhcb1"));')
+    gInterpreter.ProcessLine(
+        'std::auto_ptr<LHCOpticsApproximator> apr = std::auto_ptr<LHCOpticsApproximator>((LHCOpticsApproximator*) f->Get("' + approximator_name + '"));')
     gInterpreter.ProcessLine("f->Close()")
     gInterpreter.ProcessLine("double input[5];")
     gInterpreter.ProcessLine("double output[5];")
-    aperture = ROOT.apr_near150
-    return aperture
+    approximator = ROOT.apr
+    return approximator
 
 
 def transport(approximator, matrix):

@@ -1,5 +1,5 @@
-import data.particles_trajectory_generator as ptg
-from data.matrix_indexes import index_map
+import madx.particles_trajectory_generator as ptg
+from madx.matrix_indexes import index_map
 import numpy as np
 from ROOT import TMultiDimFit
 
