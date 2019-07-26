@@ -150,7 +150,7 @@ def __save_particles(particles,
                      y_name="try",
                      theta_y_name="trpy",
                      t_name="tt",
-                     pt_name="tpt"):
+                     pt_name="trpt"):
     """
     Save particles in part.in file in madx format.
     :param particles: numpy matrix with particles parameters

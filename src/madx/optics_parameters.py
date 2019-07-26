@@ -17,7 +17,6 @@ def compute_v_x(bunch_configuration, path_to_configuration):
     end_positions = reference_particles["end"]
     shifted_end_positions = shifted_particles["end"]
 
-    # todo what if end_positions and shifted_end_positions will loose different particles?
     begin_positions, end_positions, shifted_end_positions = adjust_particles_numbers(reference_particles["start"],
                                                                                      end_positions,
                                                                                      shifted_end_positions)

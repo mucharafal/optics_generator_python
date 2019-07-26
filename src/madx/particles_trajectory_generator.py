@@ -58,22 +58,24 @@ def generate_from_range(bunch_configuration, path_to_accelerator_configuration):
 
     particles = pg.generate_from_range(bunch_configuration)
 
-    segments = __transport(particles.T, path_to_accelerator_configuration)
+    segments = __transport(particles, path_to_accelerator_configuration)
 
     return segments
 
 
 def __transport(particles, path_to_accelerator_configuration):
     """
-    Transport particles described in matrix. Matrix format: x, theta x, y, theta y, t, pt
+    Transport particles described in matrix. Matrix format: x, theta x, y, theta y, pt
     :param particles:
     :param path_to_accelerator_configuration:
     :return: dict with matrices describing position of particles on stations, matrix format:
     ordinal number, turn, x, theta x, y, theta y, t, pt, e, s
     """
     number_of_processes = 4
-    segments = mr.compute_trajectory(particles, path_to_accelerator_configuration, number_of_processes)
 
+    particles_with_t = np.insert(particles, 4, 0, axis=1)
+
+    segments = mr.compute_trajectory(particles_with_t.T, path_to_accelerator_configuration, number_of_processes)
     return segments
 
 
