@@ -56,7 +56,7 @@ def __get_tokens(conf, places):
     tokens["insert_particles"] += "      exec,getpart($n);\n"
     tokens["insert_particles"] += "      " + ptc_prefix() + "start,x=ex,px=epx,y=ey,py=epy,t=et,pt=ept;\n"
     tokens["insert_particles"] += "      n = n + 1;\n"
-    tokens["insert_particles"] += "   }"
+    tokens["insert_particles"] += "   }\n"
     tokens["output_mad_file"] = "track"
 
     def options():
@@ -73,7 +73,7 @@ def __get_tokens(conf, places):
     return tokens
 
 
-def generate_configuration_file_from_source(path_to_configuration, xml_configuration_file_name):
+def generate_configuration_file_from_source(path_to_xml_file, item_number, path_to_configuration, number_of_particles):
     """
     Generate configuration file for madx using configuration in xml file.
     File is generated in folder with configuration.
@@ -86,21 +86,18 @@ def generate_configuration_file_from_source(path_to_configuration, xml_configura
     -------
     Path to generated file.
     """
-    xml_configuration_file_path = os.path.join(path_to_configuration, xml_configuration_file_name)
 
-    tree = ET.parse(xml_configuration_file_path)        # load configuration from xml file
+    tree = ET.parse(path_to_xml_file)        # load configuration from xml file
     root = tree.getroot()
 
     places = [x.attrib for x in root[0]]
 
-    configuration = root[0].attrib
+    configuration = root[item_number].attrib
 
-    sourcePath = path_to_configuration + "/" + configuration['base_mad_conf_file']
-    sourceFile = open(sourcePath, 'r')
-
-    destinyFile = open(sourcePath + "_processed", "w")
     source_path = path_to_configuration + "/" + configuration['base_mad_conf_file']
-    destiny_path = path_to_configuration + "/" + configuration['processed_mad_conf_file']
+    destiny_path = configuration['processed_mad_conf_file']
+
+    configuration["number_of_part_per_sample"] = str(number_of_particles)
 
     with open(source_path, 'r') as sourceFile:
         with open(destiny_path, "w") as destinyFile:

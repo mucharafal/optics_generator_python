@@ -2,8 +2,8 @@ import madx.particles_trajectory_generator as ptg
 import numpy as np
 
 
-def compute_v_x(bunch_configuration, path_to_configuration):
-    reference_particles = ptg.generate_from_range(bunch_configuration, path_to_configuration)
+def compute_v_x(bunch_configuration, madx_configuration):
+    reference_particles = ptg.generate_from_range(bunch_configuration, madx_configuration)
 
     x_min = bunch_configuration.x_min
     x_max = bunch_configuration.x_max
@@ -12,7 +12,7 @@ def compute_v_x(bunch_configuration, path_to_configuration):
     bunch_configuration.x_min += delta
     bunch_configuration.x_max += delta
 
-    shifted_particles = ptg.generate_from_range(bunch_configuration, path_to_configuration)
+    shifted_particles = ptg.generate_from_range(bunch_configuration, madx_configuration)
 
     end_positions = reference_particles["end"]
     shifted_end_positions = shifted_particles["end"]
@@ -32,8 +32,8 @@ def compute_v_x(bunch_configuration, path_to_configuration):
     return result
 
 
-def compute_v_y(bunch_configuration, path_to_configuration):
-    reference_particles = ptg.generate_from_range(bunch_configuration, path_to_configuration)
+def compute_v_y(bunch_configuration, madx_configuration):
+    reference_particles = ptg.generate_from_range(bunch_configuration, madx_configuration)
 
     y_min = bunch_configuration.y_min
     y_max = bunch_configuration.y_max
@@ -42,7 +42,7 @@ def compute_v_y(bunch_configuration, path_to_configuration):
     bunch_configuration.y_min += delta
     bunch_configuration.y_max += delta
 
-    shifted_particles = ptg.generate_from_range(bunch_configuration, path_to_configuration)
+    shifted_particles = ptg.generate_from_range(bunch_configuration, madx_configuration)
 
     end_positions = reference_particles["end"]
     shifted_end_positions = shifted_particles["end"]
@@ -62,8 +62,8 @@ def compute_v_y(bunch_configuration, path_to_configuration):
     return result
 
 
-def compute_l_x(bunch_configuration, path_to_configuration):
-    reference_particles = ptg.generate_from_range(bunch_configuration, path_to_configuration)
+def compute_l_x(bunch_configuration, madx_configuration):
+    reference_particles = ptg.generate_from_range(bunch_configuration, madx_configuration)
 
     theta_x_min = bunch_configuration.theta_x_min
     theta_x_max = bunch_configuration.theta_x_max
@@ -72,7 +72,7 @@ def compute_l_x(bunch_configuration, path_to_configuration):
     bunch_configuration.theta_x_min += delta
     bunch_configuration.theta_x_max += delta
 
-    shifted_particles = ptg.generate_from_range(bunch_configuration, path_to_configuration)
+    shifted_particles = ptg.generate_from_range(bunch_configuration, madx_configuration)
 
     end_positions = reference_particles["end"]
     shifted_end_positions = shifted_particles["end"]
@@ -92,8 +92,8 @@ def compute_l_x(bunch_configuration, path_to_configuration):
     return result
 
 
-def compute_l_y(bunch_configuration, path_to_configuration):
-    reference_particles = ptg.generate_from_range(bunch_configuration, path_to_configuration)
+def compute_l_y(bunch_configuration, madx_configuration):
+    reference_particles = ptg.generate_from_range(bunch_configuration, madx_configuration)
 
     theta_y_min = bunch_configuration.theta_y_min
     theta_y_max = bunch_configuration.theta_y_max
@@ -102,7 +102,7 @@ def compute_l_y(bunch_configuration, path_to_configuration):
     bunch_configuration.theta_y_min += delta
     bunch_configuration.theta_y_max += delta
 
-    shifted_particles = ptg.generate_from_range(bunch_configuration, path_to_configuration)
+    shifted_particles = ptg.generate_from_range(bunch_configuration, madx_configuration)
 
     end_positions = reference_particles["end"]
     shifted_end_positions = shifted_particles["end"]
@@ -122,8 +122,8 @@ def compute_l_y(bunch_configuration, path_to_configuration):
     return result
 
 
-def compute_d_x(bunch_configuration, path_to_configuration):
-    reference_particles = ptg.generate_from_range(bunch_configuration, path_to_configuration)
+def compute_d_x(bunch_configuration, madx_configuration):
+    reference_particles = ptg.generate_from_range(bunch_configuration, madx_configuration)
 
     pt_min = bunch_configuration.pt_min
     pt_max = bunch_configuration.pt_max
@@ -132,7 +132,7 @@ def compute_d_x(bunch_configuration, path_to_configuration):
     bunch_configuration.pt_min += delta
     bunch_configuration.pt_max += delta
 
-    shifted_particles = ptg.generate_from_range(bunch_configuration, path_to_configuration)
+    shifted_particles = ptg.generate_from_range(bunch_configuration, madx_configuration)
 
     end_positions = reference_particles["end"]
     shifted_end_positions = shifted_particles["end"]
@@ -152,8 +152,8 @@ def compute_d_x(bunch_configuration, path_to_configuration):
     return result
 
 
-def compute_d_y(bunch_configuration, path_to_configuration):
-    reference_particles = ptg.generate_from_range(bunch_configuration, path_to_configuration)
+def compute_d_y(bunch_configuration, madx_configuration):
+    reference_particles = ptg.generate_from_range(bunch_configuration, madx_configuration)
 
     pt_min = bunch_configuration.pt_min
     pt_max = bunch_configuration.pt_max
@@ -162,7 +162,7 @@ def compute_d_y(bunch_configuration, path_to_configuration):
     bunch_configuration.pt_min += delta
     bunch_configuration.pt_max += delta
 
-    shifted_particles = ptg.generate_from_range(bunch_configuration, path_to_configuration)
+    shifted_particles = ptg.generate_from_range(bunch_configuration, madx_configuration)
 
     end_positions = reference_particles["end"]
     shifted_end_positions = shifted_particles["end"]
