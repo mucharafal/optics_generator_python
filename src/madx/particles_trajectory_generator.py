@@ -3,13 +3,12 @@ import madx.runner as mr
 import numpy as np
 
 
-def generate_random_particles(bunch_configuration, path_to_accelerator_configuration, target):
+def generate_random_particles(bunch_configuration, madx_configuration, target):
     """
     Generate dict with matrix of particles' parameters on stations. List of stations is in madx configuration generator.
     Take angles into account.
     :param bunch_configuration: dict with beam parameters- x, theta x, y, theta y, t, and pt- their min and max values.
-    :param path_to_accelerator_configuration: path to folder with configuration of accelerator. Needed files:
-    todo
+    :param madx_configuration: todo
     :param target: target number of parameters at end station.
     :return: dict with numpy matrix of particles' parameters on stations, matrix format:
     ordinal number, turn, x, theta x, y, theta y, t, pt, e, s, angle x, angle y
@@ -19,7 +18,7 @@ def generate_random_particles(bunch_configuration, path_to_accelerator_configura
     number_of_particles_in_one_run = bunch_configuration.get_number_of_particles()
 
     while ("end" not in segments.keys()) or ("end" in segments.keys() and len(segments["end"]) < target):
-        new_particles = __generate_random_particles(bunch_configuration, path_to_accelerator_configuration)
+        new_particles = __generate_random_particles(bunch_configuration, madx_configuration)
 
         shift = counter * number_of_particles_in_one_run
         counter += 1
@@ -30,44 +29,42 @@ def generate_random_particles(bunch_configuration, path_to_accelerator_configura
     return segments
 
 
-def __generate_random_particles(bunch_configuration, path_to_accelerator_configuration):
+def __generate_random_particles(bunch_configuration, madx_configuration):
     """
     Generate dict with matrix of particles' parameters on stations. List of stations is in madx configuration generator.
     :param bunch_configuration: dict with beam parameters- x, theta x, y, theta y, t, and pt- their min and max values.
-    :param path_to_accelerator_configuration: path to folder with configuration of accelerator. Needed files:
-    todo
+    :param madx_configuration:
     :return: dict with numpy matrix of particles' parameters on stations, matrix format:
     ordinal number, turn, x, theta x, y, theta y, t, pt, e, s, angle x, angle y
     """
     particles = pg.generate_particles_randomly(bunch_configuration)
 
-    segments = __transport(particles, path_to_accelerator_configuration)
+    segments = __transport(particles, madx_configuration)
 
     return segments
 
 
-def generate_from_range(bunch_configuration, path_to_accelerator_configuration):
+def generate_from_range(bunch_configuration, madx_configuration):
     """
     Generate dict with matrices of particles' parameters on stations. List of stations is in madx configuration generator.
     :param bunch_configuration: dict with beam parameters- x, theta x, y, theta y, t, and pt- their min and max values
-    :param path_to_accelerator_configuration: path to folder with configuration of accelerator. Needed files:
-    todo
+    :param madx_configuration: todo
     :return: dict with numpy matrix of particles' parameters on stations, matrix format:
     ordinal number, turn, x, theta x, y, theta y, t, pt, e, s, angle x, angle y
     """
 
     particles = pg.generate_from_range(bunch_configuration)
 
-    segments = __transport(particles, path_to_accelerator_configuration)
+    segments = __transport(particles, madx_configuration)
 
     return segments
 
 
-def __transport(particles, path_to_accelerator_configuration):
+def __transport(particles, madx_configuration):
     """
     Transport particles described in matrix. Matrix format: x, theta x, y, theta y, pt
     :param particles:
-    :param path_to_accelerator_configuration:
+    :param madx_configuration:
     :return: dict with matrices describing position of particles on stations, matrix format:
     ordinal number, turn, x, theta x, y, theta y, t, pt, e, s
     """
@@ -75,7 +72,7 @@ def __transport(particles, path_to_accelerator_configuration):
 
     particles_with_t = np.insert(particles, 4, 0, axis=1)
 
-    segments = mr.compute_trajectory(particles_with_t.T, path_to_accelerator_configuration, number_of_processes)
+    segments = mr.compute_trajectory(particles_with_t.T, madx_configuration, number_of_processes)
     return segments
 
 

@@ -9,7 +9,7 @@ from data import bunch_configuration
 def mock_particles_generator(beam_configuration):
     if type(beam_configuration) is not bunch_configuration.BunchConfiguration:
         raise ValueError
-    return np.random.rand(5, beam_configuration.get_number_of_particles())
+    return np.random.rand(10, beam_configuration.get_number_of_particles())
 
 
 def mock_transport(particles, path):

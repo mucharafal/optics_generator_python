@@ -54,11 +54,11 @@ def plot_optical_function_of_approximator(approximator, bunch_configuration, opt
     axes.set_title(y_name + " from " + x_name + "\n" + title)
 
 
-def plot_optical_function_of_madx(path_to_configuration, bunch_configuration, optical_function, vector_x_name,
+def plot_optical_function_of_madx(madx_configuration, bunch_configuration, optical_function, vector_x_name,
                                   optic_parameter_name, title, x_unit="", y_unit="",
                                   x_unit_multiplier=1, y_unit_multiplier=1, plot_size=5, grid_x_resolution=5,
                                   grid_y_resolution=7):
-    result_matrix = optical_function(bunch_configuration, path_to_configuration)
+    result_matrix = optical_function(bunch_configuration, madx_configuration)
     x_index = mapping[vector_x_name]
     y_index = mapping["result"]
 

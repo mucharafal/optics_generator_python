@@ -35,21 +35,21 @@ class TestPlot_optical_function(TestCase):
         return configuration
 
     @staticmethod
-    def mock_optical_function(approximator,
-                                     x_min, x_max,
-                                     number_of_x_values,
-                                     theta_x_min, theta_x_max,
-                                     number_of_theta_x_values,
-                                     y_min, y_max,
-                                     number_of_y_values,
-                                     theta_y_min, theta_y_max,
-                                     number_of_theta_y_values,
-                                     pt_min, pt_max,
-                                     number_of_pt_values):
-        number_of_particles = number_of_pt_values * number_of_x_values * number_of_theta_x_values * number_of_y_values\
-                                * number_of_theta_y_values
+    def mock_optical_function_approximator(approximator, bunch_configuration):
+        number_of_particles = bunch_configuration.get_number_of_particles()
         return np.random.rand(6, number_of_particles)
 
-    def test_simple_run(self):
+    @staticmethod
+    def mock_optical_function_madx(bunch_configuration, madx_configuration):
+        number_of_particles = bunch_configuration.get_number_of_particles()
+        return np.random.rand(6, number_of_particles)
+
+    def test_simple_run_approximator(self):
         basic_configuration = self.get_simple_bunch_configuration()
-        opv.plot_optical_function(None, basic_configuration, self.mock_optical_function, "x", "D x", "title")
+        opv.plot_optical_function_of_approximator(None, basic_configuration, self.mock_optical_function_approximator,
+                                                  "x", "D x", "title")
+
+    def test_simple_run_madx(self):
+        basic_configuration = self.get_simple_bunch_configuration()
+        opv.plot_optical_function_of_madx(None, basic_configuration, self.mock_optical_function_madx
+                                          , "x", "D x", "title")
