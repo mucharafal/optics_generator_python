@@ -5,6 +5,8 @@ import numpy as np
 def compute_v_x(bunch_configuration, madx_configuration):
     reference_particles = ptg.generate_from_range(bunch_configuration, madx_configuration)
 
+    print(reference_particles["start"])
+
     x_min = bunch_configuration.x_min
     x_max = bunch_configuration.x_max
     delta = __get_delta(x_min, x_max)
@@ -183,8 +185,9 @@ def compute_d_y(bunch_configuration, madx_configuration):
 
 
 def __get_delta(min, max):
-    potential_delta = 0.000001 * (max - min)
-    return potential_delta if potential_delta > 0 else 0.0000001
+    multiplier = 1e-4
+    potential_delta = multiplier * (max - min)
+    return potential_delta if potential_delta > 0 else multiplier
 
 
 def __get_vector_of_transported_matrix(column_name, matrix):
@@ -227,8 +230,8 @@ def concatenate_result_with_input(matrix, result):
 
 
 def adjust_particles_numbers(begin_positions, end_positions, shifted_end_positions):
-    first_indexes_set = set(end_positions.T[0].astype(int))
-    second_indexes_set = set(shifted_end_positions.T[0].astype(int))
+    first_indexes_set = set(end_positions.T[0].astype(int) - 1)
+    second_indexes_set = set(shifted_end_positions.T[0].astype(int) - 1)
     intersection = first_indexes_set.intersection(second_indexes_set)
     begin_vector_indexes = np.array([x in intersection for x in begin_positions.T[0].astype(int)])
     begin_positions = begin_positions[begin_vector_indexes]
