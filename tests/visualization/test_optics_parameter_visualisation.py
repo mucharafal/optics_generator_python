@@ -53,3 +53,9 @@ class TestPlot_optical_function(TestCase):
         basic_configuration = self.get_simple_bunch_configuration()
         opv.plot_optical_function_of_madx(None, basic_configuration, self.mock_optical_function_madx
                                           , "x", "D x", "title")
+
+    def test_simple_run(self):
+        basic_configuration = self.get_simple_bunch_configuration()
+        opv.plot_optical_functions(basic_configuration, None, self.mock_optical_function_madx,
+                                   None, self.mock_optical_function_approximator,
+                                   "x", "D x", "title")
