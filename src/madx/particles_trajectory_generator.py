@@ -3,7 +3,7 @@ import madx.runner as mr
 import numpy as np
 
 
-def generate_random_particles(bunch_configuration, madx_configuration, target):
+def generate_random_particles(madx_configuration, bunch_configuration, target):
     """
     Generate dict with matrix of particles' parameters on stations. List of stations is in madx configuration generator.
     Take angles into account.
@@ -18,7 +18,7 @@ def generate_random_particles(bunch_configuration, madx_configuration, target):
     number_of_particles_in_one_run = bunch_configuration.get_number_of_particles()
 
     while ("end" not in segments.keys()) or ("end" in segments.keys() and len(segments["end"]) < target):
-        new_particles = __generate_random_particles(bunch_configuration, madx_configuration)
+        new_particles = __generate_random_particles(madx_configuration, bunch_configuration)
 
         shift = counter * number_of_particles_in_one_run
         counter += 1
@@ -29,7 +29,7 @@ def generate_random_particles(bunch_configuration, madx_configuration, target):
     return segments
 
 
-def __generate_random_particles(bunch_configuration, madx_configuration):
+def __generate_random_particles(madx_configuration, bunch_configuration):
     """
     Generate dict with matrix of particles' parameters on stations. List of stations is in madx configuration generator.
     :param bunch_configuration: dict with beam parameters- x, theta x, y, theta y, t, and pt- their min and max values.
@@ -44,7 +44,7 @@ def __generate_random_particles(bunch_configuration, madx_configuration):
     return segments
 
 
-def generate_from_range(bunch_configuration, madx_configuration):
+def generate_from_range(madx_configuration, bunch_configuration):
     """
     Generate dict with matrices of particles' parameters on stations. List of stations is in madx configuration generator.
     :param bunch_configuration: dict with beam parameters- x, theta x, y, theta y, t, and pt- their min and max values

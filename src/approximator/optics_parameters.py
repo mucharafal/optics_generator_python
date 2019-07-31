@@ -159,8 +159,10 @@ def compute_d_y(approximator, bunch_configuration):
 
 
 def __get_delta(min, max):
-    potential_delta = 1e-7 * (max - min)
-    return potential_delta if potential_delta > 0 else 1e-7
+    multiplier = 1e-4
+    potential_delta = multiplier * (max - min)
+    return potential_delta if potential_delta > 0 else multiplier
+
 
 def __get_vector_of_transported_matrix(column_name, matrix):
     columns_mapping = {

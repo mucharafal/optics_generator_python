@@ -22,7 +22,7 @@ def train(bunch_configuration, madx_configuration, path_to_project):
     gInterpreter.ProcessLine("Int_t mPowers[5];")
     gInterpreter.ProcessLine('char option[] = "k";')
 
-    particles = ptg.generate_random_particles(bunch_configuration, madx_configuration,
+    particles = ptg.generate_random_particles(madx_configuration, bunch_configuration,
                                               bunch_configuration.get_number_of_particles())
 
     output_matrix = particles["end"]

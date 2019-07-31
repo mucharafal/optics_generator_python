@@ -56,8 +56,11 @@ def plot_optical_function_of_approximator(approximator, bunch_configuration, opt
 
 def plot_optical_function_of_madx(madx_configuration, bunch_configuration, optical_function, vector_x_name,
                                   optic_parameter_name, title, x_unit="", y_unit="",
-                                  x_unit_multiplier=1, y_unit_multiplier=1, plot_size=5, grid_x_resolution=5,
+                                  x_unit_multiplier=1, y_unit_multiplier=1, plot_size=10, grid_x_resolution=5,
                                   grid_y_resolution=7):
+    fig = plt.gcf()
+    fig.set_size_inches(plot_size, plot_size)
+
     result_matrix = optical_function(bunch_configuration, madx_configuration)
     x_index = mapping[vector_x_name]
     y_index = mapping["result"]
@@ -93,36 +96,37 @@ def plot_optical_function_of_madx(madx_configuration, bunch_configuration, optic
 
 
 def plot_optical_functions(bunch_configuration,
-                           madx_configuration, madx_optical_function,
-                           approximator, approximator_optical_function,
+                           optics_functions_with_configurations,
                            vector_x_name, optic_parameter_name, title,
                            x_unit="", y_unit="", x_unit_multiplier=1, y_unit_multiplier=1,
                            plot_size=5, grid_x_resolution=5, grid_y_resolution=7):
-    madx_result_matrix = madx_optical_function(bunch_configuration, madx_configuration)
-    approximator_result_matrix = approximator_optical_function(approximator, bunch_configuration)
+
+    fig = plt.gcf()
+    fig.set_size_inches(plot_size, plot_size)
+
+    transporters = optics_functions_with_configurations.keys()
+
+    x_name = vector_x_name + x_unit
+    y_name = optic_parameter_name + y_unit
+    turn_name = "transporter"
 
     x_index = mapping[vector_x_name]
     y_index = mapping["result"]
 
-    madx_x_vector = madx_result_matrix.T[x_index] * x_unit_multiplier
-    madx_y_vector = madx_result_matrix.T[y_index] * y_unit_multiplier
-    madx_turn_vector = np.full(madx_x_vector.shape, 0)
+    merged_frame = pd.DataFrame(data={x_name: np.empty((0,)), y_name: np.empty((0,)),
+                                turn_name: np.empty((0,))})
 
-    approximator_x_vector = approximator_result_matrix.T[x_index] * x_unit_multiplier
-    approximator_y_vector = approximator_result_matrix.T[y_index] * y_unit_multiplier
-    approximator_turn_vector = np.full(approximator_x_vector.shape, 1)
+    for transporter_name in transporters:
+        optical_function, transporter_configuration = optics_functions_with_configurations[transporter_name]
+        result_matrix = optical_function(transporter_configuration, bunch_configuration)
+        x_vector = result_matrix.T[x_index] * x_unit_multiplier
+        y_vector = result_matrix.T[y_index] * y_unit_multiplier
+        turn_vector = np.full(x_vector.shape, transporter_name)
 
-    x_name = vector_x_name + x_unit
-    y_name = optic_parameter_name + y_unit
-    turn_name = "turn"
+        obtained_frame = pd.DataFrame(data={x_name: x_vector, y_name: y_vector,
+                                      turn_name: turn_vector})
 
-    madx_frame = pd.DataFrame(data={x_name: madx_x_vector, y_name: madx_y_vector,
-                                    turn_name: madx_turn_vector})
-
-    approximator_frame = pd.DataFrame(data={x_name: approximator_x_vector, y_name: approximator_y_vector,
-                                            turn_name: approximator_turn_vector})
-
-    merged_frame = pd.concat([madx_frame, approximator_frame])
+        merged_frame = pd.concat([merged_frame, obtained_frame])
 
     x_min = merged_frame[x_name].min()
     x_max = merged_frame[x_name].max()
@@ -141,4 +145,4 @@ def plot_optical_functions(bunch_configuration,
     plt.xticks(np.arange(x_min, x_max + delta_x / grid_x_resolution, delta_x / grid_x_resolution))
     plt.yticks(np.arange(y_min, y_max + delta_y / grid_y_resolution, delta_y / grid_y_resolution))
 
-    axes.set_title(y_name + " from " + x_name + "\n" + title)
+    axes.set_title(optic_parameter_name + " from " + vector_x_name + "\n" + title)
