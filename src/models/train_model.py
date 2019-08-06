@@ -5,89 +5,115 @@ from ROOT import TMultiDimFit, gInterpreter, gSystem
 import ROOT
 from concurrent.futures import ProcessPoolExecutor
 import os
-import shutil
 import data.bunch_configuration as buc
 import madx.madx_configuration as mac
+import utils.root_initializer as ri
+import utils.working_directory as working_directory
 
 
 def train(bunch_configuration, madx_configuration, path_to_project):
-    os.environ['LD_LIBRARY_PATH'] = path_to_project + "/root_libs"
-    gInterpreter.ProcessLine(".include " + path_to_project + "/src/root_classes/include")
-    gSystem.Load("LHCOpticsApproximator")
-
-    gInterpreter.ProcessLine("double input[5];")
-    gInterpreter.ProcessLine("double output[5];")
-    gInterpreter.ProcessLine("double x_in[5];")
-
-    gInterpreter.ProcessLine("Int_t mPowers[5];")
-    gInterpreter.ProcessLine('char option[] = "k";')
+    ri.initialise(path_to_project)
 
     particles = ptg.generate_random_particles(madx_configuration, bunch_configuration,
                                               bunch_configuration.get_number_of_particles())
 
     output_matrix = particles["end"]
+
+    print(output_matrix)
+
     input_matrix = particles["start"]
 
     indexes = output_matrix.T[0].astype(int) - 1
     input_without_lost = input_matrix[indexes]
 
-    x_input = input_without_lost.T[index_map["x"]]
-    theta_x_input = input_without_lost.T[index_map["theta x"]]
-    y_input = input_without_lost.T[index_map["y"]]
-    theta_y_input = input_without_lost.T[index_map["theta y"]]
-    pt_input = input_without_lost.T[index_map["pt"]]
+    madx_input = get_position_parameters_from_madx_format(input_without_lost)
 
-    approximator_input = np.array([x_input, theta_x_input, y_input, theta_y_input, pt_input])
+    madx_output = get_position_parameters_from_madx_format(output_matrix)
 
-    x_output = output_matrix.T[index_map["x"]]
-    theta_x_output = output_matrix.T[index_map["theta x"]]
-    y_output = output_matrix.T[index_map["y"]]
-    theta_y_output = output_matrix.T[index_map["theta y"]]
+    print("Madx run")
+
+    approximators = train_approximator(madx_input.T, madx_output.T, "dir", [7, 7, 7, 7, 7])
+
+    print("Trained")
+
+    print(approximators["x"])
+
+
+
+    print("Created")
+
+    return approximators
+
+
+def get_position_parameters_from_madx_format(matrix):
+    x = matrix.T[index_map["x"]]
+    theta_x = matrix.T[index_map["theta x"]]
+    y = matrix.T[index_map["y"]]
+    theta_y = matrix.T[index_map["theta y"]]
+    pt = matrix.T[index_map["pt"]]
+
+    return np.array([x, theta_x, y, theta_y, pt])
+
+
+def train_approximator(input_matrix, output_matrix, working_directory_name, max_pt_powers):
+
+    print(input_matrix.shape)
+
+    working_path = os.path.join(os.getcwd(), working_directory_name)
+    previous_directory = working_directory.create_and_get_into(working_path)
+
+    x_output = output_matrix.T[0]
+    print(x_output)
+    theta_x_output = output_matrix.T[1]
+    y_output = output_matrix.T[2]
+    theta_y_output = output_matrix.T[3]
 
     output_vectors = [x_output, theta_x_output, y_output, theta_y_output]
 
     number_of_parameters = len(output_vectors)
 
-    number_of_processes = 2
+    number_of_processes = 1
 
     with ProcessPoolExecutor(number_of_processes) as executor:
         futures = []
         for worker_number in range(number_of_parameters):
             worker_directory_name = "dir" + str(worker_number)
-            futures.append(executor.submit(train_approximator,
-                                           approximator_input, output_vectors[worker_number], worker_directory_name,
-                                           5e-7 if worker_number % 2 == 0 else 5e-10))
+            futures.append(executor.submit(train_tmultidimfit,
+                                           input_matrix.T, output_vectors[worker_number], worker_directory_name,
+                                           max_pt_powers[worker_number]))
 
+        print("ole")
         approximators = {
             "x": futures[0].result(),
             "theta x": futures[1].result(),
             "y": futures[2].result(),
             "theta y": futures[3].result()
         }
-        return approximators
+        print("Guappa")
+    # lhc_optics_approximator = approximator.Approximator(approximators)
+    print("start leaving")
+    working_directory.leave_and_delete(previous_directory)
+
+    return approximators
 
 
-def train_approximator(input_matrix, output_vector, working_directory_name, error):
-    # from ROOT import TMultiDimFet
+def train_tmultidimfit(input_matrix, output_vector, working_directory_name, max_pt_power):
+    from ROOT import TMultiDimFet
+    print(working_directory_name)
 
-    parameters_number = input_matrix.shape[0]
+    parameters_number = 5
     rows_number = input_matrix.shape[1]
 
-    directory_before = os.getcwd()
-    path_to_working_directory = os.path.join(os.getcwd(), working_directory_name)
-    if not os.path.exists(path_to_working_directory):
-        os.mkdir(path_to_working_directory)
+    working_path = os.path.join(os.getcwd(), working_directory_name)
+    previous_directory = working_directory.create_and_get_into(working_path)
 
-    os.chdir(path_to_working_directory)
-
-    approximator = TMultiDimFit(parameters_number, TMultiDimFit.kMonomials, ROOT.option)
-    print(approximator)
+    approximator = TMultiDimFet(parameters_number, TMultiDimFit.kMonomials, ROOT.option)
 
     ROOT.mPowers[0] = 2
     ROOT.mPowers[1] = 4
     ROOT.mPowers[2] = 2
     ROOT.mPowers[3] = 4
-    ROOT.mPowers[4] = 7
+    ROOT.mPowers[4] = max_pt_power
 
     approximator.SetMaxPowers(ROOT.mPowers)
     approximator.SetMaxFunctions(3000)
@@ -102,10 +128,11 @@ def train_approximator(input_matrix, output_vector, working_directory_name, erro
 
         approximator.AddRow(ROOT.x_in, output_vector[counter], 0)
 
-    approximator.FindParameterization()
-
-    os.chdir(directory_before)
-    shutil.rmtree(path_to_working_directory)
+    print("Start param")
+    approximator.FindParameterization(1e-8)
+    print("End!. finally...")
+    working_directory.leave_and_delete(previous_directory)
+    print("Left")
 
     return approximator
 

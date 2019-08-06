@@ -137,7 +137,7 @@ def plot_optical_functions(bunch_configuration,
     delta_x = x_max - x_min
     delta_y = y_max - y_min
 
-    axes = sns.scatterplot(data=merged_frame, x=x_name, y=y_name, hue=turn_name)
+    axes = sns.lineplot(data=merged_frame, x=x_name, y=y_name, hue=turn_name)
 
     axes.set_xlim(x_min - 0.25 * delta_x, x_max + 0.25 * delta_x)
     axes.set_ylim(y_min - 0.25 * delta_y, y_max + 0.25 * delta_y)

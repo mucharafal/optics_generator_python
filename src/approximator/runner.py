@@ -1,13 +1,15 @@
 import ROOT
 from ROOT import gSystem, gInterpreter
 import numpy as np
-import os
+import utils.root_initializer as root_initializer
+
+
+approximators_counter = 0
 
 
 def get_approximator(path_to_project, path_to_file, approximator_name):
     """
-    Get approximator_test from file. Use only once, since it initialize variables in ROOT, so with second use it is going
-    to explode. Sorry.
+    Get approximator_test from file.
     :param path_to_project: path to optics_generator_python. Needed files from it:
     - properly initialized folder root_libs
     - src/root_classes/include
@@ -15,16 +17,17 @@ def get_approximator(path_to_project, path_to_file, approximator_name):
     :param approximator_name: name of approximator_test in ROOT file
     :return: approximator_test object
     """
-    os.environ['LD_LIBRARY_PATH'] = path_to_project + "/root_libs"
-    gInterpreter.ProcessLine(".include " + path_to_project + "/src/root_classes/include")
-    gSystem.Load("LHCOpticsApproximator")
-    gInterpreter.ProcessLine('TFile *f=TFile::Open("' + path_to_file + '");')
+    root_initializer.initialise(path_to_project)
+
+    global approximators_counter
+    root_pointer_name = "apr" + str(approximators_counter)
+    approximators_counter += 1
+
+    gInterpreter.ProcessLine('f=TFile::Open("' + path_to_file + '");')
     gInterpreter.ProcessLine(
-        'std::auto_ptr<LHCOpticsApproximator> apr = std::auto_ptr<LHCOpticsApproximator>((LHCOpticsApproximator*) f->Get("' + approximator_name + '"));')
+        'std::auto_ptr<LHCOpticsApproximator> ' + root_pointer_name + ' = std::auto_ptr<LHCOpticsApproximator>((LHCOpticsApproximator*) f->Get("' + approximator_name + '"));')
     gInterpreter.ProcessLine("f->Close()")
-    gInterpreter.ProcessLine("double input[5];")
-    gInterpreter.ProcessLine("double output[5];")
-    approximator = ROOT.apr
+    approximator = getattr(ROOT, root_pointer_name)
     return approximator
 
 

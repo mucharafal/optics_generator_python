@@ -68,7 +68,7 @@ def __transport(particles, madx_configuration):
     :return: dict with matrices describing position of particles on stations, matrix format:
     ordinal number, turn, x, theta x, y, theta y, t, pt, e, s
     """
-    number_of_processes = 1
+    number_of_processes = 4
 
     particles_with_t = np.insert(particles, 4, 0, axis=1)
 
