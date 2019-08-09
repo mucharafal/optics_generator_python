@@ -10,3 +10,8 @@ class MadxConfiguration:
     def generate_madx_script(self, number_of_particles):
         return msg.generate_configuration_file_from_source(self.path_to_xml_file, self.item_number,
                                                            self.path_to_accelerator_configuration, number_of_particles)
+
+
+class TwissConfiguration(MadxConfiguration):
+    def __init__(self, path_to_madx_script):
+        self.path_to_madx_script = path_to_madx_script

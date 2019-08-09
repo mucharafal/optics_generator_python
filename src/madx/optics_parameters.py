@@ -189,6 +189,79 @@ def compute_d_y(madx_configuration, bunch_configuration):
     return result
 
 
+def compute_d_x_vs_s(madx_configuration, bunch_configuration):
+    internal_bunch_configuration = copy.copy(bunch_configuration)
+
+    internal_bunch_configuration.number_of_x_values = 1
+    internal_bunch_configuration.number_of_theta_x_values = 1
+    internal_bunch_configuration.number_of_y_values = 1
+    internal_bunch_configuration.number_of_theta_y_values = 1
+    internal_bunch_configuration.number_of_pt_values = 1
+
+    reference_particles = ptg.generate_from_range(madx_configuration, internal_bunch_configuration)
+
+    pt_min = internal_bunch_configuration.pt_min
+    pt_max = internal_bunch_configuration.pt_max
+    delta = __get_delta(pt_min, pt_max)
+
+    internal_bunch_configuration.pt_min += delta
+    internal_bunch_configuration.pt_max += delta
+
+    shifted_particles = ptg.generate_from_range(madx_configuration, internal_bunch_configuration)
+
+    end_positions = __merge_stations(reference_particles)
+    shifted_end_positions = __merge_stations(shifted_particles)
+
+    x_end_positions = __get_vector_of_transported_matrix("x", end_positions)
+    x_shifted_end_positions = __get_vector_of_transported_matrix("x", shifted_end_positions)
+
+    d_x = (x_shifted_end_positions - x_end_positions) / delta
+
+    result = np.append(__get_vector_of_transported_matrix("s", end_positions).reshape((-1, 1)), d_x.reshape((-1, 1)), axis=1)
+
+    return result
+
+
+def compute_d_y_vs_s(madx_configuration, bunch_configuration):
+    internal_bunch_configuration = copy.copy(bunch_configuration)
+
+    internal_bunch_configuration.number_of_x_values = 1
+    internal_bunch_configuration.number_of_theta_x_values = 1
+    internal_bunch_configuration.number_of_y_values = 1
+    internal_bunch_configuration.number_of_theta_y_values = 1
+    internal_bunch_configuration.number_of_pt_values = 1
+
+    reference_particles = ptg.generate_from_range(madx_configuration, internal_bunch_configuration)
+
+    pt_min = internal_bunch_configuration.pt_min
+    pt_max = internal_bunch_configuration.pt_max
+    delta = __get_delta(pt_min, pt_max)
+
+    internal_bunch_configuration.pt_min += delta
+    internal_bunch_configuration.pt_max += delta
+
+    shifted_particles = ptg.generate_from_range(madx_configuration, internal_bunch_configuration)
+
+    end_positions = __merge_stations(reference_particles)
+    shifted_end_positions = __merge_stations(shifted_particles)
+
+    y_end_positions = __get_vector_of_transported_matrix("y", end_positions)
+    y_shifted_end_positions = __get_vector_of_transported_matrix("y", shifted_end_positions)
+
+    d_y = (y_shifted_end_positions - y_end_positions) / delta
+
+    result = np.append(__get_vector_of_transported_matrix("s", end_positions).reshape((-1, 1)), d_y.reshape((-1, 1)), axis=1)
+
+    return result
+
+
+def __merge_stations(stations):
+    merged_stations = np.empty((0, stations["start"].shape[1]))
+    for station in stations:
+        merged_stations = np.append(merged_stations, stations[station], axis=0)
+    return merged_stations
+
+
 def __get_delta(min, max):
     multiplier = 1e-4
     potential_delta = multiplier * (max - min)
@@ -197,6 +270,7 @@ def __get_delta(min, max):
 
 def __get_vector_of_transported_matrix(column_name, matrix):
     columns_mapping = {
+        "s": 8,
         "x": 2,
         "theta x": 3,
         "y": 4,

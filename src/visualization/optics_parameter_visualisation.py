@@ -43,7 +43,7 @@ def plot_optical_function_of_approximator(approximator, bunch_configuration, opt
     delta_y = y_max - y_min
 
     data_frame = pd.DataFrame(data={x_name: vector_x, y_name: vector_y})
-    axes = sns.scatterplot(data=data_frame, x=x_name, y=y_name)
+    axes = sns.lineplot(data=data_frame, x=x_name, y=y_name)
 
     axes.set_xlim(x_min - 0.25 * delta_x, x_max + 0.25 * delta_x)
     axes.set_ylim(y_min - 0.25 * delta_y, y_max + 0.25 * delta_y)
@@ -51,13 +51,13 @@ def plot_optical_function_of_approximator(approximator, bunch_configuration, opt
     plt.xticks(np.arange(x_min, x_max + delta_x / grid_x_resolution, delta_x / grid_x_resolution))
     plt.yticks(np.arange(y_min, y_max + delta_y / grid_y_resolution, delta_y / grid_y_resolution))
 
-    axes.set_title(y_name + " from " + x_name + "\n" + title)
+    axes.set_title(optic_parameter_name + " from " + vector_x_name + "\n" + title)
 
 
 def plot_optical_function_of_madx(madx_configuration, bunch_configuration, optical_function, vector_x_name,
                                   optic_parameter_name, title, x_unit="", y_unit="",
                                   x_unit_multiplier=1, y_unit_multiplier=1, plot_size=10, grid_x_resolution=5,
-                                  grid_y_resolution=7):
+                                  grid_y_resolution=7, axes=None):
     fig = plt.gcf()
     fig.set_size_inches(plot_size, plot_size)
 
@@ -84,7 +84,10 @@ def plot_optical_function_of_madx(madx_configuration, bunch_configuration, optic
     delta_y = y_max - y_min
 
     data_frame = pd.DataFrame(data={x_name: vector_x, y_name: vector_y})
-    axes = sns.scatterplot(data=data_frame, x=x_name, y=y_name)
+    if axes is None:
+        axes = sns.lineplot(data=data_frame, x=x_name, y=y_name)
+    else:
+        sns.lineplot(data=data_frame, x=x_name, y=y_name, axes = axes)
 
     axes.set_xlim(x_min - 0.25 * delta_x, x_max + 0.25 * delta_x)
     axes.set_ylim(y_min - 0.25 * delta_y, y_max + 0.25 * delta_y)
@@ -92,7 +95,7 @@ def plot_optical_function_of_madx(madx_configuration, bunch_configuration, optic
     plt.xticks(np.arange(x_min, x_max + delta_x / grid_x_resolution, delta_x / grid_x_resolution))
     plt.yticks(np.arange(y_min, y_max + delta_y / grid_y_resolution, delta_y / grid_y_resolution))
 
-    axes.set_title(y_name + " from " + x_name + "\n" + title)
+    axes.set_title(optic_parameter_name + " from " + vector_x_name + "\n" + title)
 
 
 def plot_optical_functions(bunch_configuration,
