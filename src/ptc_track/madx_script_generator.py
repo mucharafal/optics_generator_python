@@ -75,13 +75,13 @@ def __get_tokens(conf, places):
 
 def generate_configuration_file_from_source(path_to_xml_file, item_number, path_to_configuration, number_of_particles):
     """
-    Generate configuration file for madx using configuration in xml file.
+    Generate configuration file for ptc_track using configuration in xml file.
     File is generated in folder with configuration.
     Parameters
     ----------
     path_to_configuration- path to folder with configuration files- xml and rest files needed to create configuration-
     check xml file.
-    xml_configuration_file_name- name of file with configuration to create madx script.
+    xml_configuration_file_name- name of file with configuration to create ptc_track script.
     Returns
     -------
     Path to generated file.
@@ -118,7 +118,7 @@ def generate_configuration_file_from_source(path_to_xml_file, item_number, path_
 def generate_configuration_file(path_to_configuration,
                                 ksi,
                                 number_of_particles_on_input):
-    file_name = "configuration.madx"
+    file_name = "configuration.ptc_track"
     with open(file_name, "w") as configuration_file:
         configuration_file.write('''option, -echo, -info,  -warn;
 
@@ -136,7 +136,7 @@ getpart(nx): macro = {
 
 set,format="4.12e";\n''')
         configuration_file.write('call, file = "' + path_to_configuration + '/2016/lhc_as-built.seq";\n')
-        configuration_file.write('call, file = "' + path_to_configuration + '/2016/opt_inj_colltunes.madx";\n')
+        configuration_file.write('call, file = "' + path_to_configuration + '/2016/opt_inj_colltunes.ptc_track";\n')
         configuration_file.write("DELTA_AP = " + str(ksi) + ";\n")
         configuration_file.write("bunch_size = " + str(number_of_particles_on_input) + ";\n")
         configuration_file.write('''
@@ -153,8 +153,8 @@ beam, sequence=lhcb2, bv=-1, energy=6500,  particle=proton,
 
 use,sequence=lhcb1;
 ''')
-        configuration_file.write('call, file="' + path_to_configuration + 'temporary_perturbation.madx";\n')
-        configuration_file.write('call, file="' + path_to_configuration + 'temporary_perturbation_b1.madx";\n')
+        configuration_file.write('call, file="' + path_to_configuration + 'temporary_perturbation.ptc_track";\n')
+        configuration_file.write('call, file="' + path_to_configuration + 'temporary_perturbation_b1.ptc_track";\n')
 
         configuration_file.write('''
 
@@ -239,7 +239,7 @@ use,sequence=lhcb1;
 use,period=lhcb1,range=ip5/beg_150_station;
 ''')
         # Probably below line is redundant
-        configuration_file.write('call, file="' + path_to_configuration + 'temporary_perturbation_b1.madx";\n')
+        configuration_file.write('call, file="' + path_to_configuration + 'temporary_perturbation_b1.ptc_track";\n')
 
         configuration_file.write('''readmytable,file=part.in,table=myevent;
 

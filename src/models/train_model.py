@@ -1,12 +1,12 @@
-import madx.particles_trajectory_generator as ptg
-from madx.matrix_indexes import index_map
+import ptc_track.particles_trajectory_generator as ptg
+from ptc_track.matrix_indexes import index_map
 import numpy as np
 from ROOT import TMultiDimFit, gInterpreter, gSystem
 import ROOT
 from concurrent.futures import ProcessPoolExecutor
 import os
 import data.bunch_configuration as buc
-import madx.madx_configuration as mac
+import ptc_track.madx_configuration as mac
 import utils.root_initializer as ri
 import utils.working_directory as working_directory
 

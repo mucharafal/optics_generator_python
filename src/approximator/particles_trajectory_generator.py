@@ -1,12 +1,12 @@
 import approximator.runner as ra
 import data.particles_generator as pg
-import madx.runner as mr       # expand function from this file used here
+import ptc_track.runner as mr       # expand function from this file used here
 import numpy as np
 
 
 def generate_random_particles(approximator, bunch_configuration):
     """
-    Generate dict with matrix of particles' parameters on stations. List of stations is in madx configuration generator.
+    Generate dict with matrix of particles' parameters on stations. List of stations is in ptc_track configuration generator.
     :param approximator- LHCOpticsApproximator object
     :param bunch_configuration: dict with bunch parameters- x, theta x, y, theta y, t, and pt- their min and max values.
     :return: dict with numpy matrix of particles' parameters on begin and end, with columns: x, theta x, y, theta y, pt

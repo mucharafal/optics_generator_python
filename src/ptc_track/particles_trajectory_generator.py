@@ -1,11 +1,11 @@
 import data.particles_generator as pg
-import madx.runner as mr
+import ptc_track.runner as mr
 import numpy as np
 
 
 def generate_random_particles(madx_configuration, bunch_configuration, target):
     """
-    Generate dict with matrix of particles' parameters on stations. List of stations is in madx configuration generator.
+    Generate dict with matrix of particles' parameters on stations. List of stations is in ptc_track configuration generator.
     Take angles into account.
     :param bunch_configuration: dict with beam parameters- x, theta x, y, theta y, t, and pt- their min and max values.
     :param madx_configuration: todo
@@ -31,7 +31,7 @@ def generate_random_particles(madx_configuration, bunch_configuration, target):
 
 def __generate_random_particles(madx_configuration, bunch_configuration):
     """
-    Generate dict with matrix of particles' parameters on stations. List of stations is in madx configuration generator.
+    Generate dict with matrix of particles' parameters on stations. List of stations is in ptc_track configuration generator.
     :param bunch_configuration: dict with beam parameters- x, theta x, y, theta y, t, and pt- their min and max values.
     :param madx_configuration:
     :return: dict with numpy matrix of particles' parameters on stations, matrix format:
@@ -46,7 +46,7 @@ def __generate_random_particles(madx_configuration, bunch_configuration):
 
 def generate_from_range(madx_configuration, bunch_configuration):
     """
-    Generate dict with matrices of particles' parameters on stations. List of stations is in madx configuration generator.
+    Generate dict with matrices of particles' parameters on stations. List of stations is in ptc_track configuration generator.
     :param bunch_configuration: dict with beam parameters- x, theta x, y, theta y, t, and pt- their min and max values
     :param madx_configuration: todo
     :return: dict with numpy matrix of particles' parameters on stations, matrix format:

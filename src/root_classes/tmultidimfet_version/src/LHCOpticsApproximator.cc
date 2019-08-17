@@ -55,29 +55,6 @@ LHCOpticsApproximator::LHCOpticsApproximator(std::string name, std::string title
 //  std::cout<<"LHCOpticsApproximator(std::string name, std::string title, TMultiDimFet::EMDFPolyType polynom_type) left"<<std::endl;
 }
 
-LHCOpticsApproximator::LHCOpticsApproximator(std::string name, std::string title, std::string beam_direction, double nominal_beam_energy,
-                                            TMultiDimFet *x_parametrisation_object, TMultiDimFet *theta_x_parametrisation_object, 
-                                            TMultiDimFet *y_parametrisation_object, TMultiDimFet *theta_y_parametrisation_object):
-                                            x_parametrisation(*x_parametrisation_object),
-                                            theta_x_parametrisation(*theta_x_parametrisation_object),
-                                            y_parametrisation(*y_parametrisation_object),
-                                            theta_y_parametrisation(*theta_y_parametrisation_object)
-{
-  this->SetName(name.c_str());
-  this->SetTitle(title.c_str());
-  Init();
-
-  if(beam_direction == "lhcb1")
-    beam = lhcb1;
-  else if(beam_direction == "lhcb2")
-    beam = lhcb2;
-  else
-    beam = lhcb1;
-
-  nominal_beam_energy_ = nominal_beam_energy;
-  nominal_beam_momentum_ = TMath::Sqrt(nominal_beam_energy_*nominal_beam_energy_ - 0.938272029*0.938272029);
-}
-
 
 LHCOpticsApproximator::LHCOpticsApproximator()
 {
@@ -188,6 +165,16 @@ LHCOpticsApproximator::LHCOpticsApproximator(const LHCOpticsApproximator &org) :
     nominal_beam_energy_ = org.nominal_beam_energy_;
     nominal_beam_momentum_ = org.nominal_beam_momentum_;
 //  std::cout<<"LHCOpticsApproximator::LHCOpticsApproximator(const LHCOpticsApproximator &org) left"<<std::endl;
+}
+
+
+double LHCOpticsApproximator::GetBegin(){
+  return s_begin_;
+}
+
+
+double LHCOpticsApproximator::GetEnd(){
+  return s_end_;
 }
 
 

@@ -3,7 +3,6 @@ import subprocess
 import numpy as np
 import shutil
 from concurrent.futures import ProcessPoolExecutor
-import madx.madx_script_generator as mcg
 
 
 def compute_trajectory(particles, madx_configuration, number_of_workers):
@@ -20,7 +19,7 @@ def compute_trajectory(particles, madx_configuration, number_of_workers):
 
 def __run_madx(path_to_madx_script):
     """
-    Run madx in current folder. As stdin for madx given content of file, whose path is specified in argument
+    Run ptc_track in current folder. As stdin for ptc_track given content of file, whose path is specified in argument
     """
     with open(path_to_madx_script) as f:
         res = subprocess.run("madx", stdin=f, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -29,7 +28,7 @@ def __run_madx(path_to_madx_script):
 
 def __read_in_madx_output_file(filename):
     """
-    Read in madx output file
+    Read in ptc_track output file
     :param filename: filename if it is in current directory or path to file
     :return: dictionary, where keys are names of segments and values are numpy matrix with data
     """
@@ -108,7 +107,7 @@ def __merge_output_from_workers(futures):
 
 def __run_worker(particles, working_directory_name, madx_configuration, shift):
     """
-    Function of worker which run madx. It prepare working directory, run madx,
+    Function of worker which run ptc_track. It prepare working directory, run ptc_track,
     read in result and return it. It must be another process not thread because it changes working directory
     of interpreter.
     :param particles: matrix with parameters of particles
@@ -151,7 +150,7 @@ def __save_particles(particles,
                      t_name="tt",
                      pt_name="trpt"):
     """
-    Save particles in part.in file in madx format.
+    Save particles in part.in file in ptc_track format.
     :param particles: numpy matrix with particles parameters
     :param ordinal_number_name: name of first parameter- ordinal number
     :param x_name: name of second parameter in file part.in- x
@@ -173,7 +172,7 @@ def __save_particles(particles,
 
 def __write_header(file_object):
     """
-    Write a header in madx format to file object given as parameter. Helper function for generate_particles
+    Write a header in ptc_track format to file object given as parameter. Helper function for generate_particles
     :param file_object: file to which header would be added
     """
     file_object.write('@ NAME             %07s "PARTICLES"\n')
@@ -186,7 +185,7 @@ def __write_header(file_object):
 
 def __write_specification_of_row(names, types, file_object):
     """
-    Every column in madx file has to be properly described. It has two parameters: name and type.
+    Every column in ptc_track file has to be properly described. It has two parameters: name and type.
     This function write to file two lines which describe this parameters.
     :param names: names of columns
     :param types: types of columns

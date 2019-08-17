@@ -4,10 +4,23 @@ import pandas as pd
 from data.units import unit_map, multiplier_for_unit
 
 
+def plot_from_one_matrix(x_name, y_name, matrix, mapping,
+                         plot_axes=None, plot_x_pos=-1, plot_y_pos=-1,
+                         title_sufix="", x_name_prefix="", y_name_prefix="",
+                         plot_function=sns.lineplot, color="b",
+                         x_axis_configuration=None, y_axis_configuration=None):
+    return plot_from_two_matrices(x_name, y_name, matrix, matrix, mapping, mapping,
+                                  plot_axes, plot_x_pos, plot_y_pos,
+                                  title_sufix, x_name_prefix, y_name_prefix,
+                                  plot_function, color,
+                                  x_axis_configuration, y_axis_configuration)
+
+
 def plot_from_two_matrices(x_name, y_name, x_matrix, y_matrix, x_matrix_mapping, y_matrix_mapping,
                            plot_axes=None, plot_x_pos=-1, plot_y_pos=-1,
                            title_sufix="", x_name_prefix="", y_name_prefix="",
-                           plot_function=sns.lineplot, color="b"):
+                           plot_function=sns.lineplot, color="b",
+                           x_axis_configuration=None, y_axis_configuration=None):
     # Get names of axis and title of plot
 
     x_full_name = x_name_prefix + x_name + unit_map[x_name]
@@ -25,19 +38,6 @@ def plot_from_two_matrices(x_name, y_name, x_matrix, y_matrix, x_matrix_mapping,
 
     frame = pd.DataFrame(data={x_full_name: vector_x, y_full_name: vector_y})
 
-    # Set scale and range of axis
-
-    x_min = np.min(vector_x)
-
-    x_max = np.max(vector_x)
-
-    y_min = np.min(vector_y)
-
-    y_max = np.max(vector_y)
-
-    delta_x = x_max - x_min
-    delta_y = y_max - y_min
-
     if plot_axes is None:
         axes = plot_function(x=x_full_name, y=y_full_name, data=frame, color=color)
     elif plot_x_pos == -1:
@@ -48,8 +48,12 @@ def plot_from_two_matrices(x_name, y_name, x_matrix, y_matrix, x_matrix_mapping,
         axes = plot_function(x=x_full_name, y=y_full_name, data=frame, ax=plot_axes[plot_x_pos][plot_y_pos], color=color)
 
     axes.set_title(title)
-    axes.set_xlim(x_min - 0.25 * delta_x, x_max + 0.25 * delta_x)
-    axes.set_ylim(y_min - 0.25 * delta_y, y_max + 0.25 * delta_y)
+
+    if x_axis_configuration is not None:
+        axes.xaxis.set_ticks(x_axis_configuration.get_ticks())
+
+    if y_axis_configuration is not None:
+        axes.yaxis.set_ticks(y_axis_configuration.get_ticks())
 
 
 def generate_dataset(x_name, y_name, hue_name, datasets):
@@ -75,43 +79,32 @@ def generate_dataset(x_name, y_name, hue_name, datasets):
 
 def plot_with_turn(x_name, y_name, hue_name, datasets, title_sufix="",
                    plot_axes=None, plot_x_pos=-1, plot_y_pos=-1,
-                   plot_function=sns.lineplot):
+                   plot_function=sns.lineplot, x_axis_configuration=None, y_axis_configuration=None):
 
     x_full_name = x_name + unit_map[x_name]
     y_full_name = y_name + unit_map[y_name]
 
     frame = generate_dataset(x_name, y_name, hue_name, datasets)
 
-    title = "Values of " + y_name + " from " + x_name
+    title = y_name + " from " + x_name
     title += "\n" + title_sufix
-
-    x_min = frame[x_name].min()
-    x_max = frame[x_name].max()
-
-    y_min = frame[y_name].min()
-    y_max = frame[y_name].max()
-
-    delta_x = x_max - x_min
-    delta_y = y_max - y_min
-
-    x_lower_axis_limit = (x_min - 0.25 * delta_x)
-    x_upper_axis_limit = (x_max + 0.25 * delta_x)
-
-    y_lower_axis_limit = (y_min - 0.25 * delta_y)
-    y_upper_axis_limit = (y_max + 0.25 * delta_y)
 
     if plot_axes is None:
         axes = plot_function(x=x_name, y=y_name, hue=hue_name, data=frame)
     elif plot_x_pos == -1:
-        axes = plot_function(x=x_name, y=y_name, hue=hue_name, data=frame, ax=plot_axes)
+        axes = plot_function(x=x_name, y=y_name, hue=hue_name, data=frame, ax=plot_axes, style=hue_name, size=hue_name)
     elif plot_y_pos == -1:
-        axes = plot_function(x=x_name, y=y_name, hue=hue_name, data=frame, ax=plot_axes[plot_x_pos])
+        axes = plot_function(x=x_name, y=y_name, hue=hue_name, data=frame, ax=plot_axes[plot_x_pos], style=hue_name, size=hue_name)
     else:
-        axes = plot_function(x=x_name, y=y_name, hue=hue_name, data=frame, ax=plot_axes[plot_x_pos][plot_y_pos])
+        axes = plot_function(x=x_name, y=y_name, hue=hue_name, data=frame, ax=plot_axes[plot_x_pos][plot_y_pos], style=hue_name, size=hue_name)
 
     axes.set_xlabel(x_full_name)
     axes.set_ylabel(y_full_name)
 
-    axes.set_xlim(x_lower_axis_limit, x_upper_axis_limit)
-    axes.set_ylim(y_lower_axis_limit, y_upper_axis_limit)
     axes.set_title(title)
+
+    if x_axis_configuration is not None:
+        axes.xaxis.set_ticks(x_axis_configuration.get_ticks())
+
+    if y_axis_configuration is not None:
+        axes.yaxis.set_ticks(y_axis_configuration.get_ticks())

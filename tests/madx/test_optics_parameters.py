@@ -1,5 +1,5 @@
 from unittest import TestCase
-import madx.optics_parameters as op
+import ptc_track.optics_parameters as op
 from data import bunch_configuration as buc
 import mock
 import numpy as np
@@ -40,7 +40,7 @@ counter = 0
 
 def transport_with_loose(particles, path):
     """
-    This function simulate loosing particles by madx. Sometimes it occurs and can lead to errors.
+    This function simulate loosing particles by ptc_track. Sometimes it occurs and can lead to errors.
     :param particles: matrix with particles positions
     :param path: path to configuration, take it as mock
     :return: matrix with positions of particles
@@ -174,19 +174,19 @@ class TestCompute_optics_parameters(TestCase):
                          op.compute_l_y]
 
     @mock.patch('data.particles_generator.generate_from_range', side_effect=mock_particles_generator)
-    @mock.patch('madx.particles_trajectory_generator.__transport', side_effect=mock_transport)
+    @mock.patch('ptc_track.particles_trajectory_generator.__transport', side_effect=mock_transport)
     def test_simple_run(self, mocked_function, another_mock):
         simple_bunch_configuration = prev_test.TestPlot_optical_function.get_simple_bunch_configuration()
         for optical_function in self.optical_functions:
             optical_function(simple_bunch_configuration, "path")
 
-    @mock.patch('madx.particles_trajectory_generator.__transport', side_effect=mock_transport)
+    @mock.patch('ptc_track.particles_trajectory_generator.__transport', side_effect=mock_transport)
     def test_with_data_generator(self, another_mock):
         simple_bunch_configuration = prev_test.TestPlot_optical_function.get_simple_bunch_configuration()
         for optical_function in self.optical_functions:
             optical_function(simple_bunch_configuration, "path")
 
-    @mock.patch('madx.particles_trajectory_generator.__transport', side_effect=transport_with_loose)
+    @mock.patch('ptc_track.particles_trajectory_generator.__transport', side_effect=transport_with_loose)
     def test_with_data_lost_transport(self, another_mock):
         simple_bunch_configuration = prev_test.TestPlot_optical_function.get_simple_bunch_configuration()
         begin_number_of_particles = simple_bunch_configuration.get_number_of_particles()
@@ -195,42 +195,42 @@ class TestCompute_optics_parameters(TestCase):
             if output.shape != (begin_number_of_particles - 2, 6):
                 self.fail("Incorrect output size: " + str(output.shape))
 
-    @mock.patch('madx.particles_trajectory_generator.__transport', side_effect=v_x_transport)
+    @mock.patch('ptc_track.particles_trajectory_generator.__transport', side_effect=v_x_transport)
     def test_v_x(self, transport_function_mock):
         simple_bunch_configuration = self.get_bunch_configuration_to_optics_test()
         matrix = op.compute_v_x(simple_bunch_configuration, "")
         v_x = matrix[0][5]
         self.assertAlmostEqual(v_x, 100, msg="value of v_x is incorrect")
 
-    @mock.patch('madx.particles_trajectory_generator.__transport', side_effect=v_y_transport)
+    @mock.patch('ptc_track.particles_trajectory_generator.__transport', side_effect=v_y_transport)
     def test_v_y(self, transport_function_mock):
         simple_bunch_configuration = self.get_bunch_configuration_to_optics_test()
         matrix = op.compute_v_y(simple_bunch_configuration, "")
         v_y = matrix[0][5]
         self.assertAlmostEqual(v_y, 100, msg="value of v_y is incorrect")
 
-    @mock.patch('madx.particles_trajectory_generator.__transport', side_effect=l_x_transport)
+    @mock.patch('ptc_track.particles_trajectory_generator.__transport', side_effect=l_x_transport)
     def test_l_x(self, transport_function_mock):
         simple_bunch_configuration = self.get_bunch_configuration_to_optics_test()
         matrix = op.compute_l_x(simple_bunch_configuration, "")
         l_x = matrix[0][5]
         self.assertAlmostEqual(l_x, 100, msg="value of l_x is incorrect")
 
-    @mock.patch('madx.particles_trajectory_generator.__transport', side_effect=l_y_transport)
+    @mock.patch('ptc_track.particles_trajectory_generator.__transport', side_effect=l_y_transport)
     def test_l_y(self, transport_function_mock):
         simple_bunch_configuration = self.get_bunch_configuration_to_optics_test()
         matrix = op.compute_l_y(simple_bunch_configuration, "")
         l_y = matrix[0][5]
         self.assertAlmostEqual(l_y, 100, msg="value of l_y is incorrect")
 
-    @mock.patch('madx.particles_trajectory_generator.__transport', side_effect=d_x_transport)
+    @mock.patch('ptc_track.particles_trajectory_generator.__transport', side_effect=d_x_transport)
     def test_d_x(self, transport_function_mock):
         simple_bunch_configuration = self.get_bunch_configuration_to_optics_test()
         matrix = op.compute_d_x(simple_bunch_configuration, "")
         d_x = matrix[0][5]
         self.assertAlmostEqual(d_x, 100, msg="value of l_x is incorrect")
 
-    @mock.patch('madx.particles_trajectory_generator.__transport', side_effect=d_y_transport)
+    @mock.patch('ptc_track.particles_trajectory_generator.__transport', side_effect=d_y_transport)
     def test_d_y(self, transport_function_mock):
         simple_bunch_configuration = self.get_bunch_configuration_to_optics_test()
         matrix = op.compute_d_y(simple_bunch_configuration, "")

@@ -30,7 +30,7 @@ def generate_from_range(beam_configuration):
 
 def generate_particles_randomly_with_angle(beam_configuration, x_angle_min, x_angle_max, y_angle_min, y_angle_max):
     """
-    Deprecated. Remove t parameter. Angles in such form are useless for madx.
+    Deprecated. Remove t parameter. Angles in such form are useless for ptc_track.
     Generate matrix. WARNING- to file part.in are saved only parameters: x, theta x,
     y, theta y, t, pt. Angles should be only in returned matrix.
     :param beam_configuration- configuration of beam- min and max values of parameters, number of particles
@@ -69,6 +69,7 @@ def generate_particles_randomly(beam_configuration):
     max_vector = np.zeros((1, number_of_parameters))
     min_vector = np.zeros((1, number_of_parameters))
 
+    # TODO refactor
     for i in range(number_of_parameters):
         max_vector[0][i] = max_values[i]
         min_vector[0][i] = min_values[i]

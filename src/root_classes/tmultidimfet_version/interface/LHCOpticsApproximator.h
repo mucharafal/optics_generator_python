@@ -43,8 +43,6 @@ class LHCOpticsApproximator : public TNamed
     //begin and end position along the beam of the particle to transport, training_tree, prefix of data branch in the tree
     LHCOpticsApproximator(std::string name, std::string title, TMultiDimFet::EMDFPolyType polynom_type,
         std::string beam_direction, double nominal_beam_energy);
-    LHCOpticsApproximator(std::string name, std::string title, std::string beam_direction, double nominal_beam_energy,
-        TMultiDimFet *x_parametrisation, TMultiDimFet *theta_x_parametrisation, TMultiDimFet *y_parametrisation, TMultiDimFet *theta_y_parametrisation);
     LHCOpticsApproximator(const LHCOpticsApproximator &org);
     LHCOpticsApproximator & operator=(const LHCOpticsApproximator &org);
 
@@ -74,6 +72,8 @@ class LHCOpticsApproximator : public TNamed
     double GetDxds(double mad_init_x, double mad_init_thx, double mad_init_y, 
         double mad_init_thy, double mad_init_xi, double d_mad_xi=0.001);
     std::vector<LHCApertureApproximator> GetApertures() {return apertures_;}
+    double GetBegin();
+    double GetEnd();
 
   private:
     void Init();

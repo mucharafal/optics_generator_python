@@ -15,7 +15,11 @@ unit_map = {
     "s": meters,
     "e": energy,
     "D x": centimeters,
-    "D y": centimeters
+    "D y": centimeters,
+    "V x": no_unit,
+    "V y": no_unit,
+    "L x": meters,
+    "L y": meters
 }
 multiplier_for_unit = {
     "x": 1000,
@@ -26,5 +30,9 @@ multiplier_for_unit = {
     "pt": 1,
     "D x": 100,
     "D y": 100,
-    "s": 1
+    "s": 1,
+    "V x": 1,
+    "V y": 1,
+    "L x": 1,
+    "L y": 1
 }

@@ -1,6 +1,7 @@
 import approximator.particles_trajectory_generator as ptg
 import numpy as np
 import copy
+import ROOT
 
 
 def compute_v_x(approximator, bunch_configuration):
@@ -112,6 +113,12 @@ def compute_l_y(approximator, bunch_configuration):
 
 
 def compute_d_x(approximator, bunch_configuration):
+    """
+    Compute Dispersion in x axis using differential
+    :param approximator: LHCOpticsApproximator object, used to transport particles
+    :param bunch_configuration: BunchConfiguration object, used to generate dataset
+    :return: Matrix with columns x, theta x, y, theta y, pt and D x
+    """
     internal_bunch_configuration = copy.copy(bunch_configuration)
     reference_particles = ptg.generate_from_range(approximator, internal_bunch_configuration)
 
@@ -139,6 +146,12 @@ def compute_d_x(approximator, bunch_configuration):
 
 
 def compute_d_y(approximator, bunch_configuration):
+    """
+    Compute Dispersion in y axis using differential
+    :param approximator: LHCOpticsApproximator object, used to transport particles
+    :param bunch_configuration: BunchConfiguration object, used to generate dataset
+    :return: Matrix with columns x, theta x, y, theta y, pt and D y
+    """
     internal_bunch_configuration = copy.copy(bunch_configuration)
     reference_particles = ptg.generate_from_range(approximator, internal_bunch_configuration)
 
@@ -165,8 +178,34 @@ def compute_d_y(approximator, bunch_configuration):
     return result
 
 
+def compute_d_x_vs_s(approximator_configuration, bunch_configuration):
+    file = ROOT.TFile.Open(approximator_configuration.path_to_root_file)
+    approximators = file.GetListOfKeys()
+    s_vs_dx = []
+    for approximator_handle in approximators:
+        approximator = approximator_handle.ReadObj()
+        dataset = compute_d_x(approximator, bunch_configuration)
+        d_x = dataset.T[5][0]
+        s_vs_dx.append([approximator.GetEnd(), d_x])
+
+    return np.array(s_vs_dx).reshape((-1, 2))
+
+
+def compute_d_y_vs_s(approximator_configuration, bunch_configuration):
+    file = ROOT.TFile.Open(approximator_configuration.path_to_root_file)
+    approximators = file.GetListOfKeys()
+    s_vs_dy = []
+    for approximator_handle in approximators:
+        approximator = approximator_handle.ReadObj()
+        dataset = compute_d_y(approximator, bunch_configuration)
+        d_y = dataset.T[5][0]
+        s_vs_dy.append([approximator.GetEnd(), d_y])
+
+    return np.array(s_vs_dy).reshape((-1, 2))
+
+
 def __get_delta(min, max):
-    multiplier = 1e-4
+    multiplier = 1e-5
     potential_delta = multiplier * (max - min)
     return potential_delta if potential_delta > 0 else multiplier
 
