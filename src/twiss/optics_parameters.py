@@ -1,5 +1,5 @@
-import ptc_twiss.particles_trajectory_generator as ptg
-import ptc_twiss.matrix_indexes as tmi
+import twiss.particles_trajectory_generator as ptg
+import twiss.matrix_indexes as tmi
 import numpy as np
 import copy
 

@@ -1,8 +1,7 @@
 import ptc_track.runner as mr
-import data.particles_generator as pg
 import numpy as np
 from concurrent.futures import ProcessPoolExecutor
-from ptc_twiss.madx_script_generator import generate_configuration_file
+from twiss.madx_script_generator import generate_configuration_file
 from utils import working_directory
 import os
 
@@ -14,7 +13,7 @@ def transport(madx_configuration, dataset):
     :param dataset:
     :return:
     """
-    result_matrix = np.empty((0, 14))
+    result_matrix = np.empty((0, 30))
     number_of_workers = 4
     with ProcessPoolExecutor(number_of_workers) as executor:
         futures = []
@@ -60,7 +59,7 @@ def read_in_twiss_output_file(file_name):
         parameters = parameters[1:]
         # skip '*'
         file_object.readline()
-        number_of_positions = 49
+        number_of_positions = 43
         columns_number = len(parameters)
         values_vector = np.fromfile(file_object, count=number_of_positions * columns_number, sep=" ")
         matrix = np.reshape(values_vector, (number_of_positions, columns_number))

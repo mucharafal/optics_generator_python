@@ -1,7 +1,7 @@
-import ptc_twiss.runner as tr
+import twiss.runner as tr
 import data.particles_generator as pg
 import numpy as np
-import ptc_twiss.matrix_indexes as indexes
+import twiss.matrix_indexes as indexes
 
 
 def generate_from_range(madx_configuration, bunch_configuration):
