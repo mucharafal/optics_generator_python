@@ -1,7 +1,7 @@
 import seaborn as sns
 import numpy as np
 import pandas as pd
-from data.units import unit_map, multiplier_for_unit
+from data.units import unit_map, multiplier_for_unit, alternative_version
 
 
 def plot_from_one_matrix(x_name, y_name, matrix, mapping,
@@ -22,11 +22,13 @@ def plot_from_two_matrices(x_name, y_name, x_matrix, y_matrix, x_matrix_mapping,
                            plot_function=sns.lineplot, color="b",
                            x_axis_configuration=None, y_axis_configuration=None):
     # Get names of axis and title of plot
+    x_alternative_version = alternative_version[x_name]
+    y_alternative_version = alternative_version[y_name]
 
-    x_full_name = x_name_prefix + x_name + unit_map[x_name]
-    y_full_name = y_name_prefix + y_name + unit_map[y_name]
+    x_full_name = x_name_prefix + x_alternative_version + unit_map[x_name]
+    y_full_name = y_name_prefix + y_alternative_version + unit_map[y_name]
 
-    title = y_name_prefix + y_name + " from " + x_name_prefix + x_name
+    title = y_name_prefix + y_alternative_version + " vs " + x_name_prefix + x_alternative_version
     title += "\n" + title_sufix
 
     # Get vectors and their properties
@@ -39,7 +41,7 @@ def plot_from_two_matrices(x_name, y_name, x_matrix, y_matrix, x_matrix_mapping,
     frame = pd.DataFrame(data={x_full_name: vector_x, y_full_name: vector_y})
 
     if plot_axes is None:
-        axes = plot_function(x=x_full_name, y=y_full_name, data=frame, color=color)
+        axes = plot_function(x=x_full_name, y=y_full_name, data=frame, color=color,  alpha=0.6)
     elif plot_x_pos == -1:
         axes = plot_function(x=x_full_name, y=y_full_name, data=frame, ax=plot_axes, color=color)
     elif plot_y_pos == -1:
@@ -48,6 +50,7 @@ def plot_from_two_matrices(x_name, y_name, x_matrix, y_matrix, x_matrix_mapping,
         axes = plot_function(x=x_full_name, y=y_full_name, data=frame, ax=plot_axes[plot_x_pos][plot_y_pos], color=color)
 
     axes.set_title(title)
+    axes.set_xlim(np.min(vector_x), np.max(vector_x))
 
     if x_axis_configuration is not None:
         axes.xaxis.set_ticks(x_axis_configuration.get_ticks())
@@ -80,28 +83,35 @@ def generate_dataset(x_name, y_name, hue_name, datasets):
 def plot_with_turn(x_name, y_name, hue_name, datasets, title_sufix="",
                    plot_axes=None, plot_x_pos=-1, plot_y_pos=-1,
                    plot_function=sns.lineplot, x_axis_configuration=None, y_axis_configuration=None):
+    x_alternative_version = alternative_version[x_name]
+    y_alternative_version = alternative_version[y_name]
 
-    x_full_name = x_name + unit_map[x_name]
-    y_full_name = y_name + unit_map[y_name]
+    x_full_name = x_alternative_version + unit_map[x_name]
+    y_full_name = y_alternative_version + unit_map[y_name]
 
     frame = generate_dataset(x_name, y_name, hue_name, datasets)
 
-    title = y_name + " from " + x_name
+    title = y_alternative_version + " vs " + x_alternative_version
     title += "\n" + title_sufix
 
+    sizes = [3 for i in range(len(datasets))]
+    print(sizes)
+
     if plot_axes is None:
-        axes = plot_function(x=x_name, y=y_name, hue=hue_name, data=frame)
+        axes = plot_function(x=x_name, y=y_name, hue=hue_name, data=frame, style=hue_name, size=hue_name, sizes=sizes, alpha=0.6)
     elif plot_x_pos == -1:
-        axes = plot_function(x=x_name, y=y_name, hue=hue_name, data=frame, ax=plot_axes, style=hue_name, size=hue_name)
+        axes = plot_function(x=x_name, y=y_name, hue=hue_name, data=frame, ax=plot_axes, style=hue_name)
     elif plot_y_pos == -1:
-        axes = plot_function(x=x_name, y=y_name, hue=hue_name, data=frame, ax=plot_axes[plot_x_pos], style=hue_name, size=hue_name)
+        axes = plot_function(x=x_name, y=y_name, hue=hue_name, data=frame, ax=plot_axes[plot_x_pos], style=hue_name)
     else:
-        axes = plot_function(x=x_name, y=y_name, hue=hue_name, data=frame, ax=plot_axes[plot_x_pos][plot_y_pos], style=hue_name, size=hue_name)
+        axes = plot_function(x=x_name, y=y_name, hue=hue_name, data=frame, ax=plot_axes[plot_x_pos][plot_y_pos], style=hue_name)
 
     axes.set_xlabel(x_full_name)
     axes.set_ylabel(y_full_name)
 
     axes.set_title(title)
+
+    axes.set_xlim(frame[x_name].min(), frame[x_name].max())
 
     if x_axis_configuration is not None:
         axes.xaxis.set_ticks(x_axis_configuration.get_ticks())

@@ -23,9 +23,9 @@ unit_map = {
 }
 multiplier_for_unit = {
     "x": 1000,
-    "theta x": 10e6,
+    "theta x": 1e6,
     "y": 1000,
-    "theta y": 10e6,
+    "theta y": 1e6,
     "t": 1,
     "pt": 1,
     "D x": 100,
@@ -35,4 +35,17 @@ multiplier_for_unit = {
     "V y": 1,
     "L x": 1,
     "L y": 1
+}
+alternative_version = {
+    "x": r"x",
+    "theta x": r"$\theta_x$",
+    "y": r"y",
+    "theta y": r"$\theta_y$",
+    "pt": r"$\xi$",
+    "D x": r"$D_x$",
+    "D y": r"$D_y$",
+    "L x": r"$L_x$",
+    "L y": r"$L_y$",
+    "V x": r"$V_x$",
+    "V y": r"$V_y$"
 }
