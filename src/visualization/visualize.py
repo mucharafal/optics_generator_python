@@ -2,6 +2,7 @@ import seaborn as sns
 import numpy as np
 import pandas as pd
 from data.units import unit_map, multiplier_for_unit, alternative_version
+import matplotlib
 
 
 def plot_from_one_matrix(x_name, y_name, matrix, mapping,
@@ -80,31 +81,50 @@ def generate_dataset(x_name, y_name, hue_name, datasets):
     return merged_dataframe
 
 
-def plot_with_turn(x_name, y_name, hue_name, datasets, title_sufix="",
-                   plot_axes=None, plot_x_pos=-1, plot_y_pos=-1,
+def plot_with_turn(x_name, y_name, legend_title, datasets, title_sufix="",
+                   plot_axes=None, plot_x_pos=None, plot_y_pos=None,
                    plot_function=sns.lineplot, x_axis_configuration=None, y_axis_configuration=None):
+    """
+    Plot different datasets on one plot.
+    :param x_name: name of x parameter in datasets
+    :type x_name: str
+    :param y_name: name of y parameter in datasets
+    :type y_name: str
+    :param legend_title: String, title in legend
+    :type legend_title: str
+    :param datasets: keys is name of dataset, value tuple with matrix and its mapping
+    :type datasets: dict
+    :param title_sufix: optional; added to title in new line
+    :type title_sufix: str
+    :param plot_axes: Axes object
+    :type plot_axes: matplotlib.axes.Axes
+    :param plot_x_pos: Int, first index of axes object
+    :param plot_y_pos: Int, second index of axes object
+    :param plot_function: function use to plot- seaborn.scatterplot or seaborn.lineplot
+    :param x_axis_configuration: configuration of labels on x axis
+    :param y_axis_configuration: configuration of labels on y axis
+    """
     x_alternative_version = alternative_version[x_name]
     y_alternative_version = alternative_version[y_name]
 
     x_full_name = x_alternative_version + unit_map[x_name]
     y_full_name = y_alternative_version + unit_map[y_name]
 
-    frame = generate_dataset(x_name, y_name, hue_name, datasets)
+    frame = generate_dataset(x_name, y_name, legend_title, datasets)
 
     title = y_alternative_version + " vs " + x_alternative_version
     title += "\n" + title_sufix
 
-    sizes = [3 for i in range(len(datasets))]
-    print(sizes)
-
     if plot_axes is None:
-        axes = plot_function(x=x_name, y=y_name, hue=hue_name, data=frame, style=hue_name, size=hue_name, sizes=sizes, alpha=0.6)
-    elif plot_x_pos == -1:
-        axes = plot_function(x=x_name, y=y_name, hue=hue_name, data=frame, ax=plot_axes, style=hue_name)
-    elif plot_y_pos == -1:
-        axes = plot_function(x=x_name, y=y_name, hue=hue_name, data=frame, ax=plot_axes[plot_x_pos], style=hue_name)
+        axes = plot_function(x=x_name, y=y_name, hue=legend_title, data=frame, style=legend_title)
+    elif plot_x_pos is None:
+        axes = plot_function(x=x_name, y=y_name, hue=legend_title, data=frame, ax=plot_axes, style=legend_title)
+    elif plot_y_pos is None:
+        axes = plot_function(x=x_name, y=y_name, hue=legend_title, data=frame, ax=plot_axes[plot_x_pos],
+                             style=legend_title)
     else:
-        axes = plot_function(x=x_name, y=y_name, hue=hue_name, data=frame, ax=plot_axes[plot_x_pos][plot_y_pos], style=hue_name)
+        axes = plot_function(x=x_name, y=y_name, hue=legend_title, data=frame, ax=plot_axes[plot_x_pos][plot_y_pos],
+                             style=legend_title)
 
     axes.set_xlabel(x_full_name)
     axes.set_ylabel(y_full_name)
@@ -118,3 +138,9 @@ def plot_with_turn(x_name, y_name, hue_name, datasets, title_sufix="",
 
     if y_axis_configuration is not None:
         axes.yaxis.set_ticks(y_axis_configuration.get_ticks())
+
+    # Show absolute maximum difference between reference and others datasets
+    # datasets_names = datasets.keys()
+    # head_name = datasets_names[0]
+    # tail_names = datasets_names[1:]
+    # reference_values = datasets[head_name][0].T[]
