@@ -22,8 +22,10 @@ def __run_madx(path_to_madx_script):
     Run ptc_track in current folder. As stdin for ptc_track given content of file, whose path is specified in argument
     """
     with open(path_to_madx_script) as f:
+        # print("Runned")
         res = subprocess.run("madx", stdin=f, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         res.stdout = open(os.devnull, 'w')
+        # print(res.stdout)
 
 
 def __read_in_madx_output_file(filename):

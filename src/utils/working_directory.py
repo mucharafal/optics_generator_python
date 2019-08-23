@@ -14,4 +14,4 @@ def create_and_get_into(path_to_working_directory):
 def leave_and_delete(previous_directory):
     working_directory = os.getcwd()
     os.chdir(previous_directory)
-    #shutil.rmtree(working_directory)
+    shutil.rmtree(working_directory)

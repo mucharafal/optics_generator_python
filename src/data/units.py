@@ -47,5 +47,6 @@ alternative_version = {
     "L x": r"$L_x$",
     "L y": r"$L_y$",
     "V x": r"$V_x$",
-    "V y": r"$V_y$"
+    "V y": r"$V_y$",
+    "s": r"s"
 }

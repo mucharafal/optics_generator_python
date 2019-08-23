@@ -1,10 +1,11 @@
 interfaceOptions =  `root-config --libs` `root-config --glibs` -I`root-config --incdir` -I./../interface
+compileOptions = -c -std=c++17
 obj:
 	mkdir ./../obj
-	gcc -c -fPIC $(interfaceOptions) FitCint.cc 				-o ./../obj/FitCint.o
-	gcc -c -fPIC $(interfaceOptions) TMultiDimFet.cc 				-o ./../obj/TMultiDimFet.o
-	gcc -c -fPIC $(interfaceOptions) TNtupleDcorr.cc 				-o ./../obj/TNtupleDcorr.o
-	gcc -c -fPIC $(interfaceOptions) LHCOpticsApproximator.cc -o ./../obj/LHCOpticsApproximator.o
+	g++ $(compileOptions) -fPIC $(interfaceOptions) FitCint.cc 				-o ./../obj/FitCint.o
+	g++ $(compileOptions) -fPIC $(interfaceOptions) TMultiDimFet.cc 				-o ./../obj/TMultiDimFet.o
+	g++ $(compileOptions) -fPIC $(interfaceOptions) TNtupleDcorr.cc 				-o ./../obj/TNtupleDcorr.o
+	g++ $(compileOptions) -fPIC $(interfaceOptions) LHCOpticsApproximator.cc -o ./../obj/LHCOpticsApproximator.o
 
 pathToRootLibraries = ../../../../root_libs
 shared: obj
