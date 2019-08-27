@@ -19,7 +19,12 @@ unit_map = {
     "V x": no_unit,
     "V y": no_unit,
     "L x": meters,
-    "L y": meters
+    "L y": meters,
+    "delta x": millimeters,
+    "delta theta x": radians,
+    "delta y": millimeters,
+    "delta theta y": radians,
+    "delta pt": no_unit
 }
 multiplier_for_unit = {
     "x": 1000,
@@ -34,7 +39,12 @@ multiplier_for_unit = {
     "V x": 1,
     "V y": 1,
     "L x": 1,
-    "L y": 1
+    "L y": 1,
+    "delta x": 1e3,
+    "delta theta x": 1e6,
+    "delta y": 1e3,
+    "delta theta y": 1e6,
+    "delta pt": 1
 }
 alternative_version = {
     "x": r"x",
@@ -48,5 +58,10 @@ alternative_version = {
     "L y": r"$L_y$",
     "V x": r"$V_x$",
     "V y": r"$V_y$",
-    "s": r"s"
+    "s": r"s",
+    "delta x": r"$\Delta x$",
+    "delta theta x": r"$\Delta \theta x$",
+    "delta y": r"$\Delta y$",
+    "delta theta y": r"$\Delta \theta y$",
+    "delta pt": r"$\Delta \xi$"
 }

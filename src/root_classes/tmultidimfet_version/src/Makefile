@@ -8,7 +8,12 @@ obj:
 	g++ $(compileOptions) -fPIC $(interfaceOptions) LHCOpticsApproximator.cc -o ./../obj/LHCOpticsApproximator.o
 
 pathToRootLibraries = ../../../../root_libs
-shared: obj
+shared: clean obj
+	mkdir $(pathToRootLibraries)
+	rootcint -f ./FitCint.cc -c ./../interface/LHCOpticsApproximator.h ./../interface/TMultiDimFet.h ./../interface/TNtupleDcorr.h ./../interface/FitCintLinkDef.h
+	mv ./FitCint_rdict.pcm $(pathToRootLibraries)
+	rootcint -f $(pathToRootLibraries)/LHCOpticsApproximator.cxx -c ./../interface/LHCOpticsApproximator.h ./../interface/TMultiDimFet.h ./../interface/TNtupleDcorr.h ./../interface/FitCintLinkDef.h 
+	rm $(pathToRootLibraries)/LHCOpticsApproximator.cxx* 
 	
 	gcc -shared $(interfaceOptions) ./../obj/LHCOpticsApproximator.o ./../obj/TMultiDimFet.o ./../obj/TNtupleDcorr.o ./../obj/FitCint.o -o $(pathToRootLibraries)/LHCOpticsApproximator.so
 	rootcint -f $(pathToRootLibraries)/FitCint.cxx -c $(interfaceOptions) ../interface/FitCintLinkDef.h
@@ -20,10 +25,3 @@ export:
 clean:
 	rm -rf ./../obj
 	rm -rf $(pathToRootLibraries)
-
-k:	clean
-	mkdir $(pathToRootLibraries)
-	rootcint -f ./FitCint.cc -c ./../interface/LHCOpticsApproximator.h ./../interface/TMultiDimFet.h ./../interface/TNtupleDcorr.h ./../interface/FitCintLinkDef.h
-	mv ./FitCint_rdict.pcm $(pathToRootLibraries)
-	rootcint -f $(pathToRootLibraries)/LHCOpticsApproximator.cxx -c ./../interface/LHCOpticsApproximator.h ./../interface/TMultiDimFet.h ./../interface/TNtupleDcorr.h ./../interface/FitCintLinkDef.h 
-	rm $(pathToRootLibraries)/LHCOpticsApproximator.cxx* 

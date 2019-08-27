@@ -281,7 +281,7 @@ def __merge_stations(stations):
 
 
 def __get_delta(min, max):
-    multiplier = 1e-4
+    multiplier = 1e-5
     potential_delta = multiplier * (max - min)
     return potential_delta if potential_delta > 0 else multiplier
 
