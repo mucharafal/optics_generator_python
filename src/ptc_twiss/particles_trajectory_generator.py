@@ -17,7 +17,7 @@ def generate_from_range(madx_configuration, bunch_configuration):
     dataset = pg.generate_from_range(bunch_configuration)
     transported = tr.transport(madx_configuration, dataset)
     segments = dict()
-    segments["start"] = dataset
+    segments["start"] = transported[np.isclose(transported.T[indexes.ptc_twiss["s"]], 0)]
     if madx_configuration.s != -1:
         filtered_matrix = transported[np.isclose(transported.T[indexes.ptc_twiss["s"]], madx_configuration.s)]
         segments["end"] = filtered_matrix
@@ -40,7 +40,7 @@ def generate_random_particles(madx_configuration, bunch_configuration):
     dataset = pg.generate_particles_randomly(bunch_configuration)
     transported = tr.transport(madx_configuration, dataset)
     segments = dict()
-    segments["start"] = dataset
+    segments["start"] = transported[np.isclose(transported.T[indexes.ptc_twiss["s"]], 0)]
     if madx_configuration.s != -1:
         filtered_matrix = transported[np.isclose(transported.T[indexes.ptc_twiss["s"]], madx_configuration.s)]
         segments["end"] = filtered_matrix

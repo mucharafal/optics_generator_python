@@ -106,10 +106,10 @@ def prepare_matrix(particles, parameter_name):
     """
     begin_parameters = particles["start"]
     end_parameters = particles["end"]
-    result_matrix = begin_parameters.T[0].reshape((-1, 1))
-    result_matrix = np.append(result_matrix, begin_parameters.T[1].reshape((-1, 1)), axis=1)
-    result_matrix = np.append(result_matrix, begin_parameters.T[2].reshape((-1, 1)), axis=1)
-    result_matrix = np.append(result_matrix, begin_parameters.T[3].reshape((-1, 1)), axis=1)
-    result_matrix = np.append(result_matrix, begin_parameters.T[4].reshape((-1, 1)), axis=1)
+    result_matrix = begin_parameters.T[tmi.ptc_twiss["x"]].reshape((-1, 1))
+    result_matrix = np.append(result_matrix, begin_parameters.T[tmi.ptc_twiss["theta x"]].reshape((-1, 1)), axis=1)
+    result_matrix = np.append(result_matrix, begin_parameters.T[tmi.ptc_twiss["y"]].reshape((-1, 1)), axis=1)
+    result_matrix = np.append(result_matrix, begin_parameters.T[tmi.ptc_twiss["theta y"]].reshape((-1, 1)), axis=1)
+    result_matrix = np.append(result_matrix, begin_parameters.T[tmi.ptc_twiss["pt"]].reshape((-1, 1)), axis=1)
     result_matrix = np.append(result_matrix, end_parameters.T[tmi.ptc_twiss[parameter_name]].reshape((-1, 1)), axis=1)
     return result_matrix
