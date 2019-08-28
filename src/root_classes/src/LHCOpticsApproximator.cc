@@ -245,6 +245,7 @@ void LHCOpticsApproximator::Train(TTree *inp_tree, std::string data_prefix, poly
   inp_tree->SetBranchStatus(theta_x_out_lab.c_str(),1);
   inp_tree->SetBranchStatus(y_out_lab.c_str(),1);
   inp_tree->SetBranchStatus(theta_y_out_lab.c_str(),1);
+  inp_tree->SetBranchStatus(s_out_lab.c_str(),1);
   inp_tree->SetBranchStatus(ksi_out_lab.c_str(),1);
   inp_tree->SetBranchStatus(valid_out_lab.c_str(),1);
 
@@ -569,6 +570,7 @@ void LHCOpticsApproximator::Test(TTree *inp_tree, TFile *f_out, std::string data
   inp_tree->SetBranchStatus(y_out_lab.c_str(),1);
   inp_tree->SetBranchStatus(theta_y_out_lab.c_str(),1);
   inp_tree->SetBranchStatus(ksi_out_lab.c_str(),1);
+  inp_tree->SetBranchStatus(s_out_lab.c_str(),1);
   inp_tree->SetBranchStatus(valid_out_lab.c_str(),1);
 
   //set input data adresses

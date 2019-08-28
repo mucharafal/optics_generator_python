@@ -1330,6 +1330,7 @@ void MADParamGenerator::PrintTreeInfo(const Parametisation_configuration &conf,
 TTree *MADParamGenerator::GetSamplesTree(
 		const Parametisation_configuration &conf, std::string sample_file_name,
 		TFile *&f) {
+	// read in particles from file
 	f = TFile::Open(sample_file_name.c_str(), "read");
 	if (!f->IsOpen())
 		return NULL;

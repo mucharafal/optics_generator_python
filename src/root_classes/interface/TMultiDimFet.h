@@ -21,6 +21,9 @@
 #endif
 
 #include <vector>
+#ifndef ROOT_TMultiDimFit_wrapper
+#include "TMultiDimFit_wrapper.h"
+#endif
 
 class TBrowser;
 
@@ -134,6 +137,7 @@ public:
    TMultiDimFet();
 //   TMultiDimFet(const TMultiDimFet &in);
    const TMultiDimFet &operator=(const TMultiDimFet &in);
+   TMultiDimFet(TMultiDimFit_wrapper &in);
 
    TMultiDimFet(Int_t dimension,
                 EMDFPolyType type=kMonomials,

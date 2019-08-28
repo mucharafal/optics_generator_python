@@ -77,6 +77,8 @@ private:
 
 TMatrixD dataIn;
 TMatrixD dataOut;
+double dataOutS;
+double dataInS;
 std::vector<lost_particle> dataLost;
 std::map<std::string, TMatrixD> additional_scoring_planes;
 

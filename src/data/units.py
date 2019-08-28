@@ -5,6 +5,7 @@ seconds = " [s]"
 energy = " [TeV]"
 no_unit = " "
 centimeters = " [cm]"
+nanometers = " [nm]"
 unit_map = {
     "x": millimeters,
     "theta x": radians,
@@ -20,7 +21,7 @@ unit_map = {
     "V y": no_unit,
     "L x": meters,
     "L y": meters,
-    "delta x": millimeters,
+    "delta x": nanometers,
     "delta theta x": radians,
     "delta y": millimeters,
     "delta theta y": radians,
@@ -40,7 +41,7 @@ multiplier_for_unit = {
     "V y": 1,
     "L x": 1,
     "L y": 1,
-    "delta x": 1e3,
+    "delta x": 1e9,
     "delta theta x": 1e6,
     "delta y": 1e3,
     "delta theta y": 1e6,

@@ -15,7 +15,6 @@ FitData::~FitData() {
 ;
 
 void FitData::readIn(std::string name) {
-
 	int n = 0, k = 0;
 
 	std::ifstream ifs;
@@ -75,6 +74,9 @@ void FitData::readIn(std::string name) {
 		(this->dataIn)[3][i] = y1;
 		(this->dataIn)[4][i] = py1;
 		(this->dataIn)[5][i] = pt1;
+		this->dataInS = 0; 	//this data is in madx output file, in "start" station. 
+							//However, probably almost all the time it is equal zero. 
+							//If not, please read in begining position of particles from output of ptc_track(madx)
 	}
 	std::cout << "Data read in." << std::endl;
 	ifs1.close();
@@ -95,7 +97,7 @@ int FitData::readOut(std::string name, std::string section) {
 	char ln2[200];
 	char ln3[200];
 
-	Double_t x1, px1, y1, py1, pt1;
+	Double_t x1, px1, y1, py1, pt1, s, energy, t, turn;
 	double trash, nLike;
 
 	getline(ifs, ln1);
@@ -138,7 +140,7 @@ int FitData::readOut(std::string name, std::string section) {
 	}
 	this->dataOut.ResizeTo(6, this->outSize);
 	for (i = 0; i < this->dataOut.GetNcols(); i++) {
-		int read_values = sscanf(ln1.c_str(), form1.c_str(), &nLike, &trash, &x1, &px1, &y1, &py1, &pt1, &trash, &trash, &trash);
+		int read_values = sscanf(ln1.c_str(), form1.c_str(), &nLike, &turn, &x1, &px1, &y1, &py1, &t, &pt1, &s, &energy);
 		if(read_values == 10){
 			n = nLike;
 			(this->dataOut)[0][i] = n;
@@ -148,6 +150,7 @@ int FitData::readOut(std::string name, std::string section) {
 			(this->dataOut)[4][i] = py1;
 			(this->dataOut)[5][i] = pt1;
 			(this->dataIn)[0][n - 1] = n;
+			this->dataOutS = s;
 		}
 		getline(ifs, ln1);
 	}
@@ -172,7 +175,7 @@ void FitData::readAdditionalScoringPlanes(std::string name,
 	char ln2[200];
 	char ln3[200];
 
-	Double_t x1, px1, y1, py1, pt1;
+	Double_t x1, px1, y1, py1, pt1, s, energy, t, turn;
 	double trash, nLike;
 
 	getline(ifs, ln1);
@@ -207,7 +210,7 @@ void FitData::readAdditionalScoringPlanes(std::string name,
 					curr_data_set->ResizeTo(6, m);
 					for (i = 0; i < (*curr_data_set).GetNcols(); i++) {
 						getline(ifs, ln1);
-						sscanf(ln1.c_str(), form1.c_str(), &nLike, &trash, &x1, &px1, &y1, &py1, &pt1, &trash, &trash, &trash);
+						int read_values = sscanf(ln1.c_str(), form1.c_str(), &nLike, &turn, &x1, &px1, &y1, &py1, &t, &pt1, &s, &energy);
 						n = nLike;
 						(*curr_data_set)[0][i] = n;
 						(*curr_data_set)[1][i] = x1;
@@ -411,6 +414,7 @@ int FitData::AppendRootFile(TTree *inp_tree, std::string data_prefix) {
 	inp_tree->SetBranchStatus(y_out_lab.c_str(), 1);
 	inp_tree->SetBranchStatus(theta_y_out_lab.c_str(), 1);
 	inp_tree->SetBranchStatus(ksi_out_lab.c_str(), 1);
+	inp_tree->SetBranchStatus(s_out_lab.c_str(), 1);
 	inp_tree->SetBranchStatus(valid_out_lab.c_str(), 1);
 
 	//set input data adresses
@@ -463,7 +467,7 @@ int FitData::AppendRootFile(TTree *inp_tree, std::string data_prefix) {
 		out_var[2] = (this->dataOut)[3][i];
 		out_var[3] = (this->dataOut)[4][i];
 		out_var[4] = (this->dataOut)[5][i];
-		out_var[5] = 0; //temporarily
+		out_var[5] = this->dataOutS; 
 		out_var[6] = 1;
 		
 		int in_index = ((Int_t)((this->dataOut)[0][i])) - 1;
@@ -475,7 +479,7 @@ int FitData::AppendRootFile(TTree *inp_tree, std::string data_prefix) {
 		in_var[2] = (this->dataIn)[3][in_index];
 		in_var[3] = (this->dataIn)[4][in_index];
 		in_var[4] = (this->dataIn)[5][in_index];
-		in_var[5] = 0; //temporarily
+		in_var[5] = this->dataInS;
 
 		//read interplane branches
 		for (inter_planes_iterator it = inter_planes.begin();

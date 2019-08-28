@@ -12,6 +12,7 @@
 #include "TDecompChol.h"
 #include <map>
 #include <iostream>
+#include "TMultiDimFit_wrapper.h"
 
 #define RADDEG (180. / TMath::Pi())
 #define DEGRAD (TMath::Pi() / 180.)
@@ -259,6 +260,93 @@ const TMultiDimFet &TMultiDimFet::operator=(const TMultiDimFet &in)
 //   std::cout<<"TMultiDimFet &TMultiDimFet::operator=(const TMultiDimFet &in) left"<<std::endl;
    return in;
 }
+
+TMultiDimFet::EMDFPolyType mapType(TMultiDimFit::EMDFPolyType type) {
+   switch (type)
+    {
+    case TMultiDimFit::EMDFPolyType::kMonomials:
+        return TMultiDimFet::EMDFPolyType::kMonomials;
+    case TMultiDimFit::EMDFPolyType::kChebyshev:
+        return TMultiDimFet::EMDFPolyType::kChebyshev;
+    case TMultiDimFit::EMDFPolyType::kLegendre:
+        return TMultiDimFet::EMDFPolyType::kLegendre;
+    }
+}
+
+TMultiDimFet::TMultiDimFet(TMultiDimFit_wrapper &in)
+{
+//   std::cout<<"TMultiDimFet &TMultiDimFet::operator=(const TMultiDimFet &in) entered"<<std::endl;
+   fMeanQuantity = in.getFMeanQuantity();         // Mean of dependent quantity
+
+   fMaxQuantity = 0.0;          //! Max value of dependent quantity
+   fMinQuantity = 0.0;          //! Min value of dependent quantity
+   fSumSqQuantity = 0.0;        //! SumSquare of dependent quantity
+   fSumSqAvgQuantity = 0.0;     //! Sum of squares away from mean
+
+   fNVariables = in.getFNVariables();           // Number of independent variables
+
+   fMaxVariables.ResizeTo(in.getFMaxVariables().GetLwb(), in.getFMaxVariables().GetUpb());
+   fMaxVariables = in.getFMaxVariables();         // max value of independent variables
+
+   fMinVariables.ResizeTo(in.getFMinVariables().GetLwb(), in.getFMinVariables().GetUpb());
+   fMinVariables = in.getFMinVariables();         // min value of independent variables
+
+   fSampleSize = 0;           //! Size of training sample
+   fTestSampleSize = 0;       //! Size of test sample
+   fMinAngle = 1;             //! Min angle for acepting new function
+   fMaxAngle = 0.0;             //! Max angle for acepting new function
+
+   fMaxTerms = in.getFMaxTerms();             // Max terms expected in final expr.
+
+   fMinRelativeError = 0.0;     //! Min relative error accepted
+
+   fMaxPowers.clear();            //! [fNVariables] maximum powers
+   fPowerLimit = 1;           //! Control parameter
+
+   fMaxFunctions = in.getFMaxFunctions();         // max number of functions
+
+   fFunctionCodes.clear();        //! [fMaxFunctions] acceptance code
+   fMaxStudy = 0;             //! max functions to study
+
+   fMaxPowersFinal.clear();       //! [fNVariables] maximum powers from fit;
+
+   fMaxFunctionsTimesNVariables = in.getFMaxFunctionsTimesNVariables();	// fMaxFunctionsTimesNVariables
+
+   fPowers = in.getFPowers();
+
+   fPowerIndex = in.getFPowerIndex();           // [fMaxTerms] Index of accepted powers
+
+   fMaxResidual = 0.0;          //! Max redsidual value
+   fMinResidual = 0.0;          //! Min redsidual value
+   fMaxResidualRow = 0;       //! Row giving max residual
+   fMinResidualRow = 0;       //! Row giving min residual
+   fSumSqResidual = 0.0;        //! Sum of Square residuals
+
+   fNCoefficients = in.getFNCoefficients();        // Dimension of model coefficients
+
+   fCoefficients.ResizeTo(in.getFCoefficients().GetLwb(), in.getFCoefficients().GetUpb());
+   fCoefficients = in.getFCoefficients();         // Vector of the final coefficients
+
+   fRMS = 0.0;                  //! Root mean square of fit
+   fChi2 = 0.0;                 //! Chi square of fit
+   fParameterisationCode = 0; //! Exit code of parameterisation
+   fError = 0.0;                //! Error from parameterization
+   fTestError = 0.0;            //! Error from test
+   fPrecision = 0.0;            //! Relative precision of param
+   fTestPrecision = 0.0;        //! Relative precision of test
+   fCorrelationCoeff = 0.0;     //! Multi Correlation coefficient
+   fTestCorrelationCoeff = 0.0; //! Multi Correlation coefficient
+   fHistograms = 0;           //! List of histograms
+   fHistogramMask = 0;        //! Bit pattern of hisograms used
+   fFitter = 0;            //! Fit object (MINUIT)
+
+   fPolyType = mapType(in.getFPolyType());             // Type of polynomials to use
+   fShowCorrelation = in.getFShowCorrelation();      // print correlation matrix
+   fIsUserFunction = in.getFIsUserFunction();       // Flag for user defined function
+   fIsVerbose = in.getFIsVerbose();            //
+}
+
+
 
 
 //____________________________________________________________________
