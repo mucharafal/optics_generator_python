@@ -14,14 +14,7 @@ def generate_random_particles(approximator, bunch_configuration):
 
     particles = pg.generate_particles_randomly(bunch_configuration)
 
-    segments = dict()
-
-    segments["start"] = particles
-
-    transported_particles = ra.transport(approximator, particles)
-    segments["end"] = transported_particles
-
-    return segments
+    return transport(approximator, particles)
 
 
 def generate_from_range(approximator, bunch_configuration):
@@ -35,11 +28,17 @@ def generate_from_range(approximator, bunch_configuration):
 
     particles = pg.generate_from_range(bunch_configuration)
 
+    return transport(approximator, particles)
+
+
+def transport(approximator, matrix):
+    """matrix in format returned by data.particles_generator functions"""
+
     segments = dict()
 
-    segments["start"] = particles
+    segments["start"] = matrix
 
-    transported_particles = ra.transport(approximator, particles)
+    transported_particles = ra.transport(approximator, matrix)
     segments["end"] = transported_particles
 
     return segments

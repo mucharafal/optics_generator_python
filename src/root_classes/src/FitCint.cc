@@ -154,7 +154,7 @@ namespace ROOT {
       ::LHCApertureApproximator *ptr = 0;
       static ::TVirtualIsAProxy* isa_proxy = new ::TInstrumentedIsAProxy< ::LHCApertureApproximator >(0);
       static ::ROOT::TGenericClassInfo 
-         instance("LHCApertureApproximator", ::LHCApertureApproximator::Class_Version(), "../interface/LHCOpticsApproximator.h", 120,
+         instance("LHCApertureApproximator", ::LHCApertureApproximator::Class_Version(), "../interface/LHCOpticsApproximator.h", 122,
                   typeid(::LHCApertureApproximator), ::ROOT::Internal::DefineBehavior(ptr, ptr),
                   &::LHCApertureApproximator::Dictionary, isa_proxy, 4,
                   sizeof(::LHCApertureApproximator) );

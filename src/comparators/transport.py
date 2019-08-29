@@ -3,20 +3,21 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 import data.units as units
+import data.particles_generator as pg
 
 
 def compare(dataset_configuration, transporters, transported_dimension, depended_value,
             title_sufix="", plot_axes=None, plot_x_pos=None, plot_y_pos=None,
             plot_function=sns.lineplot, x_axis_configuration=None, y_axis_configuration=None):
     # datasets["approximator"] = segments: segment_name -> segment_matrix
-    datasets = transport(dataset_configuration, transporters)
+    input_matrix = pg.generate_particles_randomly(dataset_configuration)
+    datasets = transport(input_matrix, transporters)
     list_of_datasets = to_list(datasets)
     compared = compare_with_others(list_of_datasets[0], list_of_datasets[1:], transported_dimension,
                                    depended_value)
     axes = visualize.plot_with_turn(depended_value, "delta " + transported_dimension, "Compare", compared,
                                     title_sufix, plot_axes, plot_x_pos, plot_y_pos, plot_function, x_axis_configuration,
                                     y_axis_configuration)
-    axes.set_yscale("log")
 
 
 def compare_heatmap(dataset_configuration, reference_transporter, compared_transporter, transported_dimension,
@@ -68,7 +69,7 @@ def compare_with_others(reference_dataset, others_datasets, transported_dimensio
         name = reference_dataset_name + " - " + dataset_name
         (obtained_dataset, obtained_mapping) = obtained_pack
         obtained_values = obtained_dataset["end"].T[obtained_mapping[transported_dimension]]
-        absolute_difference = np.absolute(obtained_values - reference_values)
+        absolute_difference = obtained_values - reference_values
         matrix = np.append(absolute_difference.reshape((-1, 1)),
                            dataset["start"].T[mapping[depended_value]].reshape((-1, 1)),
                            axis=1)

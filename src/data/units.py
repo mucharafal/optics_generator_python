@@ -1,16 +1,18 @@
 millimeters = " [mm]"
 meters = " [m]"
-radians = " [μrad]"
+microradians = " [μrad]"
 seconds = " [s]"
 energy = " [TeV]"
 no_unit = " "
 centimeters = " [cm]"
 nanometers = " [nm]"
+micrometers = " [μm]"
+nanoradians = " [nrad]"
 unit_map = {
     "x": millimeters,
-    "theta x": radians,
+    "theta x": microradians,
     "y": millimeters,
-    "theta y": radians,
+    "theta y": microradians,
     "t": seconds,
     "pt": no_unit,
     "s": meters,
@@ -21,10 +23,10 @@ unit_map = {
     "V y": no_unit,
     "L x": meters,
     "L y": meters,
-    "delta x": nanometers,
-    "delta theta x": radians,
-    "delta y": millimeters,
-    "delta theta y": radians,
+    "delta x": micrometers,
+    "delta theta x": nanoradians,
+    "delta y": micrometers,
+    "delta theta y": nanoradians,
     "delta pt": no_unit
 }
 multiplier_for_unit = {
@@ -41,10 +43,10 @@ multiplier_for_unit = {
     "V y": 1,
     "L x": 1,
     "L y": 1,
-    "delta x": 1e9,
-    "delta theta x": 1e6,
-    "delta y": 1e3,
-    "delta theta y": 1e6,
+    "delta x": 1e6,
+    "delta theta x": 1e9,
+    "delta y": 1e6,
+    "delta theta y": 1e9,
     "delta pt": 1
 }
 alternative_version = {

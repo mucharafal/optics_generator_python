@@ -38,7 +38,6 @@ LHCOpticsApproximator::LHCOpticsApproximator(std::string name, std::string title
   y_parametrisation(5, polynom_type, "k"),
   theta_y_parametrisation(5, polynom_type, "k")
 {
-//  std::cout<<"LHCOpticsApproximator(std::string name, std::string title, TMultiDimFet::EMDFPolyType polynom_type) entered"<<std::endl;
   this->SetName(name.c_str());
   this->SetTitle(title.c_str());
   Init();
@@ -52,18 +51,39 @@ LHCOpticsApproximator::LHCOpticsApproximator(std::string name, std::string title
 
   nominal_beam_energy_ = nominal_beam_energy;
   nominal_beam_momentum_ = TMath::Sqrt(nominal_beam_energy_*nominal_beam_energy_ - 0.938272029*0.938272029);
-//  std::cout<<"LHCOpticsApproximator(std::string name, std::string title, TMultiDimFet::EMDFPolyType polynom_type) left"<<std::endl;
+}
+
+
+LHCOpticsApproximator::LHCOpticsApproximator(std::string name, std::string title, TMultiDimFet::EMDFPolyType polynom_type, std::string beam_direction, double nominal_beam_energy,
+  TMultiDimFet *given_x_parametrisation, TMultiDimFet *given_theta_x_parametrisation, TMultiDimFet *given_y_parametrisation, TMultiDimFet *given_theta_y_parametrisation)
+{
+  this->x_parametrisation = *given_x_parametrisation;
+  this->theta_x_parametrisation = *given_theta_x_parametrisation;
+  this->y_parametrisation = *given_y_parametrisation;
+  this->theta_y_parametrisation = *given_theta_y_parametrisation;
+  this->SetName(name.c_str());
+  this->SetTitle(title.c_str());
+  Init();
+
+  if(beam_direction == "lhcb1")
+    beam = lhcb1;
+  else if(beam_direction == "lhcb2")
+    beam = lhcb2;
+  else
+    beam = lhcb1;
+
+  nominal_beam_energy_ = nominal_beam_energy;
+  nominal_beam_momentum_ = TMath::Sqrt(nominal_beam_energy_*nominal_beam_energy_ - 0.938272029*0.938272029);
+  trained_ = true;
 }
 
 
 LHCOpticsApproximator::LHCOpticsApproximator()
 {
-//  std::cout<<"LHCOpticsApproximator::LHCOpticsApproximator() entered"<<std::endl;
   Init();
   beam = lhcb1;
   nominal_beam_energy_ = 7000;
   nominal_beam_momentum_ = TMath::Sqrt(nominal_beam_energy_*nominal_beam_energy_ - 0.938272029*0.938272029);
-//  std::cout<<"LHCOpticsApproximator::LHCOpticsApproximator() left"<<std::endl;
 }
 
 
@@ -73,7 +93,6 @@ bool LHCOpticsApproximator::Transport(double *in, double *out, bool check_apertu
     return false;
 
   bool res = CheckInputRange(in);
-//  std::cout<<"CheckInputRange: "<<res<<std::endl;
 
   out[0] = x_parametrisation.Eval(in);
   out[1] = theta_x_parametrisation.Eval(in);
@@ -81,18 +100,13 @@ bool LHCOpticsApproximator::Transport(double *in, double *out, bool check_apertu
   out[3] = theta_y_parametrisation.Eval(in);
   out[4] = in[4];
 
-//  std::cout<<"apertures_.size() : "<<apertures_.size()<<std::endl;
   if(check_apertures)
   {
-//    std::cout<<"Checking apertures =============="<<std::endl;
     for(int i=0; i<apertures_.size(); i++)
     {
-//      std::cout<<"aperture "<<i<<" checked : ";
       res = res && apertures_[i].CheckAperture(in);
-//      std::cout<<"++++  "<<i<<" "<<res<<std::endl;
     }
   }
-//  std::cout<<"accepted: "<<res<<std::endl;
   return res;
 }
 

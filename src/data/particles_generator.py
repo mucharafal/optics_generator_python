@@ -56,7 +56,7 @@ def generate_particles_randomly(beam_configuration):
     """
     Generate matrix with random values of parameters from given ranges
     :param beam_configuration
-    :return: numpy matrix with number_of_particles x 6 shape
+    :return: numpy matrix with number_of_particles x 5 shape
     """
     min_values = [beam_configuration.x_min, beam_configuration.theta_x_min, beam_configuration.y_min,
                   beam_configuration.theta_y_min, beam_configuration.pt_min]

@@ -39,7 +39,7 @@ def __generate_random_particles(madx_configuration, bunch_configuration):
     """
     particles = pg.generate_particles_randomly(bunch_configuration)
 
-    segments = __transport(particles, madx_configuration)
+    segments = transport(madx_configuration, particles)
 
     return segments
 
@@ -55,12 +55,12 @@ def generate_from_range(madx_configuration, bunch_configuration):
 
     particles = pg.generate_from_range(bunch_configuration)
 
-    segments = __transport(particles, madx_configuration)
+    segments = transport(madx_configuration, particles)
 
     return segments
 
 
-def __transport(particles, madx_configuration):
+def transport(madx_configuration, particles):
     """
     Transport particles described in matrix. Matrix format: x, theta x, y, theta y, pt
     :param particles:

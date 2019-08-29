@@ -89,14 +89,10 @@ TMultiDimFet::TMultiDimFet()
 //   std::cout<<"TMultiDimFet::TMultiDimFet() left"<<std::endl;
 }
 
-/*
+
 TMultiDimFet::TMultiDimFet(const TMultiDimFet &in)
 {
-   std::cout<<"TMultiDimFet::TMultiDimFet(const TMultiDimFet &in) entered"<<std::endl;
-
-   if(this==&in)
-     return;
-
+   std::cout << ":/\n";
    fMeanQuantity = in.fMeanQuantity;         // Mean of dependent quantity
 
    fMaxQuantity = 0.0;          //! Max value of dependent quantity
@@ -120,32 +116,22 @@ TMultiDimFet::TMultiDimFet(const TMultiDimFet &in)
    fMaxTerms = in.fMaxTerms;             // Max terms expected in final expr.
 
    fMinRelativeError = 0.0;     //! Min relative error accepted
-   fMaxPowers = 0;            //! [fNVariables] maximum powers
+
+   fMaxPowers.clear();            //! [fNVariables] maximum powers
    fPowerLimit = 1;           //! Control parameter
 
    fMaxFunctions = in.fMaxFunctions;         // max number of functions
 
-   fFunctionCodes = 0;        //! [fMaxFunctions] acceptance code
+   fFunctionCodes.clear();        //! [fMaxFunctions] acceptance code
    fMaxStudy = 0;             //! max functions to study
-   fMaxPowersFinal = 0;       //! [fNVariables] maximum powers from fit;
+
+   fMaxPowersFinal.clear();       //! [fNVariables] maximum powers from fit;
 
    fMaxFunctionsTimesNVariables = in.fMaxFunctionsTimesNVariables;	// fMaxFunctionsTimesNVariables
-   std::cout<<"here 01"<<std::endl;
-   std::cout<<in.fMaxFunctionsTimesNVariables<<std::endl;
-   fPowers = new Int_t[in.fMaxFunctionsTimesNVariables];
-   std::cout<<"here 02"<<std::endl;
-   std::cout<<in.fMaxFunctionsTimesNVariables<<std::endl;
-   for(int i=0; i<in.fMaxFunctionsTimesNVariables; i++)
-     fPowers[i] = in.fPowers[i];
-   std::cout<<"here 03"<<std::endl;
 
-   std::cout<<"here 04, fMaxTerms="<<fMaxTerms<<std::endl;
-   std::cout<<in.fMaxTerms<<std::endl;
-   fPowerIndex = new Int_t[in.fMaxTerms];
-   for(int i=0; i<in.fMaxTerms; i++)
-     fPowerIndex[i] = in.fPowerIndex[i];           // [fMaxTerms] Index of accepted powers
+   fPowers = in.fPowers;
 
-   std::cout<<"here 05"<<std::endl;
+   fPowerIndex = in.fPowerIndex;           // [fMaxTerms] Index of accepted powers
 
    fMaxResidual = 0.0;          //! Max redsidual value
    fMinResidual = 0.0;          //! Min redsidual value
@@ -155,7 +141,6 @@ TMultiDimFet::TMultiDimFet(const TMultiDimFet &in)
 
    fNCoefficients = in.fNCoefficients;        // Dimension of model coefficients
 
-   std::cout<<"here 06"<<std::endl;
    fCoefficients.ResizeTo(in.fCoefficients.GetLwb(), in.fCoefficients.GetUpb());
    fCoefficients = in.fCoefficients;         // Vector of the final coefficients
 
@@ -176,9 +161,8 @@ TMultiDimFet::TMultiDimFet(const TMultiDimFet &in)
    fShowCorrelation = in.fShowCorrelation;      // print correlation matrix
    fIsUserFunction = in.fIsUserFunction;       // Flag for user defined function
    fIsVerbose = in.fIsVerbose;            //
-   std::cout<<"TMultiDimFet::TMultiDimFet(const TMultiDimFet &in) left"<<std::endl;
+   std::cout << "dupa\n";
 }
-*/
 
 const TMultiDimFet &TMultiDimFet::operator=(const TMultiDimFet &in)
 {
@@ -188,6 +172,7 @@ const TMultiDimFet &TMultiDimFet::operator=(const TMultiDimFet &in)
 //     std::cout<<" TMultiDimFet &TMultiDimFet::operator=, this==&in"<<std::endl;
      return in;
    }
+   std::cout << "ole\n";
 
    fMeanQuantity = in.fMeanQuantity;         // Mean of dependent quantity
 
@@ -275,6 +260,7 @@ TMultiDimFet::EMDFPolyType mapType(TMultiDimFit::EMDFPolyType type) {
 
 TMultiDimFet::TMultiDimFet(TMultiDimFit_wrapper &in)
 {
+   std::cout << "hej\n";
 //   std::cout<<"TMultiDimFet &TMultiDimFet::operator=(const TMultiDimFet &in) entered"<<std::endl;
    fMeanQuantity = in.getFMeanQuantity();         // Mean of dependent quantity
 
