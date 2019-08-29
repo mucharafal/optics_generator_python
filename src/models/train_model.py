@@ -1,4 +1,5 @@
 import ptc_track.particles_trajectory_generator as ptg
+import ptc_track.madx_configuration as track_conf
 from ptc_track.matrix_indexes import ptc_track as index_map
 import numpy as np
 import ROOT
@@ -6,10 +7,15 @@ from concurrent.futures import ProcessPoolExecutor
 import data.bunch_configuration as buc
 import utils.root_initializer as ri
 import models.approximator as stub_app
+import xml.etree.ElementTree as ET
+# Import lib to enable import TMultiDimFet, TMultiDimFit_wrapper, LHCOpticsApproximator from ROOT
+
 
 
 def train_prototype(bunch_configuration, madx_configuration, path_to_project):
     ri.initialise(path_to_project)
+    from ROOT import TMultiDimFit_wrapper
+    from ROOT import TMultiDimFet
 
     particles = ptg.generate_random_particles(madx_configuration, bunch_configuration,
                                               bunch_configuration.get_number_of_particles())
@@ -27,6 +33,68 @@ def train_prototype(bunch_configuration, madx_configuration, path_to_project):
     approximators = train_approximator(madx_input.T, madx_output.T, [7, 7, 7, 7, 7])
 
     return stub_app.Approximator(approximators)
+
+
+def train_from_xml_configuration(path_to_optics, path_to_xml_file, number_of_item, path_to_project):
+    ri.initialise(path_to_project)
+
+    from ROOT import LHCOpticsApproximator
+
+    tree = ET.parse(path_to_xml_file)  # load configuration from xml file
+    root = tree.getroot()
+
+    station_configuration = root[number_of_item].attrib
+
+    madx_configuration = track_conf.TrackConfiguration(path_to_xml_file, number_of_item, path_to_optics)
+
+    bunch_configuration = get_bunch_configuration_from(station_configuration)
+
+    particles = ptg.generate_random_particles(madx_configuration, bunch_configuration,
+                                              bunch_configuration.get_number_of_particles())
+
+    output_matrix = particles["end"]
+    input_matrix = particles["start"]
+
+    indexes = output_matrix.T[0].astype(int) - 1
+    input_without_lost = input_matrix[indexes]
+
+    madx_input = get_position_parameters_from_madx_format(input_without_lost)
+    madx_output = get_position_parameters_from_madx_format(output_matrix)
+
+    polynomial_type = get_polynomial_type(station_configuration)
+
+    max_pt_degree = [
+        int(station_configuration["max_degree_x"]),
+        int(station_configuration["max_degree_tx"]),
+        int(station_configuration["max_degree_y"]),
+        int(station_configuration["max_degree_ty"])
+    ]
+
+    approximators = train_approximator(madx_input.T, madx_output.T, max_pt_degree)
+
+    approximator = LHCOpticsApproximator(station_configuration["optics_parametrisation_name"],
+                                         station_configuration["optics_parametrisation_name"],
+                                         polynomial_type, station_configuration["beam"],
+                                         float(station_configuration["nominal_beam_energy"]),
+                                         approximators["x"],
+                                         approximators["theta x"],
+                                         approximators["y"],
+                                         approximators["theta y"])
+
+    # approximator = stub_app.Approximator(approximators)
+
+    return approximator
+
+
+def get_polynomial_type(configuration):
+    if configuration["polynomials_type"] == "kMonomials":
+        return 0
+    elif configuration["polynomials_type"] == "kChebyshev":
+        return 1
+    elif configuration["polynomials_type"] == "kLegendre":
+        return 2
+    # default
+    return 0
 
 
 def get_position_parameters_from_madx_format(matrix):
@@ -123,6 +191,16 @@ def get_bunch_configuration():
     )
 
     return configuration
+
+
+def get_bunch_configuration_from(configuration):
+    return buc.BunchConfiguration(
+        float(configuration["x_min"]), float(configuration["x_max"]), 1,
+        float(configuration["theta_x_min"]), float(configuration["theta_x_max"]), 1,
+        float(configuration["y_min"]), float(configuration["y_max"]), 1,
+        float(configuration["theta_y_min"]), float(configuration["theta_y_max"]), 1,
+        float(configuration["ksi_min"]), float(configuration["ksi_max"]), int(configuration["tot_entries_number"])
+    )
 
 
 def test(approximator, input_matrix, output_row):

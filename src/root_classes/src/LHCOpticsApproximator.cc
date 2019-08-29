@@ -56,6 +56,28 @@ LHCOpticsApproximator::LHCOpticsApproximator(std::string name, std::string title
 }
 
 
+LHCOpticsApproximator::LHCOpticsApproximator(std::string name, std::string title, TMultiDimFet::EMDFPolyType polynom_type, std::string beam_direction, double nominal_beam_energy,
+  TMultiDimFet *given_x_parametrisation, TMultiDimFet *given_theta_x_parametrisation, TMultiDimFet *given_y_parametrisation, TMultiDimFet *given_theta_y_parametrisation)
+  : x_parametrisation(*given_x_parametrisation), theta_x_parametrisation(*given_theta_x_parametrisation), y_parametrisation(*given_y_parametrisation), theta_y_parametrisation(*given_theta_y_parametrisation)
+{
+//  std::cout<<"LHCOpticsApproximator(std::string name, std::string title, TMultiDimFet::EMDFPolyType polynom_type) entered"<<std::endl;
+  this->SetName(name.c_str());
+  this->SetTitle(title.c_str());
+  Init();
+
+  if(beam_direction == "lhcb1")
+    beam = lhcb1;
+  else if(beam_direction == "lhcb2")
+    beam = lhcb2;
+  else
+    beam = lhcb1;
+
+  nominal_beam_energy_ = nominal_beam_energy;
+  nominal_beam_momentum_ = TMath::Sqrt(nominal_beam_energy_*nominal_beam_energy_ - 0.938272029*0.938272029);
+//  std::cout<<"LHCOpticsApproximator(std::string name, std::string title, TMultiDimFet::EMDFPolyType polynom_type) left"<<std::endl;
+}
+
+
 LHCOpticsApproximator::LHCOpticsApproximator()
 {
 //  std::cout<<"LHCOpticsApproximator::LHCOpticsApproximator() entered"<<std::endl;

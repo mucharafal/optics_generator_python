@@ -43,6 +43,8 @@ class LHCOpticsApproximator : public TNamed
     //begin and end position along the beam of the particle to transport, training_tree, prefix of data branch in the tree
     LHCOpticsApproximator(std::string name, std::string title, TMultiDimFet::EMDFPolyType polynom_type,
         std::string beam_direction, double nominal_beam_energy);
+    LHCOpticsApproximator(std::string name, std::string title, TMultiDimFet::EMDFPolyType polynom_type, std::string beam_direction, double nominal_beam_energy,
+        TMultiDimFet *given_x_parametrisation, TMultiDimFet *given_theta_x_parametrisation, TMultiDimFet *given_y_parametrisation, TMultiDimFet *given_theta_y_parametrisation);
     LHCOpticsApproximator(const LHCOpticsApproximator &org);
     LHCOpticsApproximator & operator=(const LHCOpticsApproximator &org);
 

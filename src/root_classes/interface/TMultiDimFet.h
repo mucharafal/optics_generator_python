@@ -135,7 +135,7 @@ protected:
                                  Double_t dResidur);
 public:
    TMultiDimFet();
-//   TMultiDimFet(const TMultiDimFet &in);
+   TMultiDimFet(const TMultiDimFet &in);
    const TMultiDimFet &operator=(const TMultiDimFet &in);
    TMultiDimFet(TMultiDimFit_wrapper &in);
 
