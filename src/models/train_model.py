@@ -23,6 +23,8 @@ def train_prototype(bunch_configuration, madx_configuration, path_to_project):
 
 def train_from_xml_configuration(path_to_optics, path_to_xml_file, number_of_item, path_to_sources):
     root_initializer.initialise(path_to_sources)
+    from ROOT import LHCOpticsApproximator
+    from ROOT import TMultiDimFet
 
     # Import configuration of approximator from XML file
     tree = ET.parse(path_to_xml_file)  # load configuration from xml file
@@ -44,9 +46,6 @@ def train_from_xml_configuration(path_to_optics, path_to_xml_file, number_of_ite
 
     # Train approximators (TMultiDimFit_wrapper)
     approximators = train_approximators(madx_input, madx_output.T, max_pt_degree)
-
-    from ROOT import LHCOpticsApproximator
-    from ROOT import TMultiDimFet
 
     # Get rid of additional data from TMultiDimFit and map it to TMultiDimFet
     new_approximators = {
