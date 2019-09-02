@@ -1,6 +1,6 @@
 interfaceOptions =  `root-config --libs` `root-config --glibs` -I`root-config --incdir` -I./../interface
 pathToRootLibraries = ../../../root_libs
-compileOption = -std=c++17 -fPIC
+compileOption = -std=c++14 -fPIC
 
 clean:
 	rm -rf ./../obj

@@ -825,8 +825,8 @@ namespace {
 0
     };
     static const char* includePaths[] = {
-"/cvmfs/sft.cern.ch/lcg/releases/ROOT/6.18.00-885ca/x86_64-centos7-gcc8-opt/include",
-"/eos/home-r/rmucha/SWAN_projects/optics_generator_python/src/root_classes/src/",
+"/usr/include/root",
+"/home/rafalmucha/Pobrane/optic/optics_generator_python/src/root_classes/src/",
 0
     };
     static const char* fwdDeclCode = R"DICTFWDDCLS(

@@ -44,7 +44,6 @@ TMultiDimFet* TMultiDimFet::fgInstance = 0;
 //____________________________________________________________________
 TMultiDimFet::TMultiDimFet()
 {
-//   std::cout<<"TMultiDimFet::TMultiDimFet() entered"<<std::endl;
    // Empty CTOR. Do not use
    fMeanQuantity            = 0;
    fMaxQuantity             = 0;
@@ -86,13 +85,11 @@ TMultiDimFet::TMultiDimFet()
 
    fFitter                  = 0;
    fgInstance               = 0;
-//   std::cout<<"TMultiDimFet::TMultiDimFet() left"<<std::endl;
 }
 
 
 TMultiDimFet::TMultiDimFet(const TMultiDimFet &in)
 {
-   std::cout << ":/\n";
    fMeanQuantity = in.fMeanQuantity;         // Mean of dependent quantity
 
    fMaxQuantity = 0.0;          //! Max value of dependent quantity
@@ -161,18 +158,14 @@ TMultiDimFet::TMultiDimFet(const TMultiDimFet &in)
    fShowCorrelation = in.fShowCorrelation;      // print correlation matrix
    fIsUserFunction = in.fIsUserFunction;       // Flag for user defined function
    fIsVerbose = in.fIsVerbose;            //
-   std::cout << "dupa\n";
 }
 
 const TMultiDimFet &TMultiDimFet::operator=(const TMultiDimFet &in)
 {
-//   std::cout<<"TMultiDimFet &TMultiDimFet::operator=(const TMultiDimFet &in) entered"<<std::endl;
    if(this==&in)
    {
-//     std::cout<<" TMultiDimFet &TMultiDimFet::operator=, this==&in"<<std::endl;
      return in;
    }
-   std::cout << "ole\n";
 
    fMeanQuantity = in.fMeanQuantity;         // Mean of dependent quantity
 
@@ -242,7 +235,6 @@ const TMultiDimFet &TMultiDimFet::operator=(const TMultiDimFet &in)
    fShowCorrelation = in.fShowCorrelation;      // print correlation matrix
    fIsUserFunction = in.fIsUserFunction;       // Flag for user defined function
    fIsVerbose = in.fIsVerbose;            //
-//   std::cout<<"TMultiDimFet &TMultiDimFet::operator=(const TMultiDimFet &in) left"<<std::endl;
    return in;
 }
 
@@ -260,8 +252,6 @@ TMultiDimFet::EMDFPolyType mapType(TMultiDimFit::EMDFPolyType type) {
 
 TMultiDimFet::TMultiDimFet(TMultiDimFit_wrapper &in)
 {
-   std::cout << "hej\n";
-//   std::cout<<"TMultiDimFet &TMultiDimFet::operator=(const TMultiDimFet &in) entered"<<std::endl;
    fMeanQuantity = in.getFMeanQuantity();         // Mean of dependent quantity
 
    fMaxQuantity = 0.0;          //! Max value of dependent quantity
@@ -747,24 +737,13 @@ void TMultiDimFet::ZeroDoubiousCoefficients(double error)
   for (int i = 0; i < fNCoefficients; i++)
   {
     m.insert(std::pair<double, int>(TMath::Abs(fCoefficients(i)), i));
-    //std::cout<<fCoefficients(i)<<" "<<i<<std::endl;
   }
-
-  //std::cout<<std::endl;
-
-  //for(cmt::iterator it = m.begin(); it!=m.end(); ++it)
- // {
-  //  std::cout<<"inside map "<<it->first<<" "<<it->second<<std::endl;
-  //}
-
- // std::cout<<std::endl;
 
   double del_error_abs=0;
   int deleted_terms_count=0;
 
   for(cmt::iterator it = m.begin(); it!=m.end() && del_error_abs<error; ++it)
   {
-//    std::cout<<"entered "<<TMath::Abs(it->first)+del_error_abs<<" "<<error<<std::endl;
     if(TMath::Abs(it->first)+del_error_abs<error)
     {
       fCoefficients(it->second)=0.0;

@@ -1,66 +1,35 @@
-import ptc_track.particles_trajectory_generator as ptg
+import ptc_track.particles_trajectory_generator as ptc_twiss_transporter
 import ptc_track.madx_configuration as track_conf
 from ptc_track.matrix_indexes import ptc_track as index_map
 import numpy as np
 import ROOT
 from concurrent.futures import ProcessPoolExecutor
 import data.bunch_configuration as buc
-import utils.root_initializer as ri
+import utils.root_initializer as root_initializer
 import models.approximator as stub_app
 import xml.etree.ElementTree as ET
+import data.particles_generator as pg
 
 
 def train_prototype(bunch_configuration, madx_configuration, path_to_project):
-    ri.initialise(path_to_project)
-    from ROOT import TMultiDimFit_wrapper
-    from ROOT import TMultiDimFet
+    root_initializer.initialise(path_to_project)
 
-    particles = ptg.generate_random_particles(madx_configuration, bunch_configuration,
-                                              bunch_configuration.get_number_of_particles())
+    madx_input, madx_output = generate_training_dataset(madx_configuration, bunch_configuration)
 
-    output_matrix = particles["end"]
-    input_matrix = particles["start"]
+    approximators = train_approximators(madx_input, madx_output.T, [7, 7, 7, 7, 7])
 
-    indexes = output_matrix.T[0].astype(int) - 1
-    input_without_lost = input_matrix[indexes]
-
-    madx_input = get_position_parameters_from_madx_format(input_without_lost)
-
-    madx_output = get_position_parameters_from_madx_format(output_matrix)
-
-    approximators = train_approximator(madx_input.T, madx_output.T, [7, 7, 7, 7, 7])
-
-    return stub_app.Approximator(approximators), madx_input, madx_output
+    return stub_app.Approximator(approximators)
 
 
-def train_from_xml_configuration(path_to_optics, path_to_xml_file, number_of_item, path_to_project):
-    ri.initialise(path_to_project)
+def train_from_xml_configuration(path_to_optics, path_to_xml_file, number_of_item, path_to_sources):
+    root_initializer.initialise(path_to_sources)
 
-    from ROOT import LHCOpticsApproximator
-
+    # Import configuration of approximator from XML file
     tree = ET.parse(path_to_xml_file)  # load configuration from xml file
     root = tree.getroot()
-
     station_configuration = root[number_of_item].attrib
 
-    madx_configuration = track_conf.TrackConfiguration(path_to_xml_file, number_of_item, path_to_optics)
-
-    bunch_configuration = get_bunch_configuration_from(station_configuration)
-
-    particles = ptg.generate_random_particles(madx_configuration, bunch_configuration,
-                                              bunch_configuration.get_number_of_particles())
-
-    output_matrix = particles["end"]
-    input_matrix = particles["start"]
-
-    indexes = output_matrix.T[0].astype(int) - 1
-    input_without_lost = input_matrix[indexes]
-
-    madx_input = get_position_parameters_from_madx_format(input_without_lost)
-    madx_output = get_position_parameters_from_madx_format(output_matrix)
-
     polynomial_type = get_polynomial_type(station_configuration)
-
     max_pt_degree = [
         int(station_configuration["max_degree_x"]),
         int(station_configuration["max_degree_tx"]),
@@ -68,10 +37,18 @@ def train_from_xml_configuration(path_to_optics, path_to_xml_file, number_of_ite
         int(station_configuration["max_degree_ty"])
     ]
 
-    approximators = train_approximator(madx_input.T, madx_output.T, max_pt_degree)
+    # Generate data for approximator
+    madx_configuration = track_conf.TrackConfiguration(path_to_xml_file, number_of_item, path_to_optics)
+    bunch_configuration = get_bunch_configuration_from(station_configuration)
+    madx_input, madx_output = generate_training_dataset(madx_configuration, bunch_configuration)
 
+    # Train approximators (TMultiDimFit_wrapper)
+    approximators = train_approximators(madx_input, madx_output.T, max_pt_degree)
+
+    from ROOT import LHCOpticsApproximator
     from ROOT import TMultiDimFet
 
+    # Get rid of additional data from TMultiDimFit and map it to TMultiDimFet
     new_approximators = {
         "x": TMultiDimFet(approximators["x"]),
         "theta x": TMultiDimFet(approximators["theta x"]),
@@ -79,18 +56,35 @@ def train_from_xml_configuration(path_to_optics, path_to_xml_file, number_of_ite
         "theta y": TMultiDimFet(approximators["theta y"])
     }
 
+    # Create LHCOpticsApproximator
     approximator = LHCOpticsApproximator(station_configuration["optics_parametrisation_name"],
                                          station_configuration["optics_parametrisation_name"],
                                          polynomial_type, station_configuration["beam"],
                                          float(station_configuration["nominal_beam_energy"]),
-                                         approximators["x"],
-                                         approximators["theta x"],
-                                         approximators["y"],
-                                         approximators["theta y"])
+                                         new_approximators["x"],
+                                         new_approximators["theta x"],
+                                         new_approximators["y"],
+                                         new_approximators["theta y"])
 
-    approximator2 = stub_app.Approximator(approximators)
+    return approximator
 
-    return approximator, approximator2
+
+def generate_training_dataset(madx_configuration, bunch_configuration):
+    # Generate beginning positions
+    input_matrix = pg.generate_particles_randomly(bunch_configuration)
+
+    output_segments = ptc_twiss_transporter.transport(madx_configuration, input_matrix)
+
+    output_matrix = output_segments["end"]
+
+    # If there are lost particles in output, get rid off this particles from input matrix
+    indexes = output_matrix.T[0].astype(int) - 1
+    input_without_lost = input_matrix[indexes]
+
+    madx_input = input_without_lost
+    madx_output = get_position_parameters_from_madx_format(output_matrix)
+
+    return madx_input, madx_output
 
 
 def get_polynomial_type(configuration):
@@ -114,7 +108,7 @@ def get_position_parameters_from_madx_format(matrix):
     return np.array([x, theta_x, y, theta_y, pt])
 
 
-def train_approximator(input_matrix, output_matrix, max_pt_powers):
+def train_approximators(input_matrix, output_matrix, max_pt_powers):
     x_output = output_matrix.T[0]
     theta_x_output = output_matrix.T[1]
     y_output = output_matrix.T[2]
@@ -143,14 +137,13 @@ def train_approximator(input_matrix, output_matrix, max_pt_powers):
 
 
 def train_tmultidimfit(input_matrix, output_vector, max_pt_power):
-    from ROOT import TMultiDimFit
     from ROOT import TMultiDimFet
     from ROOT import TMultiDimFit_wrapper
 
     parameters_number = 5
     rows_number = input_matrix.shape[1]
 
-    approximator = TMultiDimFet(parameters_number, 0, ROOT.option)
+    approximator = TMultiDimFit_wrapper(parameters_number, 0, ROOT.option)
 
     ROOT.mPowers[0] = 2
     ROOT.mPowers[1] = 4
@@ -171,8 +164,7 @@ def train_tmultidimfit(input_matrix, output_vector, max_pt_power):
 
         approximator.AddRow(ROOT.x_in, output_vector[counter], 0)
 
-    approximator.FindParameterization(5e-7)
-    # alternative_approximator = TMultiDimFet(approximator)
+    approximator.FindParameterization()
 
     return approximator
 

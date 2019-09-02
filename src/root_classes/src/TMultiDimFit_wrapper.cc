@@ -57,3 +57,8 @@ TMultiDimFit_wrapper::TMultiDimFit_wrapper() : TMultiDimFit() {
 TMultiDimFit_wrapper::TMultiDimFit_wrapper(Int_t dimension) : TMultiDimFit(dimension) {
 
 }
+TMultiDimFit_wrapper::TMultiDimFit_wrapper(Int_t dimension, 
+                                           EMDFPolyType type,
+                                           Option_t *option) : TMultiDimFit(dimension, type, option) {
+
+}

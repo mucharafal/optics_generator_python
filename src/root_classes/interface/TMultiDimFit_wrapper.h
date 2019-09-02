@@ -22,6 +22,9 @@ public:
 
     TMultiDimFit_wrapper();
     TMultiDimFit_wrapper(Int_t dimension);
+    TMultiDimFit_wrapper(Int_t dimension, 
+                         EMDFPolyType type,
+                         Option_t *option);
 
     ClassDef(TMultiDimFit_wrapper,2) // Multi dimensional fit class
 };
