@@ -23,21 +23,11 @@ def train_prototype(bunch_configuration, madx_configuration, path_to_project):
 
 def train_from_xml_configuration(path_to_optics, path_to_xml_file, number_of_item, path_to_sources):
     root_initializer.initialise(path_to_sources)
-    from ROOT import LHCOpticsApproximator
     from ROOT import TMultiDimFet
 
-    # Import configuration of approximator from XML file
-    tree = ET.parse(path_to_xml_file)  # load configuration from xml file
-    root = tree.getroot()
-    station_configuration = root[number_of_item].attrib
+    station_configuration = get_configuration_of_station(path_to_xml_file, number_of_item)
 
-    polynomial_type = get_polynomial_type(station_configuration)
-    max_pt_degree = [
-        int(station_configuration["max_degree_x"]),
-        int(station_configuration["max_degree_tx"]),
-        int(station_configuration["max_degree_y"]),
-        int(station_configuration["max_degree_ty"])
-    ]
+    max_pt_degree = get_max_pt_degree(station_configuration)
 
     # Generate data for approximator
     madx_configuration = track_conf.TrackConfiguration(path_to_xml_file, number_of_item, path_to_optics)
@@ -46,27 +36,42 @@ def train_from_xml_configuration(path_to_optics, path_to_xml_file, number_of_ite
 
     # Train approximators
     errors = [5e-7, 5e-10, 5e-7, 5e-10]
-    approximators = train_approximators(madx_input, madx_output.T, max_pt_degree, errors)
+    approximators = train_approximators(madx_input, madx_output, max_pt_degree, errors)
 
-    # Get rid of additional data from TMultiDimFit and map it to TMultiDimFet
-    new_approximators = {
-        "x": TMultiDimFet(approximators["x"]),
-        "theta x": TMultiDimFet(approximators["theta x"]),
-        "y": TMultiDimFet(approximators["y"]),
-        "theta y": TMultiDimFet(approximators["theta y"])
-    }
+    new_approximators = {name: TMultiDimFet(approximator) for name, approximator in approximators.items()}
 
     # Create LHCOpticsApproximator
-    approximator = LHCOpticsApproximator(station_configuration["optics_parametrisation_name"],
-                                         station_configuration["optics_parametrisation_name"],
-                                         polynomial_type, station_configuration["beam"],
-                                         float(station_configuration["nominal_beam_energy"]),
-                                         new_approximators["x"],
-                                         new_approximators["theta x"],
-                                         new_approximators["y"],
-                                         new_approximators["theta y"])
+
+    approximator = compose_lhc_optics_approximator(new_approximators, station_configuration)
 
     return approximator
+
+
+def get_configuration_of_station(path_to_xml_file, number_of_item):
+    tree = ET.parse(path_to_xml_file)  # load configuration from xml file
+    root = tree.getroot()
+    station_configuration = root[number_of_item].attrib
+    return station_configuration
+
+
+def get_max_pt_degree(configuration):
+    max_pt_degree = [
+        int(configuration["max_degree_x"]),
+        int(configuration["max_degree_tx"]),
+        int(configuration["max_degree_y"]),
+        int(configuration["max_degree_ty"])
+    ]
+    return max_pt_degree
+
+
+def get_bunch_configuration_from(configuration):
+    return buc.BunchConfiguration(
+        float(configuration["x_min"]), float(configuration["x_max"]), 1,
+        float(configuration["theta_x_min"]), float(configuration["theta_x_max"]), 1,
+        float(configuration["y_min"]), float(configuration["y_max"]), 1,
+        float(configuration["theta_y_min"]), float(configuration["theta_y_max"]), 1,
+        float(configuration["ksi_min"]), float(configuration["ksi_max"]), int(configuration["tot_entries_number"])
+    )
 
 
 def generate_training_dataset(madx_configuration, bunch_configuration):
@@ -87,16 +92,6 @@ def generate_training_dataset(madx_configuration, bunch_configuration):
     return madx_input, madx_output
 
 
-def get_polynomial_type(configuration):
-    mapping = {
-        "kMonomials": 0,
-        "kChebychev": 1,
-        "kLegendre": 2
-    }
-    polynomial_type = configuration["polynomials_type"]
-    return mapping[polynomial_type] if polynomial_type in mapping else 0
-
-
 def get_position_parameters_from_madx_format(matrix):
     x = matrix.T[index_map["x"]]
     theta_x = matrix.T[index_map["theta x"]]
@@ -104,7 +99,7 @@ def get_position_parameters_from_madx_format(matrix):
     theta_y = matrix.T[index_map["theta y"]]
     pt = matrix.T[index_map["pt"]]
 
-    return np.array([x, theta_x, y, theta_y, pt])
+    return np.array([x, theta_x, y, theta_y, pt]).T
 
 
 def train_approximators(input_matrix, output_matrix, max_pt_powers, errors):
@@ -115,7 +110,7 @@ def train_approximators(input_matrix, output_matrix, max_pt_powers, errors):
 
     output_vectors = [x_output, theta_x_output, y_output, theta_y_output]
 
-    number_of_parameters = output_matrix.shape[1]
+    number_of_parameters = len(output_vectors)
 
     number_of_processes = 2
 
@@ -123,7 +118,7 @@ def train_approximators(input_matrix, output_matrix, max_pt_powers, errors):
         futures = []
         for worker_number in range(number_of_parameters):
             futures.append(executor.submit(train_tmultidimfit,
-                                           input_matrix.T, output_vectors[worker_number],
+                                           input_matrix, output_vectors[worker_number],
                                            max_pt_powers[worker_number], errors[worker_number]))
 
         approximators = {
@@ -136,12 +131,21 @@ def train_approximators(input_matrix, output_matrix, max_pt_powers, errors):
 
 
 def train_tmultidimfit(input_matrix, output_vector, max_pt_power, error):
+    number_of_input_parameters = input_matrix.shape[1]
+
+    approximator = initialize_tmultidimfit(number_of_input_parameters, max_pt_power)
+
+    insert_data_to_approximator(approximator, input_matrix, output_vector)
+
+    approximator.FindParameterization(error)
+
+    return approximator
+
+
+def initialize_tmultidimfit(parameters_number, max_pt_power):
     # Need initialized ROOT (previous invoking utils.root_initializer.initialise)
     from ROOT import TMultiDimFet
     from ROOT import TMultiDimFit_wrapper
-
-    parameters_number = 5
-    rows_number = input_matrix.shape[1]
 
     approximator = TMultiDimFet(parameters_number, 0, ROOT.option)
 
@@ -158,22 +162,41 @@ def train_tmultidimfit(input_matrix, output_vector, max_pt_power, error):
     approximator.SetPowerLimit(1.6)
     approximator.SetMinRelativeError(1e-13)
 
+    return approximator
+
+
+def insert_data_to_approximator(approximator, input_data, expected_output):
+    parameters_number = input_data.shape[1]
+    rows_number = input_data.shape[0]
     for counter in range(rows_number):
         for i in range(parameters_number):
-            ROOT.x_in[i] = input_matrix[i][counter]
+            ROOT.x_in[i] = input_data[counter][i]
 
-        approximator.AddRow(ROOT.x_in, output_vector[counter], 0)
+        approximator.AddRow(ROOT.x_in, expected_output[counter], 0)
 
-    approximator.FindParameterization(error)
+
+def compose_lhc_optics_approximator(approximators, station_configuration):
+    from ROOT import LHCOpticsApproximator
+
+    polynomial_type = get_polynomial_type(station_configuration)
+
+    approximator = LHCOpticsApproximator(station_configuration["optics_parametrisation_name"],
+                                         station_configuration["optics_parametrisation_name"],
+                                         polynomial_type, station_configuration["beam"],
+                                         float(station_configuration["nominal_beam_energy"]),
+                                         approximators["x"],
+                                         approximators["theta x"],
+                                         approximators["y"],
+                                         approximators["theta y"])
 
     return approximator
 
 
-def get_bunch_configuration_from(configuration):
-    return buc.BunchConfiguration(
-        float(configuration["x_min"]), float(configuration["x_max"]), 1,
-        float(configuration["theta_x_min"]), float(configuration["theta_x_max"]), 1,
-        float(configuration["y_min"]), float(configuration["y_max"]), 1,
-        float(configuration["theta_y_min"]), float(configuration["theta_y_max"]), 1,
-        float(configuration["ksi_min"]), float(configuration["ksi_max"]), int(configuration["tot_entries_number"])
-    )
+def get_polynomial_type(configuration):
+    mapping = {
+        "kMonomials": 0,
+        "kChebychev": 1,
+        "kLegendre": 2
+    }
+    polynomial_type = configuration["polynomials_type"]
+    return mapping[polynomial_type] if polynomial_type in mapping else 0
