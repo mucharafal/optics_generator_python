@@ -3,6 +3,7 @@ import subprocess
 import numpy as np
 import utils.working_directory as working_directory
 from concurrent.futures import ProcessPoolExecutor
+from datetime import date
 
 
 def compute_trajectory(particles, madx_configuration, number_of_workers):
@@ -175,7 +176,7 @@ def __write_header(file_object):
     file_object.write('@ TYPE             %04s "USER"\n')
     file_object.write('@ TITLE            %34s "EVENT"\n')
     file_object.write('@ ORIGIN           %19s "MAD-X 3.00.03 Linux"\n')
-    file_object.write('@ DATE             %08s "22/02/06"\n')  # todo add current date
+    file_object.write('@ DATE             %08s "' + date.today().strftime("%d/%m/%Y") + '"\n')
     file_object.write('@ TIME             %08s "11.11.11"\n')
 
 
