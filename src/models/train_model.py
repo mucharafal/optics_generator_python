@@ -114,6 +114,7 @@ def train_approximators(input_matrix, output_matrix, max_pt_powers):
     theta_y_output = output_matrix.T[3]
 
     output_vectors = [x_output, theta_x_output, y_output, theta_y_output]
+    errors = [5e-7, 5e-10, 5e-7, 5e-10]
 
     number_of_parameters = len(output_vectors)
 
@@ -124,7 +125,7 @@ def train_approximators(input_matrix, output_matrix, max_pt_powers):
         for worker_number in range(number_of_parameters):
             futures.append(executor.submit(train_tmultidimfit,
                                            input_matrix.T, output_vectors[worker_number],
-                                           max_pt_powers[worker_number]))
+                                           max_pt_powers[worker_number], errors[worker_number]))
 
         approximators = {
             "x": futures[0].result(),
@@ -135,14 +136,14 @@ def train_approximators(input_matrix, output_matrix, max_pt_powers):
     return approximators
 
 
-def train_tmultidimfit(input_matrix, output_vector, max_pt_power):
+def train_tmultidimfit(input_matrix, output_vector, max_pt_power, error):
     from ROOT import TMultiDimFet
     from ROOT import TMultiDimFit_wrapper
 
     parameters_number = 5
     rows_number = input_matrix.shape[1]
 
-    approximator = TMultiDimFit_wrapper(parameters_number, 0, ROOT.option)
+    approximator = TMultiDimFet(parameters_number, 0, ROOT.option)
 
     ROOT.mPowers[0] = 2
     ROOT.mPowers[1] = 4
@@ -163,7 +164,7 @@ def train_tmultidimfit(input_matrix, output_vector, max_pt_power):
 
         approximator.AddRow(ROOT.x_in, output_vector[counter], 0)
 
-    approximator.FindParameterization()
+    approximator.FindParameterization(error)
 
     return approximator
 

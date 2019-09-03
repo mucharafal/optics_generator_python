@@ -1,7 +1,9 @@
+#!/bin/python3
 import models.train_model as trainer
 import xml.etree.ElementTree as ET
 from ROOT import TObject, TFile
 import os
+import sys
 
 
 def main(path_to_xml_file, path_to_project, path_to_optics):
@@ -18,3 +20,13 @@ def main(path_to_xml_file, path_to_project, path_to_optics):
         approximator.Write(root[number_of_station].attrib["optics_parametrisation_name"], TObject.kOverwrite)
         file.Close()
 
+
+if __name__ == "__main__":
+    if len(sys.argv) == 4:
+        main(sys.argv[1], sys.argv[2], sys.argv[3])
+    else:
+        print("Help:\n"
+              "./make_parametrisation.py arg1 arg2 arg3\n"
+              "arg1- path to xml file\n"
+              "arg2- path to project (sources)\n"
+              "arg3- path to folder with optics (2017_matched ie)\n")

@@ -2,25 +2,24 @@ import seaborn as sns
 import numpy as np
 import pandas as pd
 from data.units import unit_map, multiplier_for_unit, alternative_version
-import matplotlib
 
 
 def plot_from_one_matrix(x_name, y_name, matrix, mapping,
                          plot_axes=None, plot_x_pos=-1, plot_y_pos=-1,
                          title_sufix="", x_name_prefix="", y_name_prefix="",
-                         plot_function=sns.lineplot, color="b",
+                         plot_function=sns.lineplot, color="black", marker="x",
                          x_axis_configuration=None, y_axis_configuration=None):
     return plot_from_two_matrices(x_name, y_name, matrix, matrix, mapping, mapping,
                                   plot_axes, plot_x_pos, plot_y_pos,
                                   title_sufix, x_name_prefix, y_name_prefix,
-                                  plot_function, color,
+                                  plot_function, color, marker,
                                   x_axis_configuration, y_axis_configuration)
 
 
 def plot_from_two_matrices(x_name, y_name, x_matrix, y_matrix, x_matrix_mapping, y_matrix_mapping,
                            plot_axes=None, plot_x_pos=-1, plot_y_pos=-1,
                            title_sufix="", x_name_prefix="", y_name_prefix="",
-                           plot_function=sns.lineplot, color="b",
+                           plot_function=sns.lineplot, color="black", marker="x",
                            x_axis_configuration=None, y_axis_configuration=None):
     # Get names of axis and title of plot
     x_alternative_version = alternative_version[x_name]
@@ -42,13 +41,16 @@ def plot_from_two_matrices(x_name, y_name, x_matrix, y_matrix, x_matrix_mapping,
     frame = pd.DataFrame(data={x_full_name: vector_x, y_full_name: vector_y})
 
     if plot_axes is None:
-        axes = plot_function(x=x_full_name, y=y_full_name, data=frame, color=color,  alpha=0.6)
+        axes = plot_function(x=x_full_name, y=y_full_name, data=frame, palette=[color], markers=[marker], s=1)
     elif plot_x_pos == -1:
-        axes = plot_function(x=x_full_name, y=y_full_name, data=frame, ax=plot_axes, color=color)
+        axes = plot_function(x=x_full_name, y=y_full_name, data=frame, ax=plot_axes, palette=[color], markers=[marker],
+                             s=1)
     elif plot_y_pos == -1:
-        axes = plot_function(x=x_full_name, y=y_full_name, data=frame, ax=plot_axes[plot_x_pos], color=color)
+        axes = plot_function(x=x_full_name, y=y_full_name, data=frame, ax=plot_axes[plot_x_pos], palette=[color],
+                             markers=[marker], s=1)
     else:
-        axes = plot_function(x=x_full_name, y=y_full_name, data=frame, ax=plot_axes[plot_x_pos][plot_y_pos], color=color)
+        axes = plot_function(x=x_full_name, y=y_full_name, data=frame, ax=plot_axes[plot_x_pos][plot_y_pos],
+                             palette=[color], markers=[marker], s=1)
 
     axes.set_title(title)
     axes.set_xlim(np.min(vector_x), np.max(vector_x))
@@ -58,6 +60,8 @@ def plot_from_two_matrices(x_name, y_name, x_matrix, y_matrix, x_matrix_mapping,
 
     if y_axis_configuration is not None:
         axes.yaxis.set_ticks(y_axis_configuration.get_ticks())
+
+    return axes
 
 
 def generate_dataset(x_name, y_name, hue_name, datasets):
@@ -115,7 +119,7 @@ def plot_with_turn(x_name, y_name, legend_title, datasets, title_sufix="",
     title = y_alternative_version + " vs " + x_alternative_version
     title += "\n" + title_sufix
 
-    if plot_axes is None:
+    if plot_axes is None:   #s = 1, palette=["black"], markers=["x"] for plot errors
         axes = plot_function(x=x_name, y=y_name, hue=legend_title, data=frame, style=legend_title)
     elif plot_x_pos is None:
         axes = plot_function(x=x_name, y=y_name, hue=legend_title, data=frame, ax=plot_axes, style=legend_title)

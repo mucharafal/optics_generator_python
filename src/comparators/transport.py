@@ -18,6 +18,7 @@ def compare(dataset_configuration, transporters, transported_dimension, depended
     axes = visualize.plot_with_turn(depended_value, "delta " + transported_dimension, "Compare", compared,
                                     title_sufix, plot_axes, plot_x_pos, plot_y_pos, plot_function, x_axis_configuration,
                                     y_axis_configuration)
+    return axes
 
 
 def compare_heatmap(dataset_configuration, reference_transporter, compared_transporter, transported_dimension,
