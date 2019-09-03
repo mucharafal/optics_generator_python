@@ -177,7 +177,7 @@ def __write_header(file_object):
     file_object.write('@ TITLE            %34s "EVENT"\n')
     file_object.write('@ ORIGIN           %19s "MAD-X 3.00.03 Linux"\n')
     file_object.write('@ DATE             %08s "' + date.today().strftime("%d/%m/%Y") + '"\n')
-    file_object.write('@ TIME             %08s "11.11.11"\n')
+    file_object.write('@ TIME             %08s "' + date.today().strftime("%H/%M/%S") + '"\n')
 
 
 def __write_specification_of_row(names, types, file_object):
