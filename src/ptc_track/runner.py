@@ -1,7 +1,7 @@
 import os
 import subprocess
 import numpy as np
-import shutil
+import utils.working_directory as working_directory
 from concurrent.futures import ProcessPoolExecutor
 
 
@@ -118,12 +118,8 @@ def __run_worker(particles, working_directory_name, madx_configuration, shift):
     :param shift: shift of ordinal numbers of particles
     :return:
     """
-    directory_before = os.getcwd()
     path_to_working_directory = os.path.join(os.getcwd(), working_directory_name)
-    if not os.path.exists(path_to_working_directory):
-        os.mkdir(path_to_working_directory)
-
-    os.chdir(path_to_working_directory)
+    beginning_directory = working_directory.create_and_get_into(path_to_working_directory)
 
     __save_particles(particles)
 
@@ -133,12 +129,11 @@ def __run_worker(particles, working_directory_name, madx_configuration, shift):
 
     __run_madx(configuration_file_name)
 
-    segments = __read_in_madx_output_file("trackone")
+    raw_segments = __read_in_madx_output_file("trackone")
 
-    os.chdir(directory_before)
-    # shutil.rmtree(path_to_working_directory)
+    working_directory.leave_and_delete(beginning_directory)
 
-    segments = shift_ordinal_number_in_segments(segments, shift)
+    segments = shift_ordinal_number_in_segments(raw_segments, shift)
 
     return segments
 
