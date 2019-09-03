@@ -1,5 +1,4 @@
 import ptc_track.runner as mr
-import data.particles_generator as pg
 import numpy as np
 from concurrent.futures import ProcessPoolExecutor
 from ptc_twiss.madx_script_generator import generate_configuration_file
@@ -14,7 +13,7 @@ def transport(madx_configuration, dataset):
     :param dataset:
     :return:
     """
-    result_matrix = np.empty((0, 14))
+    result_matrix = None
     number_of_workers = 4
     with ProcessPoolExecutor(number_of_workers) as executor:
         futures = []
@@ -23,7 +22,8 @@ def transport(madx_configuration, dataset):
             futures.append(executor.submit(run_worker, madx_configuration, processed_row, i))
 
         for future in futures:
-            result_matrix = np.append(result_matrix, future.result(), axis=0)
+            result_matrix = future.result() if result_matrix is None else \
+                np.append(result_matrix, future.result(), axis=0)
     return result_matrix
 
 
@@ -56,14 +56,23 @@ def read_in_twiss_output_file(file_name):
         line = file_object.readline()
         while line[0] != "*":
             line = file_object.readline()
+        # Line with * has types of columns
         parameters = line.split()
         parameters = parameters[1:]
         # skip '*'
         file_object.readline()
-        number_of_positions = 49
+
+        matrix = None
         columns_number = len(parameters)
-        values_vector = np.fromfile(file_object, count=number_of_positions * columns_number, sep=" ")
-        matrix = np.reshape(values_vector, (number_of_positions, columns_number))
+
+        values_vector = np.fromfile(file_object, count=columns_number, sep=" ")
+        while len(values_vector) > 0:
+            matrix = np.append(matrix, values_vector.reshape((columns_number, 1)), axis=0) if \
+                matrix is not None else \
+                values_vector.reshape((columns_number, 1))
+            values_vector = np.fromfile(file_object, count=columns_number, sep=" ")
+            print(values_vector.shape)
+
         return matrix
 
 
