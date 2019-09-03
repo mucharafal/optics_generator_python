@@ -16,7 +16,7 @@ def train_prototype(bunch_configuration, madx_configuration, path_to_project):
 
     madx_input, madx_output = generate_training_dataset(madx_configuration, bunch_configuration)
 
-    approximators = train_approximators(madx_input, madx_output.T, [7, 7, 7, 7, 7])
+    approximators = train_approximators(madx_input, madx_output.T, [7, 7, 7, 7, 7], [5e-7, 5e-10, 5e-7, 5e-10])
 
     return stub_app.Approximator(approximators)
 
@@ -44,8 +44,9 @@ def train_from_xml_configuration(path_to_optics, path_to_xml_file, number_of_ite
     bunch_configuration = get_bunch_configuration_from(station_configuration)
     madx_input, madx_output = generate_training_dataset(madx_configuration, bunch_configuration)
 
-    # Train approximators (TMultiDimFit_wrapper)
-    approximators = train_approximators(madx_input, madx_output.T, max_pt_degree)
+    # Train approximators
+    errors = [5e-7, 5e-10, 5e-7, 5e-10]
+    approximators = train_approximators(madx_input, madx_output.T, max_pt_degree, errors)
 
     # Get rid of additional data from TMultiDimFit and map it to TMultiDimFet
     new_approximators = {
@@ -87,14 +88,13 @@ def generate_training_dataset(madx_configuration, bunch_configuration):
 
 
 def get_polynomial_type(configuration):
-    if configuration["polynomials_type"] == "kMonomials":
-        return 0
-    elif configuration["polynomials_type"] == "kChebyshev":
-        return 1
-    elif configuration["polynomials_type"] == "kLegendre":
-        return 2
-    # default
-    return 0
+    mapping = {
+        "kMonomials": 0,
+        "kChebychev": 1,
+        "kLegendre": 2
+    }
+    polynomial_type = configuration["polynomials_type"]
+    return mapping[polynomial_type] if polynomial_type in mapping else 0
 
 
 def get_position_parameters_from_madx_format(matrix):
@@ -107,16 +107,15 @@ def get_position_parameters_from_madx_format(matrix):
     return np.array([x, theta_x, y, theta_y, pt])
 
 
-def train_approximators(input_matrix, output_matrix, max_pt_powers):
+def train_approximators(input_matrix, output_matrix, max_pt_powers, errors):
     x_output = output_matrix.T[0]
     theta_x_output = output_matrix.T[1]
     y_output = output_matrix.T[2]
     theta_y_output = output_matrix.T[3]
 
     output_vectors = [x_output, theta_x_output, y_output, theta_y_output]
-    errors = [5e-7, 5e-10, 5e-7, 5e-10]
 
-    number_of_parameters = len(output_vectors)
+    number_of_parameters = output_matrix.shape[1]
 
     number_of_processes = 2
 
@@ -137,6 +136,7 @@ def train_approximators(input_matrix, output_matrix, max_pt_powers):
 
 
 def train_tmultidimfit(input_matrix, output_vector, max_pt_power, error):
+    # Need initialized ROOT (previous invoking utils.root_initializer.initialise)
     from ROOT import TMultiDimFet
     from ROOT import TMultiDimFit_wrapper
 
@@ -169,30 +169,6 @@ def train_tmultidimfit(input_matrix, output_vector, max_pt_power, error):
     return approximator
 
 
-def get_bunch_configuration():
-
-    number_of_particles = 1000
-
-    x_mean = 0.0
-    sigma_x = 4e-3
-    theta_x_mean = 0.000
-    sigma_theta_x = 1.3e-3
-    y_mean = 0.0
-    sigma_y = 4e-3
-    theta_y_mean = 0.00
-    sigma_theta_y = 1.3e-3
-    pt_mean = -0.15
-    sigma_pt = 0.2
-
-    configuration = buc.BunchConfiguration.from_sigma(
-        x_mean, sigma_x, 1, theta_x_mean, sigma_theta_x, 1,
-        y_mean, sigma_y, 1, theta_y_mean, sigma_theta_y, 1,
-        pt_mean, sigma_pt, number_of_particles
-    )
-
-    return configuration
-
-
 def get_bunch_configuration_from(configuration):
     return buc.BunchConfiguration(
         float(configuration["x_min"]), float(configuration["x_max"]), 1,
@@ -201,16 +177,3 @@ def get_bunch_configuration_from(configuration):
         float(configuration["theta_y_min"]), float(configuration["theta_y_max"]), 1,
         float(configuration["ksi_min"]), float(configuration["ksi_max"]), int(configuration["tot_entries_number"])
     )
-
-
-def test(approximator, input_matrix, output_row):
-    errors = list()
-    for index, input_row in enumerate(input_matrix):
-        input_row = np.array(input_row)
-        print(input_row.shape)
-        approximated_value = approximator.Eval(input_row)
-        error = abs(approximated_value - output_row[index])
-        print(error)
-        errors.append(error)
-
-    return errors
