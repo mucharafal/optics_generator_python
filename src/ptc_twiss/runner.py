@@ -9,9 +9,11 @@ import os
 def transport(madx_configuration, dataset):
     """
     Transport particles using twiss
-    :param madx_configuration:
-    :param dataset:
-    :return:
+    :param madx_configuration: configuration for run madx with ptc_twiss command
+    :type madx_configuration: TwissConfiguration
+    :param dataset: matrix with columns: x, theta x, y, theta y, pt
+    :type dataset: np.array
+    :return: matrix returned by ptc_twiss- results from processing next lines of
     """
     result_matrix = None
     number_of_workers = 4
@@ -28,14 +30,21 @@ def transport(madx_configuration, dataset):
 
 
 def run_worker(madx_configuration, row, process_number):
+    # Create and get into working directory
     current_directory = os.getcwd()
     working_directory_name = os.path.join(current_directory, "twiss" + str(process_number))
     begin_directory = working_directory.create_and_get_into(working_directory_name)
+
     path_to_madx_script = generate_configuration_file(madx_configuration, row)
+
     mr.__run_madx(path_to_madx_script)
+
     matrix = read_in_twiss_output_file("twiss_output")
+
     matrix_with_pt = np.append(matrix, np.full((matrix.shape[0], 1), row["pt"]), axis=1)
+
     working_directory.leave_and_delete(begin_directory)
+
     return matrix_with_pt
 
 
