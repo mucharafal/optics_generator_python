@@ -22,10 +22,9 @@ def __run_madx(path_to_madx_script):
     Run ptc_track in current folder. As stdin for ptc_track given content of file, whose path is specified in argument
     """
     with open(path_to_madx_script) as f:
-        # print("Runned")
         res = subprocess.run("madx", stdin=f, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        # print(res.stdout) # if output from madx is needed
         res.stdout = open(os.devnull, 'w')
-        # print(res.stdout)
 
 
 def __read_in_madx_output_file(filename):
@@ -121,7 +120,7 @@ def __run_worker(particles, working_directory_name, madx_configuration, shift):
     path_to_working_directory = os.path.join(os.getcwd(), working_directory_name)
     beginning_directory = working_directory.create_and_get_into(path_to_working_directory)
 
-    __save_particles(particles)
+    __save_particles_to_file(particles)
 
     number_of_particles = particles.shape[0]
 
@@ -138,14 +137,14 @@ def __run_worker(particles, working_directory_name, madx_configuration, shift):
     return segments
 
 
-def __save_particles(particles,
-                     ordinal_number_name="mken",
-                     x_name="trx",
-                     theta_x_name="trpx",
-                     y_name="try",
-                     theta_y_name="trpy",
-                     t_name="tt",
-                     pt_name="trpt"):
+def __save_particles_to_file(particles,
+                             ordinal_number_name="mken",
+                             x_name="trx",
+                             theta_x_name="trpx",
+                             y_name="try",
+                             theta_y_name="trpy",
+                             t_name="tt",
+                             pt_name="trpt"):
     """
     Save particles in part.in file in ptc_track format.
     :param particles: numpy matrix with particles parameters
