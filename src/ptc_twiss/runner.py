@@ -22,7 +22,6 @@ def transport(madx_configuration, dataset):
         for i, raw_row in enumerate(dataset):
             processed_row = process_row(raw_row)
             futures.append(executor.submit(run_worker, madx_configuration, processed_row, i))
-
         for future in futures:
             result_matrix = future.result() if result_matrix is None else \
                 np.append(result_matrix, future.result(), axis=0)
@@ -40,9 +39,7 @@ def run_worker(madx_configuration, row, process_number):
     mr.__run_madx(path_to_madx_script)
 
     matrix = read_in_twiss_output_file("twiss_output")
-
     matrix_with_pt = np.append(matrix, np.full((matrix.shape[0], 1), row["pt"]), axis=1)
-
     working_directory.leave_and_delete(begin_directory)
 
     return matrix_with_pt
@@ -73,14 +70,12 @@ def read_in_twiss_output_file(file_name):
 
         matrix = None
         columns_number = len(parameters)
-
         values_vector = np.fromfile(file_object, count=columns_number, sep=" ")
         while len(values_vector) > 0:
-            matrix = np.append(matrix, values_vector.reshape((columns_number, 1)), axis=0) if \
+            matrix = np.append(matrix, values_vector.reshape((-1, columns_number)), axis=0) if \
                 matrix is not None else \
-                values_vector.reshape((columns_number, 1))
+                values_vector.reshape((-1, columns_number))
             values_vector = np.fromfile(file_object, count=columns_number, sep=" ")
-            print(values_vector.shape)
 
         return matrix
 
