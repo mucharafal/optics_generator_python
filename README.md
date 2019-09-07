@@ -53,15 +53,6 @@ start script: /eos/user/firstLetterOfCernLogin/CernLogin/SWAN_projects/optics_ge
 or alternatively:
 /eos/user/\`username=\\\`whoami\\\`;echo ${username:0:1}\`/\`whoami\`/SWAN_projects/optics_generator_python/swan_start_script  
 It is also advised to choose 4 cores
-After starting session:   
-Compile library:   
-Open terminal (button '>_' in right upper corner)
-```
-cd SWAN_projects/optics_generator_python/src/root_classes/src
-make shared
-```
-
-Library has to be compiled only once. If you start SWAN another time all you need is properly set stack and start script
 
 ### Adding optics
 
