@@ -49,7 +49,9 @@ mv optics_generator_python-v0.1.2-SWAN optics_generator_python
 ### First run
 Setup SWAN:   
 stack: 96 python 3   
-start script: /eos/user/firstLetterOfCernLogin/CernLogin/SWAN_projects/optics_generator_python/swan_start_script   
+start script: /eos/user/firstLetterOfCernLogin/CernLogin/SWAN_projects/optics_generator_python/swan_start_script    
+or alternatively:
+/eos/user/\`username=\\\`whoami\\\`;echo ${username:0:1}\`/\`whoami\`/SWAN_projects/optics_generator_python/swan_start_script  
 It is also advised to choose 4 cores
 After starting session:   
 Compile library:   
