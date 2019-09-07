@@ -7,20 +7,21 @@ from data.units import unit_map, multiplier_for_unit, alternative_version
 def plot_from_one_matrix(x_name, y_name, matrix, mapping,
                          plot_axes=None, plot_x_pos=-1, plot_y_pos=-1,
                          title_sufix="", x_name_prefix="", y_name_prefix="",
-                         plot_function=sns.lineplot, color="black", marker="x",
-                         x_axis_configuration=None, y_axis_configuration=None):
+                         plot_function=sns.lineplot, color="black",
+                         x_axis_configuration=None, y_axis_configuration=None, **additional_plot_function_arguments):
     return plot_from_two_matrices(x_name, y_name, matrix, matrix, mapping, mapping,
                                   plot_axes, plot_x_pos, plot_y_pos,
                                   title_sufix, x_name_prefix, y_name_prefix,
-                                  plot_function, color, marker,
-                                  x_axis_configuration, y_axis_configuration)
+                                  plot_function, color,
+                                  x_axis_configuration, y_axis_configuration, **additional_plot_function_arguments)
 
 
 def plot_from_two_matrices(x_name, y_name, x_matrix, y_matrix, x_matrix_mapping, y_matrix_mapping,
                            plot_axes=None, plot_x_pos=-1, plot_y_pos=-1,
                            title_sufix="", x_name_prefix="", y_name_prefix="",
-                           plot_function=sns.lineplot, color="black", marker="x",
-                           x_axis_configuration=None, y_axis_configuration=None):
+                           plot_function=sns.lineplot, color="black",
+                           x_axis_configuration=None, y_axis_configuration=None, **additional_plot_function_arguments):
+
     # Get names of axis and title of plot
     x_alternative_version = alternative_version[x_name]
     y_alternative_version = alternative_version[y_name]
@@ -41,16 +42,17 @@ def plot_from_two_matrices(x_name, y_name, x_matrix, y_matrix, x_matrix_mapping,
     frame = pd.DataFrame(data={x_full_name: vector_x, y_full_name: vector_y})
 
     if plot_axes is None:
-        axes = plot_function(x=x_full_name, y=y_full_name, data=frame, palette=[color], markers=[marker], s=1)
+        axes = plot_function(x=x_full_name, y=y_full_name, data=frame, palette=[color],
+                             **additional_plot_function_arguments)
     elif plot_x_pos == -1:
-        axes = plot_function(x=x_full_name, y=y_full_name, data=frame, ax=plot_axes, palette=[color], markers=[marker],
-                             s=1)
+        axes = plot_function(x=x_full_name, y=y_full_name, data=frame, ax=plot_axes, palette=[color],
+                             **additional_plot_function_arguments)
     elif plot_y_pos == -1:
         axes = plot_function(x=x_full_name, y=y_full_name, data=frame, ax=plot_axes[plot_x_pos], palette=[color],
-                             markers=[marker], s=1)
+                             **additional_plot_function_arguments)
     else:
         axes = plot_function(x=x_full_name, y=y_full_name, data=frame, ax=plot_axes[plot_x_pos][plot_y_pos],
-                             palette=[color], markers=[marker], s=1)
+                             palette=[color], **additional_plot_function_arguments)
 
     axes.set_title(title)
     axes.set_xlim(np.min(vector_x), np.max(vector_x))
@@ -87,7 +89,8 @@ def generate_dataset(x_name, y_name, hue_name, datasets):
 
 def plot_datasets(x_name, y_name, legend_title, datasets, title_sufix="",
                   plot_axes=None, plot_x_pos=None, plot_y_pos=None,
-                  plot_function=sns.lineplot, x_axis_configuration=None, y_axis_configuration=None):
+                  plot_function=sns.lineplot, x_axis_configuration=None, y_axis_configuration=None,
+                  **additional_plot_function_arguments):
     """
     Plot different datasets on one plot.
     :param x_name: name of x parameter in datasets
@@ -120,15 +123,17 @@ def plot_datasets(x_name, y_name, legend_title, datasets, title_sufix="",
     title += "\n" + title_sufix
 
     if plot_axes is None:   #s = 1, palette=["black"], markers=["x"] for plot errors
-        axes = plot_function(x=x_name, y=y_name, hue=legend_title, data=frame, style=legend_title)
+        axes = plot_function(x=x_name, y=y_name, hue=legend_title, data=frame, style=legend_title,
+                             **additional_plot_function_arguments)
     elif plot_x_pos is None:
-        axes = plot_function(x=x_name, y=y_name, hue=legend_title, data=frame, ax=plot_axes, style=legend_title)
+        axes = plot_function(x=x_name, y=y_name, hue=legend_title, data=frame, ax=plot_axes, style=legend_title,
+                             **additional_plot_function_arguments)
     elif plot_y_pos is None:
         axes = plot_function(x=x_name, y=y_name, hue=legend_title, data=frame, ax=plot_axes[plot_x_pos],
-                             style=legend_title)
+                             style=legend_title, **additional_plot_function_arguments)
     else:
         axes = plot_function(x=x_name, y=y_name, hue=legend_title, data=frame, ax=plot_axes[plot_x_pos][plot_y_pos],
-                             style=legend_title)
+                             style=legend_title, **additional_plot_function_arguments)
 
     axes.set_xlabel(x_full_name)
     axes.set_ylabel(y_full_name)
