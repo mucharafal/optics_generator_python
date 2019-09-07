@@ -11,6 +11,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$path_to_root_libs:/cvmfs/sft.cern.ch/lc
 # Download madx
 MADX_PATH=$path_to_SWAN_Projects/madx
 if ! test -f "$MADX_PATH"; then
+    cd $path_to_SWAN_Projects
     wget -L http://madx.web.cern.ch/madx/releases/last-rel/madx-linux64-gnu
     mv madx-linux64-gnu $MADX_PATH
     chmod +700 $MADX_PATH
@@ -19,8 +20,9 @@ fi
 # Compile library
 if ! test -d "$path_to_root_libs"; then
     current_dir=`pwd`
+    cd $path_to_SWAN_Projects
     cd $folder_with_sources_name
-    cd root_classes/src
-    make shared
+    cd src/root_classes/src
+    make shared &
     cd $current_dir
 fi
