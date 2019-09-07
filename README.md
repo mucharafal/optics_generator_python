@@ -1,7 +1,7 @@
 Optics generator
 ==============================
 
-Description here
+Program to make and verify parametrisation of optics.
 
 Project Organization
 ------------
@@ -43,8 +43,15 @@ python3 (command "python3" in terminal)
 ROOT (command "import ROOT" in python3)   
 seaborn ("import seaborn" in python3)   
 --------
+# How to run
+##SWAN
+###Download project
+
+Open swan- configuration can be any.   
+Open terminal (button '>_' in right upper corner)    
+```
+cd SWAN_projects
+git clone https://gitlab.cern.ch/rmucha/optics_generator_python.git
+```
 
 
-
-
-<p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
