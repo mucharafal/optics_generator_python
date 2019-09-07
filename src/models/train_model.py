@@ -25,7 +25,7 @@ def train_from_xml_configuration(path_to_optics, path_to_xml_file, number_of_ite
     root_initializer.initialise(path_to_sources)
     from ROOT import TMultiDimFet
 
-    station_configuration = get_configuration_of_station(path_to_xml_file, number_of_item)
+    station_configuration, apertures = get_configuration_of_station(path_to_xml_file, number_of_item)
 
     max_pt_degree = get_max_pt_degree(station_configuration)
 
@@ -51,7 +51,8 @@ def get_configuration_of_station(path_to_xml_file, number_of_item):
     tree = ET.parse(path_to_xml_file)  # load configuration from xml file
     root = tree.getroot()
     station_configuration = root[number_of_item].attrib
-    return station_configuration
+    apertures = [x.attrib for x in root[number_of_item]]
+    return station_configuration, apertures
 
 
 def get_max_pt_degree(configuration):

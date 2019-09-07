@@ -85,9 +85,9 @@ def generate_dataset(x_name, y_name, hue_name, datasets):
     return merged_dataframe
 
 
-def plot_with_turn(x_name, y_name, legend_title, datasets, title_sufix="",
-                   plot_axes=None, plot_x_pos=None, plot_y_pos=None,
-                   plot_function=sns.lineplot, x_axis_configuration=None, y_axis_configuration=None):
+def plot_datasets(x_name, y_name, legend_title, datasets, title_sufix="",
+                  plot_axes=None, plot_x_pos=None, plot_y_pos=None,
+                  plot_function=sns.lineplot, x_axis_configuration=None, y_axis_configuration=None):
     """
     Plot different datasets on one plot.
     :param x_name: name of x parameter in datasets
@@ -142,11 +142,5 @@ def plot_with_turn(x_name, y_name, legend_title, datasets, title_sufix="",
 
     if y_axis_configuration is not None:
         axes.yaxis.set_ticks(y_axis_configuration.get_ticks())
-
-    # Show absolute maximum difference between reference and others datasets
-    # datasets_names = datasets.keys()
-    # head_name = datasets_names[0]
-    # tail_names = datasets_names[1:]
-    # reference_values = datasets[head_name][0].T[]
 
     return axes

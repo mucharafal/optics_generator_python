@@ -15,9 +15,9 @@ def compare(dataset_configuration, transporters, transported_dimension, depended
     list_of_datasets = to_list(datasets)
     compared = compare_with_others(list_of_datasets[0], list_of_datasets[1:], transported_dimension,
                                    depended_value)
-    axes = visualize.plot_with_turn(depended_value, "delta " + transported_dimension, "Compare", compared,
-                                    title_sufix, plot_axes, plot_x_pos, plot_y_pos, plot_function, x_axis_configuration,
-                                    y_axis_configuration)
+    axes = visualize.plot_datasets(depended_value, "delta " + transported_dimension, "Compare", compared,
+                                   title_sufix, plot_axes, plot_x_pos, plot_y_pos, plot_function, x_axis_configuration,
+                                   y_axis_configuration)
     return axes
 
 
