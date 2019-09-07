@@ -1,0 +1,6 @@
+username=`whoami`
+first_username_letter=${username:0:1}
+path_to_SWAN_Projects=/eos/user/$first_username_letter/$username/SWAN_projects
+export PATH=$path_to_SWAN_Projects:$PATH
+export PYTHONPATH=$PYTHONPATH:$path_to_SWAN_Projects/optics_generator_python/src
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$path_to_SWAN_Projects/optics_generator_python/root_libs:/cvmfs/sft.cern.ch/lcg/views/LCG_96python3/x86_64-centos7-gcc8-opt/lib:
