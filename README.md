@@ -42,8 +42,10 @@ move it to folder SWAN_projects on cernbox
 Unzip it and change name on optics_generator_python   
 You can do this by terminal (button '>_' in right upper corner)
 ```
+cd SWAN_projects
 unzip optics_generator_python-v0.1.2-SWAN.zip
 mv optics_generator_python-v0.1.2-SWAN optics_generator_python
+rm optics_generator_python-v0.1.2-SWAN.zip
 ```
 
 ### First run

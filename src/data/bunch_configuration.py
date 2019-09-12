@@ -22,16 +22,16 @@ class BunchConfiguration:
         self.number_of_pt_values = number_of_pt_values
 
     @staticmethod
-    def from_sigma(x_mean, sigma_x, number_of_x_values,
-                   theta_x_mean, sigma_theta_x, number_of_theta_x_values,
-                   y_mean, sigma_y, number_of_y_values,
-                   theta_y_mean, sigma_theta_y, number_of_theta_y_values,
-                   pt_mean, sigma_pt, number_of_pt_values):
-        return BunchConfiguration(x_mean - sigma_x, x_mean + sigma_x, number_of_x_values,
-                                  theta_x_mean - sigma_theta_x, theta_x_mean + sigma_theta_x, number_of_theta_x_values,
-                                  y_mean - sigma_y, y_mean + sigma_y, number_of_y_values,
-                                  theta_y_mean - sigma_theta_y, theta_y_mean + sigma_theta_y, number_of_theta_y_values,
-                                  pt_mean - sigma_pt, pt_mean + sigma_pt, number_of_pt_values)
+    def from_sigma(x_mean, delta_x, number_of_x_values,
+                   theta_x_mean, delta_theta_x, number_of_theta_x_values,
+                   y_mean, delta_y, number_of_y_values,
+                   theta_y_mean, delta_theta_y, number_of_theta_y_values,
+                   pt_mean, delta_pt, number_of_pt_values):
+        return BunchConfiguration(x_mean - delta_x, x_mean + delta_x, number_of_x_values,
+                                  theta_x_mean - delta_theta_x, theta_x_mean + delta_theta_x, number_of_theta_x_values,
+                                  y_mean - delta_y, y_mean + delta_y, number_of_y_values,
+                                  theta_y_mean - delta_theta_y, theta_y_mean + delta_theta_y, number_of_theta_y_values,
+                                  pt_mean - delta_pt, pt_mean + delta_pt, number_of_pt_values)
 
     def get_number_of_particles(self):
         number_of_particles = self.number_of_pt_values * self.number_of_theta_y_values * self.number_of_y_values * \
