@@ -1,192 +1,110 @@
 import ptc_track.particles_trajectory_generator as ptg
+import data.particles_generator as pg
 import numpy as np
-import copy
+import ptc_track.matrix_indexes as ptc_track_indexes
+import utils.differential_quotient as optical_function_as_differential
 
 
-def compute_v_x(madx_configuration, bunch_configuration):
-    internal_bunch_configuration = copy.copy(bunch_configuration)
-    reference_particles = ptg.generate_from_range(madx_configuration, internal_bunch_configuration)
+def apply_configuration_to_transporter(configuration):
+    return lambda x: ptg.transport(configuration, x)
 
-    x_min = internal_bunch_configuration.x_min
-    x_max = internal_bunch_configuration.x_max
-    delta = __get_delta(x_min, x_max)
 
-    internal_bunch_configuration.x_min += delta
-    internal_bunch_configuration.x_max += delta
+def normalize_ptc_track_transporter_output(transporter):
+    def normalize_matrix(ptc_track_output):
+        columns_indexes = [ptc_track_indexes.ptc_track[column_name] for column_name in ["x", "theta x", "y", "theta y", "pt"]]
+        return ptc_track_output.T[columns_indexes].T
 
-    shifted_particles = ptg.generate_from_range(madx_configuration, internal_bunch_configuration)
+    def normalized_transporter(particles):
+        segments = transporter(particles)
+        last_segment = segments["end"]
+        return normalize_matrix(last_segment)
 
-    end_positions = reference_particles["end"]
-    shifted_end_positions = shifted_particles["end"]
+    return normalized_transporter
 
-    begin_positions, end_positions, shifted_end_positions = adjust_particles_numbers(reference_particles["start"],
-                                                                                     end_positions,
-                                                                                     shifted_end_positions)
 
-    x_end_positions = __get_vector_of_transported_matrix("x", end_positions)
-    x_shifted_end_positions = __get_vector_of_transported_matrix("x", shifted_end_positions)
+def compute_v_x(madx_configuration, grid_configuration):
+    particles = pg.generate_from_range(grid_configuration)
 
-    v_x = (x_shifted_end_positions - x_end_positions) / delta
+    transporter = apply_configuration_to_transporter(madx_configuration)
+    normalized_transporter = normalize_ptc_track_transporter_output(transporter)
 
-    begin_positions_vectors = process_input_matrix(begin_positions)
-    result = concatenate_result_with_input(begin_positions_vectors, v_x)
+    particles_with_optical_function = optical_function_as_differential.compute_optical_function(normalized_transporter,
+                                                                                                particles,
+                                                                                                "x", "x", 1e-5)
 
-    return result
+    return particles_with_optical_function
 
 
-def compute_v_y(madx_configuration, bunch_configuration):
-    internal_bunch_configuration = copy.copy(bunch_configuration)
-    reference_particles = ptg.generate_from_range(madx_configuration, internal_bunch_configuration)
+def compute_v_y(madx_configuration, grid_configuration):
+    particles = pg.generate_from_range(grid_configuration)
 
-    y_min = internal_bunch_configuration.y_min
-    y_max = internal_bunch_configuration.y_max
-    delta = __get_delta(y_min, y_max)
+    transporter = apply_configuration_to_transporter(madx_configuration)
+    normalized_transporter = normalize_ptc_track_transporter_output(transporter)
 
-    internal_bunch_configuration.y_min += delta
-    internal_bunch_configuration.y_max += delta
+    particles_with_optical_function = optical_function_as_differential.compute_optical_function(normalized_transporter,
+                                                                                                particles,
+                                                                                                "y", "y", 1e-5)
 
-    shifted_particles = ptg.generate_from_range(madx_configuration, internal_bunch_configuration)
+    return particles_with_optical_function
 
-    end_positions = reference_particles["end"]
-    shifted_end_positions = shifted_particles["end"]
 
-    begin_positions, end_positions, shifted_end_positions = adjust_particles_numbers(reference_particles["start"],
-                                                                                     end_positions,
-                                                                                     shifted_end_positions)
+def compute_l_x(madx_configuration, grid_configuration):
+    particles = pg.generate_from_range(grid_configuration)
 
-    y_end_positions = __get_vector_of_transported_matrix("y", end_positions)
-    y_shifted_end_positions = __get_vector_of_transported_matrix("y", shifted_end_positions)
+    transporter = apply_configuration_to_transporter(madx_configuration)
+    normalized_transporter = normalize_ptc_track_transporter_output(transporter)
 
-    v_y = (y_shifted_end_positions - y_end_positions) / delta
+    particles_with_optical_function = optical_function_as_differential.compute_optical_function(normalized_transporter,
+                                                                                                particles,
+                                                                                                "theta x", "x", 1e-5)
 
-    begin_positions_vectors = process_input_matrix(begin_positions)
-    result = concatenate_result_with_input(begin_positions_vectors, v_y)
+    return particles_with_optical_function
 
-    return result
 
+def compute_l_y(madx_configuration, grid_configuration):
+    particles = pg.generate_from_range(grid_configuration)
 
-def compute_l_x(madx_configuration, bunch_configuration):
-    internal_bunch_configuration = copy.copy(bunch_configuration)
-    reference_particles = ptg.generate_from_range(madx_configuration, internal_bunch_configuration)
+    transporter = apply_configuration_to_transporter(madx_configuration)
+    normalized_transporter = normalize_ptc_track_transporter_output(transporter)
 
-    theta_x_min = internal_bunch_configuration.theta_x_min
-    theta_x_max = internal_bunch_configuration.theta_x_max
-    delta = __get_delta(theta_x_min, theta_x_max)
+    particles_with_optical_function = optical_function_as_differential.compute_optical_function(normalized_transporter,
+                                                                                                particles,
+                                                                                                "theta y", "y", 1e-5)
 
-    internal_bunch_configuration.theta_x_min += delta
-    internal_bunch_configuration.theta_x_max += delta
+    return particles_with_optical_function
 
-    shifted_particles = ptg.generate_from_range(madx_configuration, internal_bunch_configuration)
 
-    end_positions = reference_particles["end"]
-    shifted_end_positions = shifted_particles["end"]
+def compute_d_x(madx_configuration, grid_configuration):
+    particles = pg.generate_from_range(grid_configuration)
 
-    begin_positions, end_positions, shifted_end_positions = adjust_particles_numbers(reference_particles["start"],
-                                                                                     end_positions,
-                                                                                     shifted_end_positions)
+    transporter = apply_configuration_to_transporter(madx_configuration)
+    normalized_transporter = normalize_ptc_track_transporter_output(transporter)
 
-    x_end_positions = __get_vector_of_transported_matrix("x", end_positions)
-    x_shifted_end_positions = __get_vector_of_transported_matrix("x", shifted_end_positions)
+    particles_with_optical_function = optical_function_as_differential.compute_optical_function(normalized_transporter,
+                                                                                                particles,
+                                                                                                "pt", "x", 1e-5)
 
-    l_x = (x_shifted_end_positions - x_end_positions) / delta
+    return particles_with_optical_function
 
-    begin_positions_vectors = process_input_matrix(begin_positions)
-    result = concatenate_result_with_input(begin_positions_vectors, l_x)
 
-    return result
+def transform_to_geometrical_coordinates(particles):
+    new_particles = np.copy(particles)
+    new_particles.T[1] /= 1 + new_particles.T[4]
+    new_particles.T[3] /= 1 + new_particles.T[4]
+    return new_particles
 
 
-def compute_l_y(madx_configuration, bunch_configuration):
-    internal_bunch_configuration = copy.copy(bunch_configuration)
-    reference_particles = ptg.generate_from_range(madx_configuration, internal_bunch_configuration)
+def compute_d_y(madx_configuration, grid_configuration):
+    particles = pg.generate_from_range(grid_configuration)
 
-    theta_y_min = internal_bunch_configuration.theta_y_min
-    theta_y_max = internal_bunch_configuration.theta_y_max
-    delta = __get_delta(theta_y_min, theta_y_max)
+    transporter = apply_configuration_to_transporter(madx_configuration)
+    normalized_transporter = normalize_ptc_track_transporter_output(transporter)
 
-    internal_bunch_configuration.theta_y_min += delta
-    internal_bunch_configuration.theta_y_max += delta
+    particles_with_optical_function = optical_function_as_differential.compute_optical_function(normalized_transporter,
+                                                                                                particles,
+                                                                                                "pt", "y", 1e-5)
 
-    shifted_particles = ptg.generate_from_range(madx_configuration, internal_bunch_configuration)
-
-    end_positions = reference_particles["end"]
-    shifted_end_positions = shifted_particles["end"]
-
-    begin_positions, end_positions, shifted_end_positions = adjust_particles_numbers(reference_particles["start"],
-                                                                                     end_positions,
-                                                                                     shifted_end_positions)
-
-    y_end_positions = __get_vector_of_transported_matrix("y", end_positions)
-    y_shifted_end_positions = __get_vector_of_transported_matrix("y", shifted_end_positions)
-
-    l_y = (y_shifted_end_positions - y_end_positions) / delta
-
-    begin_positions_vectors = process_input_matrix(begin_positions)
-    result = concatenate_result_with_input(begin_positions_vectors, l_y)
-
-    return result
-
-
-def compute_d_x(madx_configuration, bunch_configuration):
-    internal_bunch_configuration = copy.copy(bunch_configuration)
-    reference_particles = ptg.generate_from_range(madx_configuration, internal_bunch_configuration)
-
-    pt_min = internal_bunch_configuration.pt_min
-    pt_max = internal_bunch_configuration.pt_max
-    delta = __get_delta(pt_min, pt_max)
-
-    internal_bunch_configuration.pt_min += delta
-    internal_bunch_configuration.pt_max += delta
-
-    shifted_particles = ptg.generate_from_range(madx_configuration, internal_bunch_configuration)
-
-    end_positions = reference_particles["end"]
-    shifted_end_positions = shifted_particles["end"]
-
-    begin_positions, end_positions, shifted_end_positions = adjust_particles_numbers(reference_particles["start"],
-                                                                                     end_positions,
-                                                                                     shifted_end_positions)
-
-    x_end_positions = __get_vector_of_transported_matrix("x", end_positions)
-    x_shifted_end_positions = __get_vector_of_transported_matrix("x", shifted_end_positions)
-
-    d_x = (x_shifted_end_positions - x_end_positions) / delta
-
-    begin_positions_vectors = process_input_matrix(begin_positions)
-    result = concatenate_result_with_input(begin_positions_vectors, d_x)
-
-    return result
-
-
-def compute_d_y(madx_configuration, bunch_configuration):
-    internal_bunch_configuration = copy.copy(bunch_configuration)
-    reference_particles = ptg.generate_from_range(madx_configuration, internal_bunch_configuration)
-
-    pt_min = internal_bunch_configuration.pt_min
-    pt_max = internal_bunch_configuration.pt_max
-    delta = __get_delta(pt_min, pt_max)
-
-    internal_bunch_configuration.pt_min += delta
-    internal_bunch_configuration.pt_max += delta
-
-    shifted_particles = ptg.generate_from_range(madx_configuration, internal_bunch_configuration)
-
-    end_positions = reference_particles["end"]
-    shifted_end_positions = shifted_particles["end"]
-
-    begin_positions, end_positions, shifted_end_positions = adjust_particles_numbers(reference_particles["start"],
-                                                                                     end_positions,
-                                                                                     shifted_end_positions)
-
-    y_end_positions = __get_vector_of_transported_matrix("y", end_positions)
-    y_shifted_end_positions = __get_vector_of_transported_matrix("y", shifted_end_positions)
-
-    d_y = (y_shifted_end_positions - y_end_positions) / delta
-
-    begin_positions_vectors = process_input_matrix(begin_positions)
-    result = concatenate_result_with_input(begin_positions_vectors, d_y)
-
-    return result
+    return particles_with_optical_function
 
 
 def __merge_stations(stations):

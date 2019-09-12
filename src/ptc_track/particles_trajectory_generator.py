@@ -62,7 +62,8 @@ def generate_from_range(madx_configuration, bunch_configuration):
 
 def transport(madx_configuration, particles):
     """
-    Transport particles described in matrix. Matrix format: x, theta x, y, theta y, pt
+    Transport particles described in matrix. Coordinates of input must be canonical- they will be transformed to
+    geometrical. Matrix format: x, theta x, y, theta y, pt
     :param particles:
     :param madx_configuration:
     :return: dict with matrices describing position of particles on stations, matrix format:
@@ -73,7 +74,11 @@ def transport(madx_configuration, particles):
     particles_with_t = np.insert(particles, 4, 0, axis=1)
 
     segments = mr.compute_trajectory(particles_with_t.T, madx_configuration, number_of_processes)
+
     return segments
+
+
+
 
 
 
