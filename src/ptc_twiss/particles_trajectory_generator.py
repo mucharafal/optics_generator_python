@@ -33,7 +33,12 @@ def generate_random_particles(madx_configuration, bunch_configuration):
 
 
 def transport(madx_configuration, particles):
-    transported = tr.transport(madx_configuration, particles)
+    # print("PTC_TWISS original particles")
+    # print(particles)
+    transformed_coordinates_particles = transform_to_geometrical_coordinates(particles)
+    # print("PTC_TWISS transformed")
+    # print(transformed_coordinates_particles)
+    transported = tr.transport(madx_configuration, transformed_coordinates_particles)
     segments = dict()
     segments["start"] = transported[np.isclose(transported.T[indexes.ptc_twiss["s"]], 0)]
     if madx_configuration.s != -1:
@@ -43,3 +48,10 @@ def transport(madx_configuration, particles):
     else:
         segments["end"] = transported
         return segments
+
+
+def transform_to_geometrical_coordinates(particles):
+    particles.T[1] /= 1 + particles.T[4]
+    particles.T[3] /= 1 + particles.T[4]
+    return particles
+

@@ -8,7 +8,7 @@ import os
 
 def transport(madx_configuration, dataset):
     """
-    Transport particles using twiss
+    Transport particles using ptc_twiss
     :param madx_configuration: configuration for run madx with ptc_twiss command
     :type madx_configuration: TwissConfiguration
     :param dataset: matrix with columns: x, theta x, y, theta y, pt
