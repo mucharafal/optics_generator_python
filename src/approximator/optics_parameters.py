@@ -1,7 +1,6 @@
 import approximator.particles_trajectory_generator as ptg
 import numpy as np
 import copy
-import ROOT
 
 
 def compute_v_x(approximator, bunch_configuration):

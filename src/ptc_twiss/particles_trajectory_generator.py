@@ -35,7 +35,7 @@ def generate_random_particles(madx_configuration, bunch_configuration):
 def transport(madx_configuration, particles):
     # print("PTC_TWISS original particles")
     # print(particles)
-    transformed_coordinates_particles = transform_to_geometrical_coordinates(particles)
+    # transformed_coordinates_particles = transform_to_geometrical_coordinates(particles)
     # print("PTC_TWISS transformed")
     # print(transformed_coordinates_particles)
     transported = tr.transport(madx_configuration, particles)
