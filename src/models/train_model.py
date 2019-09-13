@@ -4,7 +4,7 @@ from ptc_track.matrix_indexes import ptc_track as index_map
 import numpy as np
 import ROOT
 from concurrent.futures import ProcessPoolExecutor
-import data.bunch_configuration as buc
+import data.grid_configuration as buc
 import utils.root_initializer as root_initializer
 import models.approximator as stub_app
 import xml.etree.ElementTree as ET
@@ -66,7 +66,7 @@ def get_max_pt_degree(configuration):
 
 
 def get_bunch_configuration_from(configuration):
-    return buc.BunchConfiguration(
+    return buc.GridConfiguration(
         float(configuration["x_min"]), float(configuration["x_max"]), 1,
         float(configuration["theta_x_min"]), float(configuration["theta_x_max"]), 1,
         float(configuration["y_min"]), float(configuration["y_max"]), 1,

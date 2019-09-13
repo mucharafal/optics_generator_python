@@ -25,7 +25,6 @@ def compute_optical_function(universal_transporter, particles, delta_parameter_n
     delta_x = compute_delta(particles_copy, delta_parameter_name, delta_alternative_value)
     particles_copy.T[columns_mapping[delta_parameter_name]] += delta_x
     x2 = universal_transporter(particles_copy).T[columns_mapping[transported_parameter_name]]
-    print(x2.shape)
     optical_function = compute_differential(x2, x1, delta_x)
     particles_with_optical_function = add_column_to(particles, optical_function)
     return particles_with_optical_function
@@ -51,7 +50,5 @@ def compute_differential(vector1, vector2, delta_x):
 
 
 def add_column_to(matrix, column):
-    print(matrix.shape)
-    print(column.shape)
     return np.append(matrix, np.reshape(column, (-1, 1)), axis=1)
 

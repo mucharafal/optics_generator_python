@@ -38,7 +38,7 @@ def transport(madx_configuration, particles):
     transformed_coordinates_particles = transform_to_geometrical_coordinates(particles)
     # print("PTC_TWISS transformed")
     # print(transformed_coordinates_particles)
-    transported = tr.transport(madx_configuration, transformed_coordinates_particles)
+    transported = tr.transport(madx_configuration, particles)
     segments = dict()
     segments["start"] = transported[np.isclose(transported.T[indexes.ptc_twiss["s"]], 0)]
     if madx_configuration.s != -1:
@@ -51,7 +51,8 @@ def transport(madx_configuration, particles):
 
 
 def transform_to_geometrical_coordinates(particles):
-    particles.T[1] /= 1 + particles.T[4]
-    particles.T[3] /= 1 + particles.T[4]
-    return particles
+    new_particles_matrix = np.copy(particles)
+    new_particles_matrix.T[1] /= 1 + new_particles_matrix.T[4]
+    new_particles_matrix.T[3] /= 1 + new_particles_matrix.T[4]
+    return new_particles_matrix
 
