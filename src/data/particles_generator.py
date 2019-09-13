@@ -58,21 +58,13 @@ def generate_particles_randomly(beam_configuration):
     :param beam_configuration
     :return: numpy matrix with number_of_particles x 5 shape
     """
-    min_values = [beam_configuration.x_min, beam_configuration.theta_x_min, beam_configuration.y_min,
-                  beam_configuration.theta_y_min, beam_configuration.pt_min]
-    max_values = [beam_configuration.x_max, beam_configuration.theta_x_max, beam_configuration.y_max,
-                  beam_configuration.theta_y_max, beam_configuration.pt_max]
+    min_vector = np.array([beam_configuration.x_min, beam_configuration.theta_x_min, beam_configuration.y_min,
+                           beam_configuration.theta_y_min, beam_configuration.pt_min])
+    max_vector = np.array([beam_configuration.x_max, beam_configuration.theta_x_max, beam_configuration.y_max,
+                           beam_configuration.theta_y_max, beam_configuration.pt_max])
 
     number_of_parameters = 5
     number_of_particles = beam_configuration.get_number_of_particles()
-
-    max_vector = np.zeros((1, number_of_parameters))
-    min_vector = np.zeros((1, number_of_parameters))
-
-    # TODO refactor
-    for i in range(number_of_parameters):
-        max_vector[0][i] = max_values[i]
-        min_vector[0][i] = min_values[i]
 
     grid = (max_vector - min_vector) * np.random.random_sample((number_of_particles, number_of_parameters)) + min_vector
     return grid
