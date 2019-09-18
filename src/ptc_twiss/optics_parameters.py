@@ -4,6 +4,26 @@ import numpy as np
 import copy
 
 
+def compute_v_x(madx_configuration, bunch_configuration):
+    """
+    Compute values of V x on grid specified in bunch configuration
+    :param madx_configuration: TwissConfiguration object
+    :param bunch_configuration: BunchConfiguration object, specification of grid
+    :return: matrix with columns: x, theta_x, y, theta_y, pt, V x
+    """
+    return __compute_optical_function(madx_configuration, bunch_configuration, "V x")
+
+
+def compute_v_y(madx_configuration, bunch_configuration):
+    """
+    Compute values of V y on grid specified in bunch configuration
+    :param madx_configuration: TwissConfiguration object
+    :param bunch_configuration: BunchConfiguration object, specification of grid
+    :return: matrix with columns: x, theta_x, y, theta_y, pt, V y
+    """
+    return __compute_optical_function(madx_configuration, bunch_configuration, "V y")
+
+
 def compute_l_x(madx_configuration, bunch_configuration):
     """
     Compute values of L x on grid specified in bunch configuration

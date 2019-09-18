@@ -85,7 +85,7 @@ def generate_dataset(x_name, y_name, hue_name, datasets):
 
 def plot_datasets(x_name, y_name, legend_title, datasets, title_sufix="",
                   plot_axes=None, plot_x_pos=None, plot_y_pos=None,
-                  plot_function=sns.lineplot, x_axis_configuration=None, y_axis_configuration=None):
+                  plot_function=sns.lineplot, x_axis_configuration=None, y_axis_configuration=None, **kwargs):
     """
     Plot different datasets on one plot.
     :param x_name: name of x parameter in datasets
@@ -118,15 +118,15 @@ def plot_datasets(x_name, y_name, legend_title, datasets, title_sufix="",
     title += "\n" + title_sufix
 
     if plot_axes is None:   #s = 1, palette=["black"], markers=["x"] for plot errors
-        axes = plot_function(x=x_name, y=y_name, hue=legend_title, data=frame, style=legend_title)
+        axes = plot_function(x=x_name, y=y_name, hue=legend_title, data=frame, style=legend_title, **kwargs)
     elif plot_x_pos is None:
-        axes = plot_function(x=x_name, y=y_name, hue=legend_title, data=frame, ax=plot_axes, style=legend_title)
+        axes = plot_function(x=x_name, y=y_name, hue=legend_title, data=frame, ax=plot_axes, style=legend_title, **kwargs)
     elif plot_y_pos is None:
         axes = plot_function(x=x_name, y=y_name, hue=legend_title, data=frame, ax=plot_axes[plot_x_pos],
-                             style=legend_title)
+                             style=legend_title, **kwargs)
     else:
         axes = plot_function(x=x_name, y=y_name, hue=legend_title, data=frame, ax=plot_axes[plot_x_pos][plot_y_pos],
-                             style=legend_title)
+                             style=legend_title, **kwargs)
 
     axes.set_xlabel(x_full_name)
     axes.set_ylabel(y_full_name)

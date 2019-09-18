@@ -23,7 +23,7 @@ def plot_optical_functions(bunch_configuration,
                            vector_x_name, optic_parameter_name, title="",
                            plot_size=5, plot_axes=None, plot_x_pos=-1, plot_y_pos=-1, plot_function=sns.lineplot,
                            custom_mapping = optical_functions_matrix_mapping, x_axis_configuration=None,
-                           y_axis_configuration=None):
+                           y_axis_configuration=None, **kwargs):
     """
     Plot optical functions specified in configuration
     :param bunch_configuration: configuration of dataset
@@ -42,7 +42,7 @@ def plot_optical_functions(bunch_configuration,
     return plot_optical_functions_with_different_datasets({"": bunch_configuration}, optics_functions_with_configurations,
                                                           vector_x_name, optic_parameter_name, title, plot_size,
                                                           plot_axes, plot_x_pos, plot_y_pos, plot_function, custom_mapping,
-                                                          x_axis_configuration, y_axis_configuration)
+                                                          x_axis_configuration, y_axis_configuration, **kwargs)
 
 
 def plot_optical_functions_with_different_datasets(bunch_configurations, optics_functions_with_configurations,
@@ -50,7 +50,7 @@ def plot_optical_functions_with_different_datasets(bunch_configurations, optics_
                                                    plot_axes=None, plot_x_pos=-1, plot_y_pos=-1,
                                                    plot_function=sns.lineplot,
                                                    custom_mapping=optical_functions_matrix_mapping,
-                                                   x_axis_configuration=None, y_axis_configuration=None):
+                                                   x_axis_configuration=None, y_axis_configuration=None, **kwargs):
     """
     Plot optical functions specified in configuration
     :param bunch_configurations: map, where key is name of dataset, value- configuration of dataset
@@ -84,6 +84,6 @@ def plot_optical_functions_with_different_datasets(bunch_configurations, optics_
 
     return visualize.plot_datasets(vector_x_name, optic_parameter_name, "transporters", datasets, title,
                                    plot_axes, plot_x_pos, plot_y_pos, plot_function, x_axis_configuration=x_axis_configuration,
-                                   y_axis_configuration=y_axis_configuration)
+                                   y_axis_configuration=y_axis_configuration, **kwargs)
 
 
