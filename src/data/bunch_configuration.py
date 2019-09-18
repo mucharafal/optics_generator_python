@@ -30,11 +30,13 @@ class GridConfiguration:
                    theta_x_mean, sigma_theta_x, theta_x_resolution,
                    y_mean, sigma_y, y_resolution,
                    theta_y_mean, sigma_theta_y, theta_y_resolution,
+                   xa_mean, sigma_xa, xa_resolution,
                    pt_mean, sigma_pt, pt_resolution):
         return GridConfiguration(x_mean - sigma_x, x_mean + sigma_x, x_resolution,
                                  theta_x_mean - sigma_theta_x, theta_x_mean + sigma_theta_x, theta_x_resolution,
                                  y_mean - sigma_y, y_mean + sigma_y, y_resolution,
                                  theta_y_mean - sigma_theta_y, theta_y_mean + sigma_theta_y, theta_y_resolution,
+                                 xa_mean - sigma_xa, xa_mean + sigma_xa, xa_resolution,
                                  pt_mean - sigma_pt, pt_mean + sigma_pt, pt_resolution)
 
     def get_number_of_particles(self):

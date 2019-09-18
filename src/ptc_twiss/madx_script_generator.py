@@ -12,6 +12,7 @@ def generate_configuration_file(madx_configuration, row):
         file_object.write("theta_x = " + str(row["theta x"]) + ";\n")
         file_object.write("y = " + str(row["y"]) + ";\n")
         file_object.write("theta_y = " + str(row["theta y"]) + ";\n")
+        file_object.write("crossing_angle = " + str(row["crossing angle"]) + ";\n")
         file_object.write("pt = " + str(row["pt"]) + ";\n")
         with open(madx_configuration.path_to_madx_script) as source_file_object:
             for line in source_file_object:
