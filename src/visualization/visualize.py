@@ -41,16 +41,14 @@ def plot_from_two_matrices(x_name, y_name, x_matrix, y_matrix, x_matrix_mapping,
     frame = pd.DataFrame(data={x_full_name: vector_x, y_full_name: vector_y})
 
     if plot_axes is None:
-        axes = plot_function(x=x_full_name, y=y_full_name, data=frame, palette=[color], markers=[marker], s=1)
+        axes = plot_function(x=x_full_name, y=y_full_name, data=frame, palette=[color])
     elif plot_x_pos == -1:
-        axes = plot_function(x=x_full_name, y=y_full_name, data=frame, ax=plot_axes, palette=[color], markers=[marker],
-                             s=1)
+        axes = plot_function(x=x_full_name, y=y_full_name, data=frame, ax=plot_axes, palette=[color])
     elif plot_y_pos == -1:
-        axes = plot_function(x=x_full_name, y=y_full_name, data=frame, ax=plot_axes[plot_x_pos], palette=[color],
-                             markers=[marker], s=1)
+        axes = plot_function(x=x_full_name, y=y_full_name, data=frame, ax=plot_axes[plot_x_pos], palette=[color])
     else:
         axes = plot_function(x=x_full_name, y=y_full_name, data=frame, ax=plot_axes[plot_x_pos][plot_y_pos],
-                             palette=[color], markers=[marker], s=1)
+                             palette=[color])
 
     axes.set_title(title)
     axes.set_xlim(np.min(vector_x), np.max(vector_x))
