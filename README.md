@@ -70,5 +70,5 @@ Take a look on notebooks folder. It contain some examples to use visualization f
 To make parametrisation run script: src/models/make_parametrisation.py
 Example of use:
 ```
-python3 make_parametrisation.py $CERNBOX_HOME/SWAN_projects/folder_with_optics/conf.xml $CERNBOX_HOME/SWAN_projects/optics_generator_python/src $CERNBOX_HOME/SWAN_projects/folder_with_optics
+python3 make_parametrisation.py $CERNBOX_HOME/SWAN_projects/folder_with_optics/conf.xml $CERNBOX_HOME/SWAN_projects/optics_generator_python $CERNBOX_HOME/SWAN_projects/folder_with_optics
 ```
