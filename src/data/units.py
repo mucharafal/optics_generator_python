@@ -27,7 +27,8 @@ unit_map = {
     "delta theta x": nanoradians,
     "delta y": micrometers,
     "delta theta y": nanoradians,
-    "delta pt": no_unit
+    "delta pt": no_unit,
+    "crossing angle": microradians
 }
 multiplier_for_unit = {
     "x": 1000,
@@ -47,7 +48,8 @@ multiplier_for_unit = {
     "delta theta x": 1e9,
     "delta y": 1e6,
     "delta theta y": 1e9,
-    "delta pt": 1
+    "delta pt": 1,
+    "crossing angle": 1e6
 }
 alternative_version = {
     "x": r"x",
@@ -66,5 +68,6 @@ alternative_version = {
     "delta theta x": r"$\Delta \theta x$",
     "delta y": r"$\Delta y$",
     "delta theta y": r"$\Delta \theta y$",
-    "delta pt": r"$\Delta \xi$"
+    "delta pt": r"$\Delta \xi$",
+    "crossing angle": r"XA"
 }
