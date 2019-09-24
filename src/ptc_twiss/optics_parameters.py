@@ -130,6 +130,7 @@ def prepare_matrix(particles, parameter_name):
     result_matrix = np.append(result_matrix, begin_parameters.T[tmi.ptc_twiss["theta x"]].reshape((-1, 1)), axis=1)
     result_matrix = np.append(result_matrix, begin_parameters.T[tmi.ptc_twiss["y"]].reshape((-1, 1)), axis=1)
     result_matrix = np.append(result_matrix, begin_parameters.T[tmi.ptc_twiss["theta y"]].reshape((-1, 1)), axis=1)
+    result_matrix = np.append(result_matrix, begin_parameters.T[tmi.ptc_twiss["crossing angle"]].reshape((-1, 1)), axis=1)
     result_matrix = np.append(result_matrix, begin_parameters.T[tmi.ptc_twiss["pt"]].reshape((-1, 1)), axis=1)
     result_matrix = np.append(result_matrix, end_parameters.T[tmi.ptc_twiss[parameter_name]].reshape((-1, 1)), axis=1)
     return result_matrix

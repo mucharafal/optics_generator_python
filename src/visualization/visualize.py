@@ -25,8 +25,8 @@ def plot_from_two_matrices(x_name, y_name, x_matrix, y_matrix, x_matrix_mapping,
     x_alternative_version = alternative_version[x_name]
     y_alternative_version = alternative_version[y_name]
 
-    x_full_name = x_name_prefix + x_alternative_version + unit_map[x_name]
-    y_full_name = y_name_prefix + y_alternative_version + unit_map[y_name]
+    x_full_name = "x: " + x_name_prefix + x_alternative_version + unit_map[x_name]
+    y_full_name = "y: " + y_name_prefix + y_alternative_version + unit_map[y_name]
 
     title = y_name_prefix + y_alternative_version + " vs " + x_name_prefix + x_alternative_version
     title += "\n" + title_sufix
