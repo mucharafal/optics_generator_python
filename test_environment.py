@@ -17,6 +17,19 @@ def main():
         raise TypeError(
             "This project requires Python {}. Found: Python {}".format(
                 required_major, sys.version))
+
+    # Test import ROOT
+    try:
+        import ROOT
+    except ModuleNotFoundError:
+        print("Cannot import ROOT.")
+
+    # Test import seaborn
+    try:
+        import seaborn
+    except ModuleNotFoundError:
+        print("Cannot import seaborn- have you installed it?")
+
     else:
         print(">>> Development environment passes all tests!")
 

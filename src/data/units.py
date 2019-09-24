@@ -65,9 +65,11 @@ alternative_version = {
     "V y": r"$V_y$",
     "s": r"s",
     "delta x": r"$\Delta x$",
-    "delta theta x": r"$\Delta \theta x$",
+    "delta theta x": r"$\Delta \theta_x$",
     "delta y": r"$\Delta y$",
     "delta theta y": r"$\Delta \theta y$",
     "delta pt": r"$\Delta \xi$",
     "crossing angle": r"XA"
+    "delta theta y": r"$\Delta \theta_y$",
+    "delta pt": r"$\Delta \xi$"
 }

@@ -1,6 +1,7 @@
 import data.particles_generator as pg
 import ptc_track.runner as mr
 import numpy as np
+import ptc_track.matrix_indexes as ptc_track_indexes
 
 
 def generate_random_particles(madx_configuration, bunch_configuration, target):
@@ -62,7 +63,8 @@ def generate_from_range(madx_configuration, bunch_configuration):
 
 def transport(madx_configuration, particles):
     """
-    Transport particles described in matrix. Matrix format: x, theta x, y, theta y, pt
+    Transport particles described in matrix. Coordinates of input must be canonical- they will be transformed to
+    geometrical. Matrix format: x, theta x, y, theta y, pt
     :param particles:
     :param madx_configuration:
     :return: dict with matrices describing position of particles on stations, matrix format:
@@ -73,7 +75,28 @@ def transport(madx_configuration, particles):
     particles_with_t = np.insert(particles, 4, 0, axis=1)
 
     segments = mr.compute_trajectory(particles_with_t.T, madx_configuration, number_of_processes)
+
     return segments
+
+
+def apply_configuration_to_transporter(configuration):
+    return lambda x: transport(configuration, x)
+
+
+def normalize_ptc_track_transporter_output(transporter):
+    def normalize_matrix(ptc_track_output):
+        columns_indexes = [ptc_track_indexes.ptc_track[column_name] for column_name in ["x", "theta x", "y", "theta y", "pt"]]
+        return ptc_track_output.T[columns_indexes].T
+
+    def normalized_transporter(particles):
+        segments = transporter(particles)
+        last_segment = segments["end"]
+        return normalize_matrix(last_segment)
+
+    return normalized_transporter
+
+
+
 
 
 

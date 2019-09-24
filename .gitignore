@@ -1,2 +1,5 @@
 .idea
 .vscode
+root_libs/*
+src/*/__pycache__/
+notebooks/.sys*

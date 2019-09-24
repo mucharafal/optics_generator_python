@@ -1,7 +1,6 @@
 import approximator.particles_trajectory_generator as ptg
 import numpy as np
 import copy
-import ROOT
 
 
 def compute_v_x(approximator, bunch_configuration):
@@ -176,32 +175,6 @@ def compute_d_y(approximator, bunch_configuration):
     result = concatenate_result_with_input(begin_positions_vectors, d_y)
 
     return result
-
-
-def compute_d_x_vs_s(approximator_configuration, bunch_configuration):
-    file = ROOT.TFile.Open(approximator_configuration.path_to_root_file)
-    approximators = file.GetListOfKeys()
-    s_vs_dx = []
-    for approximator_handle in approximators:
-        approximator = approximator_handle.ReadObj()
-        dataset = compute_d_x(approximator, bunch_configuration)
-        d_x = dataset.T[5][0]
-        s_vs_dx.append([approximator.GetEnd(), d_x])
-
-    return np.array(s_vs_dx).reshape((-1, 2))
-
-
-def compute_d_y_vs_s(approximator_configuration, bunch_configuration):
-    file = ROOT.TFile.Open(approximator_configuration.path_to_root_file)
-    approximators = file.GetListOfKeys()
-    s_vs_dy = []
-    for approximator_handle in approximators:
-        approximator = approximator_handle.ReadObj()
-        dataset = compute_d_y(approximator, bunch_configuration)
-        d_y = dataset.T[5][0]
-        s_vs_dy.append([approximator.GetEnd(), d_y])
-
-    return np.array(s_vs_dy).reshape((-1, 2))
 
 
 def __get_delta(min, max):
