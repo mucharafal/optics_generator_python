@@ -38,7 +38,7 @@ Project Organization
 ### Download project
 
 Download zip from https://gitlab.cern.ch/rmucha/optics_generator_python/tree/v0.1.2-SWAN   
-move it to folder SWAN_projects on cernbox
+move it to folder SWAN_projects on cernbox (/eos/user/u/username/SWAN_projects)
 Unzip it and change name on optics_generator_python   
 You can do this by terminal (button '>_' in right upper corner)
 ```
@@ -49,19 +49,28 @@ rm optics_generator_python-v0.1.2-SWAN.zip
 ```
 
 ### First run
+https://swan.cern.ch   
 Setup SWAN:   
-stack: 96 python 3   
-start script: /eos/user/firstLetterOfCernLogin/CernLogin/SWAN_projects/optics_generator_python/swan_start_script    
-or alternatively:
-/eos/user/\`username=\\\`whoami\\\`;echo ${username:0:1}\`/\`whoami\`/SWAN_projects/optics_generator_python/swan_start_script  
+Software stack: 96 python 3   
+Environment script: $CERNBOX_HOME/SWAN_projects/optics_generator_python/swan_start_script
 It is also advised to choose 4 cores
 
 ### Adding optics
 
 Folder with optics should be in SWAN_projects folder.   
 Example optics you can copy from: https://cernbox.cern.ch/index.php/s/OykQjwp3L5TJN4z
+After that tree of folders should looks like:
+```
+SWAN_projects
+    ├── optics_generator_python
+    └── folder_with_optics
+```
 
 ### Using
 
 Take a look on notebooks folder. It contain some examples to use visualization function.   
 To make parametrisation run script: src/models/make_parametrisation.py
+Example of use:
+```
+python3 make_parametrisation.py $CERNBOX_HOME/SWAN_projects/folder_with_optics/conf.xml $CERNBOX_HOME/SWAN_projects/optics_generator_python $CERNBOX_HOME/SWAN_projects/folder_with_optics
+```
