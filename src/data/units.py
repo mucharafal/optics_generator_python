@@ -1,7 +1,8 @@
+import data.parameters_names as parameters
+
 millimeters = " [mm]"
 meters = " [m]"
 microradians = " [μrad]"
-seconds = " [s]"
 energy = " [TeV]"
 no_unit = " "
 centimeters = " [cm]"
@@ -9,67 +10,63 @@ nanometers = " [nm]"
 micrometers = " [μm]"
 nanoradians = " [nrad]"
 unit_map = {
-    "x": millimeters,
-    "theta x": microradians,
-    "y": millimeters,
-    "theta y": microradians,
-    "t": seconds,
-    "pt": no_unit,
-    "s": meters,
-    "e": energy,
-    "D x": centimeters,
-    "D y": centimeters,
-    "V x": no_unit,
-    "V y": no_unit,
-    "L x": meters,
-    "L y": meters,
-    "delta x": micrometers,
-    "delta theta x": nanoradians,
-    "delta y": micrometers,
-    "delta theta y": nanoradians,
-    "delta pt": no_unit,
-    "crossing angle": microradians
+    parameters.ParametersNames.X:               millimeters,
+    parameters.ParametersNames.THETA_X:         microradians,
+    parameters.ParametersNames.Y:               millimeters,
+    parameters.ParametersNames.THETA_Y:         microradians,
+    parameters.ParametersNames.PT:              no_unit,
+    parameters.ParametersNames.S:               meters,
+    parameters.ParametersNames.E:               energy,
+    parameters.ParametersNames.D_X:             centimeters,
+    parameters.ParametersNames.D_Y:             centimeters,
+    parameters.ParametersNames.V_X:             no_unit,
+    parameters.ParametersNames.V_Y:             no_unit,
+    parameters.ParametersNames.L_X:             meters,
+    parameters.ParametersNames.L_Y:             meters,
+    parameters.ParametersNames.DELTA_X:         micrometers,
+    parameters.ParametersNames.DELTA_THETA_X:   nanoradians,
+    parameters.ParametersNames.DELTA_Y:         micrometers,
+    parameters.ParametersNames.DELTA_THETA_Y:   nanoradians,
+    parameters.ParametersNames.DELTA_PT:        no_unit,
+    parameters.ParametersNames.CROSSING_ANGLE:  microradians
 }
 multiplier_for_unit = {
-    "x": 1000,
-    "theta x": 1e6,
-    "y": 1000,
-    "theta y": 1e6,
-    "t": 1,
-    "pt": 1,
-    "D x": 100,
-    "D y": 100,
-    "s": 1,
-    "V x": 1,
-    "V y": 1,
-    "L x": 1,
-    "L y": 1,
-    "delta x": 1e6,
-    "delta theta x": 1e9,
-    "delta y": 1e6,
-    "delta theta y": 1e9,
-    "delta pt": 1,
-    "crossing angle": 1e6
+    parameters.ParametersNames.X:               1000,
+    parameters.ParametersNames.THETA_X:         1e6,
+    parameters.ParametersNames.Y:               1000,
+    parameters.ParametersNames.THETA_Y:         1e6,
+    parameters.ParametersNames.PT:              1,
+    parameters.ParametersNames.D_X:             100,
+    parameters.ParametersNames.D_Y:             100,
+    parameters.ParametersNames.S:               1,
+    parameters.ParametersNames.V_X:             1,
+    parameters.ParametersNames.V_Y:             1,
+    parameters.ParametersNames.L_X:             1,
+    parameters.ParametersNames.L_Y:             1,
+    parameters.ParametersNames.DELTA_X:         1e6,
+    parameters.ParametersNames.DELTA_THETA_X:   1e9,
+    parameters.ParametersNames.DELTA_Y:         1e6,
+    parameters.ParametersNames.DELTA_THETA_Y:   1e9,
+    parameters.ParametersNames.DELTA_PT:        1,
+    parameters.ParametersNames.CROSSING_ANGLE:  1e6
 }
 alternative_version = {
-    "x": r"x",
-    "theta x": r"$\theta_x$",
-    "y": r"y",
-    "theta y": r"$\theta_y$",
-    "pt": r"$\xi$",
-    "D x": r"$D_x$",
-    "D y": r"$D_y$",
-    "L x": r"$L_x$",
-    "L y": r"$L_y$",
-    "V x": r"$V_x$",
-    "V y": r"$V_y$",
-    "s": r"s",
-    "delta x": r"$\Delta x$",
-    "delta theta x": r"$\Delta \theta_x$",
-    "delta y": r"$\Delta y$",
-    "delta theta y": r"$\Delta \theta y$",
-    "delta pt": r"$\Delta \xi$",
-    "crossing angle": r"XA"
-    "delta theta y": r"$\Delta \theta_y$",
-    "delta pt": r"$\Delta \xi$"
+    parameters.ParametersNames.X:               r"x",
+    parameters.ParametersNames.THETA_X:         r"$\theta_x$",
+    parameters.ParametersNames.Y:               r"y",
+    parameters.ParametersNames.THETA_Y:         r"$\theta_y$",
+    parameters.ParametersNames.PT:              r"$\xi$",
+    parameters.ParametersNames.D_X:             r"$D_x$",
+    parameters.ParametersNames.D_Y:             r"$D_y$",
+    parameters.ParametersNames.L_X:             r"$L_x$",
+    parameters.ParametersNames.L_Y:             r"$L_y$",
+    parameters.ParametersNames.V_X:             r"$V_x$",
+    parameters.ParametersNames.V_Y:             r"$V_y$",
+    parameters.ParametersNames.S:               r"s",
+    parameters.ParametersNames.DELTA_X:         r"$\Delta x$",
+    parameters.ParametersNames.DELTA_THETA_X:   r"$\Delta \theta_x$",
+    parameters.ParametersNames.DELTA_Y:         r"$\Delta y$",
+    parameters.ParametersNames.DELTA_THETA_Y:   r"$\Delta \theta_y$",
+    parameters.ParametersNames.DELTA_PT:        r"$\Delta \xi$",
+    parameters.ParametersNames.CROSSING_ANGLE:  r"XA"
 }
