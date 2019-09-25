@@ -1,3 +1,4 @@
+from data.parameters_names import ParametersNames as Parameters
 import ptc_twiss.particles_trajectory_generator as ptg
 import ptc_twiss.matrix_indexes as tmi
 import numpy as np
@@ -126,11 +127,11 @@ def prepare_matrix(particles, parameter_name):
     """
     begin_parameters = particles["start"]
     end_parameters = particles["end"]
-    result_matrix = begin_parameters.T[tmi.ptc_twiss["x"]].reshape((-1, 1))
-    result_matrix = np.append(result_matrix, begin_parameters.T[tmi.ptc_twiss["theta x"]].reshape((-1, 1)), axis=1)
-    result_matrix = np.append(result_matrix, begin_parameters.T[tmi.ptc_twiss["y"]].reshape((-1, 1)), axis=1)
-    result_matrix = np.append(result_matrix, begin_parameters.T[tmi.ptc_twiss["theta y"]].reshape((-1, 1)), axis=1)
+    result_matrix = begin_parameters.T[tmi.ptc_twiss[Parameters.X]].reshape((-1, 1))
+    result_matrix = np.append(result_matrix, begin_parameters.T[tmi.ptc_twiss[Parameters.THETA_X]].reshape((-1, 1)), axis=1)
+    result_matrix = np.append(result_matrix, begin_parameters.T[tmi.ptc_twiss[Parameters.Y]].reshape((-1, 1)), axis=1)
+    result_matrix = np.append(result_matrix, begin_parameters.T[tmi.ptc_twiss[Parameters.THETA_Y]].reshape((-1, 1)), axis=1)
     result_matrix = np.append(result_matrix, begin_parameters.T[tmi.ptc_twiss["crossing angle"]].reshape((-1, 1)), axis=1)
-    result_matrix = np.append(result_matrix, begin_parameters.T[tmi.ptc_twiss["pt"]].reshape((-1, 1)), axis=1)
+    result_matrix = np.append(result_matrix, begin_parameters.T[tmi.ptc_twiss[Parameters.PT]].reshape((-1, 1)), axis=1)
     result_matrix = np.append(result_matrix, end_parameters.T[tmi.ptc_twiss[parameter_name]].reshape((-1, 1)), axis=1)
     return result_matrix

@@ -1448,7 +1448,7 @@ void TMultiDimFet::MakeHistograms(Option_t *option)
    Int_t i = 0;
 
    // Histogram of original variables
-   if (opt.Contains("x") || opt.Contains("a")) {
+   if (opt.Contains(Parameters.X) || opt.Contains("a")) {
       SETBIT(fHistogramMask,HIST_XORIG);
       for (i = 0; i < fNVariables; i++)
          if (!fHistograms->FindObject(Form("x_%d_orig",i)))
@@ -2148,7 +2148,7 @@ void TMultiDimFet::Print(Option_t *option) const
       std::cout << std::endl
          << "  f[";
       for (i = 0; i < fNVariables; i++) {
-         std::cout << "y" << i;
+         std::cout << Parameters.Y << i;
          if (i != fNVariables-1) std::cout << ", ";
       }
       std::cout << "] := ";
@@ -2201,7 +2201,7 @@ void TMultiDimFet::PrintPolynomialsSpecial(Option_t *option) const
       std::cout << std::endl
          << "  f[";
       for (i = 0; i < fNVariables; i++) {
-         std::cout << "y" << i;
+         std::cout << Parameters.Y << i;
          if (i != fNVariables-1) std::cout << ", ";
       }
       std::cout << "] := "<<fMeanQuantity<<" + ";

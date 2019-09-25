@@ -3,6 +3,7 @@ import ptc_track.optics_parameters as mop
 import numpy as np
 import visualization.visualize as visualizer
 import seaborn as sns
+from data.parameters_names import ParametersNames as Parameters
 
 
 def compare_d_x(bunch_configuration, approximator, madx_configuration):
@@ -83,11 +84,11 @@ def compare_all(bunch_configuration, approximator, madx_configuration):
 
 def visualize_diff(differences_with_position, parameter_name, optical_function_name):
     mapping = {
-        "x": 0,
-        "theta x": 1,
-        "y": 2,
-        "theta y": 3,
-        "pt": 4,
+        Parameters.X: 0,
+        Parameters.THETA_X: 1,
+        Parameters.Y: 2,
+        Parameters.THETA_Y: 3,
+        Parameters.PT: 4,
         optical_function_name: 5
     }
     axes = visualizer.plot_from_one_matrix(parameter_name, optical_function_name, differences_with_position, mapping,

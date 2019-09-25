@@ -2,6 +2,7 @@ import data.particles_generator as pg
 import ptc_track.runner as mr
 import numpy as np
 import ptc_track.matrix_indexes as ptc_track_indexes
+from data.parameters_names import ParametersNames as Parameters
 
 
 def generate_random_particles(madx_configuration, bunch_configuration, target):
@@ -85,7 +86,7 @@ def apply_configuration_to_transporter(configuration):
 
 def normalize_ptc_track_transporter_output(transporter):
     def normalize_matrix(ptc_track_output):
-        columns_indexes = [ptc_track_indexes.ptc_track[column_name] for column_name in ["x", "theta x", "y", "theta y", "pt"]]
+        columns_indexes = [ptc_track_indexes.ptc_track[column_name] for column_name in [Parameters.X, Parameters.THETA_X, Parameters.Y, Parameters.THETA_Y, Parameters.PT]]
         return ptc_track_output.T[columns_indexes].T
 
     def normalized_transporter(particles):

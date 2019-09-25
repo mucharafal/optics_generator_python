@@ -1,6 +1,7 @@
 import approximator.particles_trajectory_generator as ptg
 import numpy as np
 import copy
+from data.parameters_names import ParametersNames as Parameters
 
 
 def compute_v_x(approximator, bunch_configuration):
@@ -19,8 +20,8 @@ def compute_v_x(approximator, bunch_configuration):
     end_positions = reference_particles["end"]
     shifted_end_positions = shifted_particles["end"]
 
-    x_end_positions = __get_vector_of_transported_matrix("x", end_positions)
-    x_shifted_end_positions = __get_vector_of_transported_matrix("x", shifted_end_positions)
+    x_end_positions = __get_vector_of_transported_matrix(Parameters.X, end_positions)
+    x_shifted_end_positions = __get_vector_of_transported_matrix(Parameters.X, shifted_end_positions)
 
     v_x = (x_shifted_end_positions - x_end_positions) / delta
 
@@ -46,8 +47,8 @@ def compute_v_y(approximator, bunch_configuration):
     end_positions = reference_particles["end"]
     shifted_end_positions = shifted_particles["end"]
 
-    y_end_positions = __get_vector_of_transported_matrix("y", end_positions)
-    y_shifted_end_positions = __get_vector_of_transported_matrix("y", shifted_end_positions)
+    y_end_positions = __get_vector_of_transported_matrix(Parameters.Y, end_positions)
+    y_shifted_end_positions = __get_vector_of_transported_matrix(Parameters.Y, shifted_end_positions)
 
     v_y = (y_shifted_end_positions - y_end_positions) / delta
 
@@ -73,8 +74,8 @@ def compute_l_x(approximator, bunch_configuration):
     end_positions = reference_particles["end"]
     shifted_end_positions = shifted_particles["end"]
 
-    x_end_positions = __get_vector_of_transported_matrix("x", end_positions)
-    x_shifted_end_positions = __get_vector_of_transported_matrix("x", shifted_end_positions)
+    x_end_positions = __get_vector_of_transported_matrix(Parameters.X, end_positions)
+    x_shifted_end_positions = __get_vector_of_transported_matrix(Parameters.X, shifted_end_positions)
 
     l_x = (x_shifted_end_positions - x_end_positions) / delta
 
@@ -100,8 +101,8 @@ def compute_l_y(approximator, bunch_configuration):
     end_positions = reference_particles["end"]
     shifted_end_positions = shifted_particles["end"]
 
-    y_end_positions = __get_vector_of_transported_matrix("y", end_positions)
-    y_shifted_end_positions = __get_vector_of_transported_matrix("y", shifted_end_positions)
+    y_end_positions = __get_vector_of_transported_matrix(Parameters.Y, end_positions)
+    y_shifted_end_positions = __get_vector_of_transported_matrix(Parameters.Y, shifted_end_positions)
 
     l_y = (y_shifted_end_positions - y_end_positions) / delta
 
@@ -133,8 +134,8 @@ def compute_d_x(approximator, bunch_configuration):
     end_positions = reference_particles["end"]
     shifted_end_positions = shifted_particles["end"]
 
-    x_end_positions = __get_vector_of_transported_matrix("x", end_positions)
-    x_shifted_end_positions = __get_vector_of_transported_matrix("x", shifted_end_positions)
+    x_end_positions = __get_vector_of_transported_matrix(Parameters.X, end_positions)
+    x_shifted_end_positions = __get_vector_of_transported_matrix(Parameters.X, shifted_end_positions)
 
     d_x = (x_shifted_end_positions - x_end_positions) / delta
 
@@ -166,8 +167,8 @@ def compute_d_y(approximator, bunch_configuration):
     end_positions = reference_particles["end"]
     shifted_end_positions = shifted_particles["end"]
 
-    y_end_positions = __get_vector_of_transported_matrix("y", end_positions)
-    y_shifted_end_positions = __get_vector_of_transported_matrix("y", shifted_end_positions)
+    y_end_positions = __get_vector_of_transported_matrix(Parameters.Y, end_positions)
+    y_shifted_end_positions = __get_vector_of_transported_matrix(Parameters.Y, shifted_end_positions)
 
     d_y = (y_shifted_end_positions - y_end_positions) / delta
 
@@ -185,11 +186,11 @@ def __get_delta(min, max):
 
 def __get_vector_of_transported_matrix(column_name, matrix):
     columns_mapping = {
-        "x": 0,
-        "theta x": 1,
-        "y": 2,
-        "theta y": 3,
-        "pt": 4
+        Parameters.X: 0,
+        Parameters.THETA_X: 1,
+        Parameters.Y: 2,
+        Parameters.THETA_Y: 3,
+        Parameters.PT: 4
     }
     index = columns_mapping[column_name]
     return matrix.T[index]

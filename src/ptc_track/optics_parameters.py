@@ -1,3 +1,4 @@
+from data.parameters_names import ParametersNames as Parameters
 import ptc_track.particles_trajectory_generator as ptg
 import data.particles_generator as pg
 import numpy as np
@@ -5,37 +6,37 @@ import utils.differential_quotient as optical_function_as_differential
 
 
 def compute_v_x(madx_configuration, grid_configuration):
-    particles_with_optical_function = compute_optical_function(madx_configuration, grid_configuration, "x", "x", 1e-5)
+    particles_with_optical_function = compute_optical_function(madx_configuration, grid_configuration, Parameters.X, Parameters.X, 1e-5)
 
     return particles_with_optical_function
 
 
 def compute_v_y(madx_configuration, grid_configuration):
-    particles_with_optical_function = compute_optical_function(madx_configuration, grid_configuration, "y", "y", 1e-5)
+    particles_with_optical_function = compute_optical_function(madx_configuration, grid_configuration, Parameters.Y, Parameters.Y, 1e-5)
 
     return particles_with_optical_function
 
 
 def compute_l_x(madx_configuration, grid_configuration):
-    particles_with_optical_function = compute_optical_function(madx_configuration, grid_configuration, "theta x", "x", 1e-5)
+    particles_with_optical_function = compute_optical_function(madx_configuration, grid_configuration, Parameters.THETA_X, Parameters.X, 1e-5)
 
     return particles_with_optical_function
 
 
 def compute_l_y(madx_configuration, grid_configuration):
-    particles_with_optical_function = compute_optical_function(madx_configuration, grid_configuration, "theta y", "y", 1e-5)
+    particles_with_optical_function = compute_optical_function(madx_configuration, grid_configuration, Parameters.THETA_Y, Parameters.Y, 1e-5)
 
     return particles_with_optical_function
 
 
 def compute_d_x(madx_configuration, grid_configuration):
-    particles_with_optical_function = compute_optical_function(madx_configuration, grid_configuration, "pt", "x", 1e-5)
+    particles_with_optical_function = compute_optical_function(madx_configuration, grid_configuration, Parameters.PT, Parameters.X, 1e-5)
 
     return particles_with_optical_function
 
 
 def compute_d_y(madx_configuration, grid_configuration):
-    particles_with_optical_function = compute_optical_function(madx_configuration, grid_configuration, "pt", "y", 1e-5)
+    particles_with_optical_function = compute_optical_function(madx_configuration, grid_configuration, Parameters.PT, Parameters.Y, 1e-5)
     return particles_with_optical_function
 
 

@@ -1,7 +1,9 @@
+from data.parameters_names import ParametersNames as Parameters
+
 indexes = {
-    "x": 0,
-    "theta x": 1,
-    "y": 2,
-    "theta y": 3,
-    "pt": 4,
+    Parameters.X: 0,
+    Parameters.THETA_X: 1,
+    Parameters.Y: 2,
+    Parameters.THETA_Y: 3,
+    Parameters.PT: 4,
 }

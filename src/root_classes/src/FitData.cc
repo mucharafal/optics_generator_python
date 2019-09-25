@@ -565,9 +565,9 @@ int FitData::AppendAcceleratorAcceptanceRootFile(TTree *acceptance_tree) {
 	//x:theta_x:y:theta_y:ksi:mad_accept:par_accept
 	double out[7];
 
-	acceptance_tree->SetBranchAddress("x", &out[0]);
+	acceptance_tree->SetBranchAddress(Parameters.X, &out[0]);
 	acceptance_tree->SetBranchAddress("theta_x", &out[1]);
-	acceptance_tree->SetBranchAddress("y", &out[2]);
+	acceptance_tree->SetBranchAddress(Parameters.Y, &out[2]);
 	acceptance_tree->SetBranchAddress("theta_y", &out[3]);
 	acceptance_tree->SetBranchAddress("ksi", &out[4]);
 	acceptance_tree->SetBranchAddress("mad_accept", &out[5]);

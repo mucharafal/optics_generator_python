@@ -9,6 +9,7 @@ import utils.root_initializer as root_initializer
 import models.approximator as stub_app
 import xml.etree.ElementTree as ET
 import data.particles_generator as pg
+from data.parameters_names import ParametersNames as Parameters
 
 
 def train_prototype(bunch_configuration, madx_configuration, path_to_project):
@@ -94,11 +95,11 @@ def generate_training_dataset(madx_configuration, bunch_configuration):
 
 
 def get_position_parameters_from_madx_format(matrix):
-    x = matrix.T[index_map["x"]]
-    theta_x = matrix.T[index_map["theta x"]]
-    y = matrix.T[index_map["y"]]
-    theta_y = matrix.T[index_map["theta y"]]
-    pt = matrix.T[index_map["pt"]]
+    x = matrix.T[index_map[Parameters.X]]
+    theta_x = matrix.T[index_map[Parameters.THETA_X]]
+    y = matrix.T[index_map[Parameters.Y]]
+    theta_y = matrix.T[index_map[Parameters.THETA_Y]]
+    pt = matrix.T[index_map[Parameters.PT]]
 
     return np.array([x, theta_x, y, theta_y, pt]).T
 
@@ -123,10 +124,10 @@ def train_approximators(input_matrix, output_matrix, max_pt_powers, errors):
                                            max_pt_powers[worker_number], errors[worker_number]))
 
         approximators = {
-            "x": futures[0].result(),
-            "theta x": futures[1].result(),
-            "y": futures[2].result(),
-            "theta y": futures[3].result()
+            Parameters.X: futures[0].result(),
+            Parameters.THETA_X: futures[1].result(),
+            Parameters.Y: futures[2].result(),
+            Parameters.THETA_Y: futures[3].result()
         }
     return approximators
 
@@ -185,10 +186,10 @@ def compose_lhc_optics_approximator(approximators, station_configuration):
                                          station_configuration["optics_parametrisation_name"],
                                          polynomial_type, station_configuration["beam"],
                                          float(station_configuration["nominal_beam_energy"]),
-                                         approximators["x"],
-                                         approximators["theta x"],
-                                         approximators["y"],
-                                         approximators["theta y"])
+                                         approximators[Parameters.X],
+                                         approximators[Parameters.THETA_X],
+                                         approximators[Parameters.Y],
+                                         approximators[Parameters.THETA_Y])
 
     return approximator
 

@@ -2,6 +2,7 @@ import visualization.visualize as visualize
 import numpy as np
 import seaborn as sns
 import data.particles_generator as pg
+from data.parameters_names import ParametersNames as Parameters
 
 
 def compare(dataset_configuration, transporters, transported_dimension, depended_value,
@@ -15,7 +16,7 @@ def compare(dataset_configuration, transporters, transported_dimension, depended
                                    depended_value)
     axes = visualize.plot_datasets(depended_value, "delta " + transported_dimension, "Compare", compared,
                                    title_sufix, plot_axes, plot_x_pos, plot_y_pos, plot_function, x_axis_configuration,
-                                   y_axis_configuration, s=1, markers=["x"])
+                                   y_axis_configuration, s=1, markers=[Parameters.X])
     return axes
 
 

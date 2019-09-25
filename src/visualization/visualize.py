@@ -122,7 +122,7 @@ def plot_datasets(x_name, y_name, legend_title, datasets, title_sufix="",
     title = y_alternative_version + " vs " + x_alternative_version
     title += "\n" + title_sufix
 
-    if plot_axes is None:   #s = 1, palette=["black"], markers=["x"] for plot errors
+    if plot_axes is None:   #s = 1, palette=["black"], markers=[Parameters.X] for plot errors
         axes = plot_function(x=x_name, y=y_name, hue=legend_title, data=frame, style=legend_title,
                              **additional_plot_function_arguments)
     elif plot_x_pos is None:

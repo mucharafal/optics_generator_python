@@ -1,14 +1,16 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
 import visualization.visualize as visualize
+from data.parameters_names import ParametersNames as Parameters
+
 
 optical_functions_matrix_mapping = {
-    "x": 0,
-    "theta x": 1,
-    "y": 2,
-    "theta y": 3,
+    Parameters.X: 0,
+    Parameters.THETA_X: 1,
+    Parameters.Y: 2,
+    Parameters.THETA_Y: 3,
     "crossing angle": 4,
-    "pt": 5,
+    Parameters.PT: 5,
     "result": 6,
     "D x": 6,
     "D y": 6,
