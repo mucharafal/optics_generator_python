@@ -1,5 +1,5 @@
 from data.parameters_names import ParametersNames as Parameters
-import ptc_track.particles_trajectory_generator as ptg
+import ptc_track.transporter as ptg
 import data.particles_generator as pg
 import numpy as np
 import utils.differential_quotient as optical_function_as_differential

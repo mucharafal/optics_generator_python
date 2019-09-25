@@ -1,4 +1,4 @@
-import ptc_track.particles_trajectory_generator as ptg
+import ptc_track.transporter as ptg
 
 
 def transport(particles, wanted_xa, configuration_madx_xa1, xa1,

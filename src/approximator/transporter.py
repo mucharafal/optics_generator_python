@@ -28,3 +28,9 @@ def get_mapping():
         Parameters.PT: 4
     }
     return mapping
+
+
+def get_transporter(approximator):
+    def transporter(particles):
+        return transport(approximator, particles)
+    return transporter
