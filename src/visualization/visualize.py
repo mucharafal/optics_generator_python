@@ -15,7 +15,7 @@ def plot_from_one_matrix(x_name, y_name, matrix, mapping,
 def plot_from_two_matrices(x_name, y_name, x_matrix, y_matrix, x_matrix_mapping, y_matrix_mapping,
                            title_sufix="", x_name_prefix="", y_name_prefix="",
                            plot_function=sns.lineplot, **additional_plot_function_arguments):
-
+    # todo reduce to use plot_dataset
     # Get names of axis and title of plot
     x_alternative_version = alternative_version[x_name]
     y_alternative_version = alternative_version[y_name]
