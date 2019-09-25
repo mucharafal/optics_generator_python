@@ -11,12 +11,12 @@ ptc_twiss = {
     Parameters.Y: 2,
     Parameters.THETA_X: 3,
     Parameters.THETA_Y: 4,
-    "L x": 9,
-    "L y": 10,
-    "D x": 11,
-    "D y": 12,
+    Parameters.L_X: 9,
+    Parameters.L_Y: 10,
+    Parameters.D_X: 11,
+    Parameters.D_Y: 12,
     Parameters.PT: 14,
-    "V x": 7,
-    "V y": 8,
-    "crossing angle": 13
+    Parameters.V_X: 7,
+    Parameters.V_Y: 8,
+    Parameters.CROSSING_ANGLE: 13
 }

@@ -73,12 +73,12 @@ def compute_norm(diff, values, madx_matrix, approximator_matrix):
 
 def compare_all(bunch_configuration, approximator, madx_configuration):
     return {
-        "D x": compare_d_x(bunch_configuration, approximator, madx_configuration),
-        "D y": compare_d_y(bunch_configuration, approximator, madx_configuration),
-        "L x": compare_l_x(bunch_configuration, approximator, madx_configuration),
-        "L y": compare_l_y(bunch_configuration, approximator, madx_configuration),
-        "V x": compare_v_x(bunch_configuration, approximator, madx_configuration),
-        "V y": compare_v_y(bunch_configuration, approximator, madx_configuration)
+        Parameters.D_X: compare_d_x(bunch_configuration, approximator, madx_configuration),
+        Parameters.D_Y: compare_d_y(bunch_configuration, approximator, madx_configuration),
+        Parameters.L_X: compare_l_x(bunch_configuration, approximator, madx_configuration),
+        Parameters.L_Y: compare_l_y(bunch_configuration, approximator, madx_configuration),
+        Parameters.V_X: compare_v_x(bunch_configuration, approximator, madx_configuration),
+        Parameters.V_Y: compare_v_y(bunch_configuration, approximator, madx_configuration)
     }
 
 
@@ -98,29 +98,29 @@ def visualize_diff(differences_with_position, parameter_name, optical_function_n
 
 def visualize_diff_d_x(bunch_configuration, approximator, madx_configuration, parameter_name):
     differences = compare_d_x(bunch_configuration, approximator, madx_configuration)
-    return visualize_diff(differences, parameter_name, "D x")
+    return visualize_diff(differences, parameter_name, Parameters.D_X)
 
 
 def visualize_diff_d_y(bunch_configuration, approximator, madx_configuration, parameter_name):
     differences = compare_d_y(bunch_configuration, approximator, madx_configuration)
-    return visualize_diff(differences, parameter_name, "D y")
+    return visualize_diff(differences, parameter_name, Parameters.D_Y)
 
 
 def visualize_diff_l_x(bunch_configuration, approximator, madx_configuration, parameter_name):
     differences = compare_l_x(bunch_configuration, approximator, madx_configuration)
-    return visualize_diff(differences, parameter_name, "L x")
+    return visualize_diff(differences, parameter_name, Parameters.L_X)
 
 
 def visualize_diff_l_y(bunch_configuration, approximator, madx_configuration, parameter_name):
     differences = compare_l_y(bunch_configuration, approximator, madx_configuration)
-    return visualize_diff(differences, parameter_name, "L y")
+    return visualize_diff(differences, parameter_name, Parameters.L_Y)
 
 
 def visualize_diff_v_x(bunch_configuration, approximator, madx_configuration, parameter_name):
     differences = compare_v_x(bunch_configuration, approximator, madx_configuration)
-    return visualize_diff(differences, parameter_name, "V x")
+    return visualize_diff(differences, parameter_name, Parameters.V_X)
 
 
 def visualize_diff_v_y(bunch_configuration, approximator, madx_configuration, parameter_name):
     differences = compare_v_y(bunch_configuration, approximator, madx_configuration)
-    return visualize_diff(differences, parameter_name, "V y")
+    return visualize_diff(differences, parameter_name, Parameters.V_Y)

@@ -40,7 +40,7 @@ def run_worker(madx_configuration, row, process_number):
     mr.__run_madx(path_to_madx_script)
 
     matrix = read_in_twiss_output_file("twiss_output")
-    matrix_with_crossing_angle = np.append(matrix, np.full((matrix.shape[0], 1), row["crossing angle"]), axis=1)
+    matrix_with_crossing_angle = np.append(matrix, np.full((matrix.shape[0], 1), row[Parameters.CROSSING_ANGLE]), axis=1)
     matrix_with_pt = np.append(matrix_with_crossing_angle, np.full((matrix_with_crossing_angle.shape[0], 1), row[Parameters.PT]), axis=1)
     working_directory.leave_and_delete(begin_directory)
 
@@ -53,7 +53,7 @@ def process_row(raw_row):
         Parameters.THETA_X: raw_row[1],
         Parameters.Y: raw_row[2],
         Parameters.THETA_Y: raw_row[3],
-        "crossing angle": raw_row[4],
+        Parameters.CROSSING_ANGLE: raw_row[4],
         Parameters.PT: raw_row[5]
     }
     return row
