@@ -68,4 +68,7 @@ def generate_particles_randomly(grid_configuration):
         min_vector[0][i] = min_resolution[i]
 
     grid = (max_vector - min_vector) * np.random.random_sample((number_of_particles, number_of_parameters)) + min_vector
-    return grid
+
+    particles_object = Particles(grid, get_mapping())
+
+    return particles_object

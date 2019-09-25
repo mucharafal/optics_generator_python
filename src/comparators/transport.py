@@ -6,8 +6,7 @@ from data.parameters_names import ParametersNames as Parameters
 
 
 def compare(dataset_configuration, transporters, transported_dimension, depended_value,
-            title_sufix="", plot_axes=None, plot_x_pos=None, plot_y_pos=None,
-            plot_function=sns.scatterplot, x_axis_configuration=None, y_axis_configuration=None):
+            title_sufix="", plot_function=sns.scatterplot, **kwargs):
     # datasets["approximator"] = segments: segment_name -> segment_matrix
     input_matrix = pg.generate_particles_randomly(dataset_configuration)
     datasets = transport(input_matrix, transporters)
@@ -15,8 +14,7 @@ def compare(dataset_configuration, transporters, transported_dimension, depended
     compared = compare_with_others(list_of_datasets[0], list_of_datasets[1:], transported_dimension,
                                    depended_value)
     axes = visualize.plot_datasets(depended_value, "delta " + transported_dimension, "Compare", compared,
-                                   title_sufix, plot_axes, plot_x_pos, plot_y_pos, plot_function, x_axis_configuration,
-                                   y_axis_configuration, s=1, markers=[Parameters.X])
+                                   title_sufix, plot_function, s=1, markers=[Parameters.X], **kwargs)
     return axes
 
 
