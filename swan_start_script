@@ -1,10 +1,8 @@
 # Main idea of this script is to add source files from optics_generator_python/src to PYTHON_PATH
 # and folder root_libs to LD_LIBRARY_PATH. Other appended path are to fix bugs in SWAN environment or madx
-username=`whoami`
-first_username_letter=${username:0:1}
-path_to_SWAN_Projects=/eos/user/$first_username_letter/$username/SWAN_projects
+path_to_SWAN_Projects=$CERNBOX_HOME/SWAN_projects
 folder_with_sources_name=optics_generator_python
-path_to_root_libs=${path_to_SWAN_project}/${path_to_root_libs}/root_libs
+path_to_root_libs=${path_to_SWAN_Projects}/${folder_with_sources_name}/root_libs
 export PATH=$path_to_SWAN_Projects:$PATH
 export PYTHONPATH=$PYTHONPATH:$path_to_SWAN_Projects/optics_generator_python/src
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$path_to_root_libs:/cvmfs/sft.cern.ch/lcg/views/LCG_96python3/x86_64-centos7-gcc8-opt/lib:
