@@ -1,44 +1,30 @@
 import approximator.runner as ra
-import data.particles_generator as pg
-import ptc_track.runner as mr       # expand function from this file used here
-import numpy as np
+from data.parameters_names import ParametersNames as Parameters
+from data.particles import Particles
 
 
-def generate_random_particles(approximator, bunch_configuration):
-    """
-    Generate dict with matrix of particles' parameters on stations. List of stations is in ptc_track configuration generator.
-    :param approximator- LHCOpticsApproximator object
-    :param bunch_configuration: dict with bunch parameters- x, theta x, y, theta y, t, and pt- their min and max values.
-    :return: dict with numpy matrix of particles' parameters on begin and end, with columns: x, theta x, y, theta y, pt
-    """
-
-    particles = pg.generate_particles_randomly(bunch_configuration)
-
-    return transport(approximator, particles)
-
-
-def generate_from_range(approximator, bunch_configuration):
-    """
-    Generate dict with matrix of particles' parameters on begin and end. Begin positions are selected as specified in
-    bunch configuration.
-    :param approximator- LHCOpticsApproximator object
-    :param bunch_configuration: dict with bunch parameters- x, theta x, y, theta y, t, and pt- their min and max values.
-    :return: dict with numpy matrix of particles' parameters on begin and end, with columns: x, theta x, y, theta y, pt
-    """
-
-    particles = pg.generate_from_range(bunch_configuration)
-
-    return transport(approximator, particles)
-
-
-def transport(approximator, matrix):
+def transport(approximator, particles):
     """matrix in format returned by data.particles_generator functions"""
 
     segments = dict()
 
-    segments["start"] = matrix
+    segments["start"] = particles
 
-    transported_particles = ra.transport(approximator, matrix)
-    segments["end"] = transported_particles
+    matrix_for_transporter = particles.get_columns(Parameters.X, Parameters.THETA_X, Parameters.Y, Parameters.THETA_Y,
+                                                   Parameters.PT)
+
+    transported_particles = ra.transport(approximator, matrix_for_transporter)
+    segments["end"] = Particles(transported_particles, get_mapping())
 
     return segments
+
+
+def get_mapping():
+    mapping = {
+        Parameters.X: 0,
+        Parameters.THETA_X: 1,
+        Parameters.Y: 2,
+        Parameters.THETA_Y: 3,
+        Parameters.PT: 4
+    }
+    return mapping
