@@ -40,9 +40,9 @@ def transport(madx_configuration, particles):
     # print(transformed_coordinates_particles)
     transported = tr.transport(madx_configuration, particles)
     segments = dict()
-    segments["start"] = transported[np.isclose(transported.T[indexes.ptc_twiss["s"]], 0)]
+    segments["start"] = transported[np.isclose(transported.T[indexes.ptc_twiss[Parameters.S]], 0)]
     if madx_configuration.s != -1:
-        filtered_matrix = transported[np.isclose(transported.T[indexes.ptc_twiss["s"]], madx_configuration.s)]
+        filtered_matrix = transported[np.isclose(transported.T[indexes.ptc_twiss[Parameters.S]], madx_configuration.s)]
         segments["end"] = filtered_matrix
         return segments
     else:

@@ -6,7 +6,7 @@ If above line in madx script is changed, adjust below map.
 Last column (pt) is appended after read in from file and is always last column.
 """
 ptc_twiss = {
-    "s": 0,
+    Parameters.S: 0,
     Parameters.X: 1,
     Parameters.Y: 2,
     Parameters.THETA_X: 3,

@@ -1,6 +1,5 @@
 import ptc_track.transporter as ptc_twiss_transporter
 import ptc_track.madx_configuration as track_conf
-from ptc_track.matrix_indexes import ptc_track as index_map
 import numpy as np
 import ROOT
 from concurrent.futures import ProcessPoolExecutor

@@ -1,5 +1,6 @@
 import ptc_track.runner as mr
 from data.parameters_names import ParametersNames as Parameters
+from data.particles import Particles
 
 
 def transport(madx_configuration, particles):
@@ -15,7 +16,12 @@ def transport(madx_configuration, particles):
 
     particles_with_t = particles.add_zeros_column(Parameters.T)
 
-    segments = mr.compute_trajectory(particles_with_t, madx_configuration, number_of_processes)
+    raw_begin_positions = particles_with_t.get_coordinates(Parameters.X, Parameters.THETA_X, Parameters.Y,
+                                                           Parameters.THETA_Y, Parameters.T, Parameters.PT)
+
+    raw_segments = mr.compute_trajectory(raw_begin_positions, madx_configuration, number_of_processes)
+
+    segments = [Particles(segment, get_mapping()) for segment in raw_segments]
 
     return segments
 
@@ -26,6 +32,21 @@ def apply_configuration_to_transporter(configuration):
 
 def get_transporter(configuration):
     return apply_configuration_to_transporter(configuration)
+
+
+def get_mapping():
+    ptc_track = {
+        Parameters.TURN: 1,
+        Parameters.X: 2,
+        Parameters.THETA_X: 3,
+        Parameters.Y: 4,
+        Parameters.THETA_Y: 5,
+        Parameters.T: 6,
+        Parameters.PT: 7,
+        Parameters.S: 8,
+        Parameters.E: 9
+    }
+    return ptc_track
 
 
 

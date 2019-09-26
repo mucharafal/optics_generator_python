@@ -22,3 +22,4 @@ class ParametersNames(enum.Enum):
     DELTA_THETA_Y = 17
     DELTA_PT = 18
     T = 19
+    TURN = 20

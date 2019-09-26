@@ -112,7 +112,7 @@ def __compute_optical_function_vs_s(madx_configuration, bunch_configuration, opt
     internal_madx_configuration = copy.copy(madx_configuration)
     internal_madx_configuration.s = -1
     particles = ptg.generate_from_range(internal_madx_configuration, bunch_configuration)
-    result = np.append(particles["end"].T[tmi.ptc_twiss["s"]].reshape((-1, 1)),
+    result = np.append(particles["end"].T[tmi.ptc_twiss[Parameters.S]].reshape((-1, 1)),
                        particles["end"].T[tmi.ptc_twiss[optical_function_name]].reshape((-1, 1)),
                        axis=1)
     return result
