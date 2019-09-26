@@ -15,3 +15,11 @@ def transport(particles, wanted_xa, configuration_madx_xa1, xa1,
         new_places[place] = particles_with_xa
 
     return new_places
+
+
+def get_transporter(wanted_xa, configuration_first_optic, xa_first_optics, configuration_second_optics,
+                    xa_second_optics):
+    def transporter(particles):
+        return transport(particles, wanted_xa, configuration_first_optic, xa_first_optics, configuration_second_optics,
+                         xa_second_optics)
+    return transporter

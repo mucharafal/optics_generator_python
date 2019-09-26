@@ -1,4 +1,4 @@
-import ptc_track.optics_parameters as optical_functions
+import ptc_track.optical_functions as optical_functions
 import numpy as np
 
 

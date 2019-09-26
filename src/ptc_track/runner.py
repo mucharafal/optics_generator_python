@@ -4,6 +4,7 @@ import numpy as np
 import utils.working_directory as working_directory
 from concurrent.futures import ProcessPoolExecutor
 from datetime import date
+from data.parameters_names import ParametersNames as Parameters
 
 
 def compute_trajectory(particles, madx_configuration, number_of_workers):
@@ -14,8 +15,80 @@ def compute_trajectory(particles, madx_configuration, number_of_workers):
     :param number_of_workers: number of processes use in computing
     :return: dict with matrix for every point in script
     """
-    trajectory_matrix = __run_parallel(particles, madx_configuration, number_of_workers)
-    return trajectory_matrix
+    segments = __run_parallel(particles, madx_configuration, number_of_workers)
+    return segments
+
+
+def __run_parallel(particles, madx_configuration, number_of_workers=4):
+    """
+    Execute parallel threads which every:
+    - create its own working directory
+    - copy configuration file from to its working directory
+    - generate particles trajectory and return it
+    :param particles: matrix with particles' parameters
+    :param madx_configuration:
+    :param number_of_workers: max number of workers
+    :return: dictionary with segments- every segment is one matrix with particles
+    """
+    parts, part_size = particles.split_on(number_of_workers)
+    # todo shift it to parts
+    # parts = []
+    # particles = particles.T
+    # part_size = int(particles.shape[0]/number_of_workers)
+    # for index in range(number_of_workers-1):
+    #     begin = index * part_size
+    #     end = begin + part_size
+    #     part = particles[begin:end]
+    #     parts.append(part)
+    #
+    # parts.append(particles[(number_of_workers-1)*part_size:])
+
+    with ProcessPoolExecutor(number_of_workers) as executor:
+        segments = {}
+        futures = []
+        for worker_number in range(number_of_workers):
+            worker_directory_name = "dir" + str(worker_number)
+            shift = part_size * worker_number
+            futures.append(executor.submit(__run_worker,
+                                           parts[worker_number], worker_directory_name,
+                                           madx_configuration, shift))
+        new_particles = __merge_output_from_workers(futures)
+        segments = merge_segments(segments, new_particles)
+        return segments
+
+
+def __run_worker(particles, working_directory_name, madx_configuration, shift):
+    """
+    Function of worker which run ptc_track. It prepare working directory, run ptc_track,
+    read in result and return it. It must be another process not thread because it changes working directory
+    of interpreter.
+    :param particles: matrix with parameters of particles
+    :param working_directory_name: name of directory in which process should work
+    :param madx_configuration:
+    :param shift: shift of ordinal numbers of particles
+    :return:
+    """
+    path_to_working_directory = os.path.join(os.getcwd(), working_directory_name)
+    beginning_directory = working_directory.create_and_get_into(path_to_working_directory)
+
+    raw_matrix_of_particles = particles.get_parameters(Parameters.X, Parameters.THETA_X, Parameters.Y,
+                                                       Parameters.THETA_Y, Parameters.T, Parameters.PT)
+
+    __save_particles_to_file(raw_matrix_of_particles)
+
+    number_of_particles = particles.get_number_of_particles()
+
+    configuration_file_name = madx_configuration.generate_madx_script(number_of_particles)
+
+    __run_madx(configuration_file_name)
+
+    raw_segments = __read_in_madx_output_file("trackone")
+
+    working_directory.leave_and_delete(beginning_directory)
+
+    segments = shift_ordinal_number_in_segments(raw_segments, shift)
+
+    return segments
 
 
 def __run_madx(path_to_madx_script):
@@ -104,37 +177,6 @@ def __merge_output_from_workers(futures):
         except Exception as e:
             print(e)
             pass    # if sth go wrong, just skip it
-    return segments
-
-
-def __run_worker(particles, working_directory_name, madx_configuration, shift):
-    """
-    Function of worker which run ptc_track. It prepare working directory, run ptc_track,
-    read in result and return it. It must be another process not thread because it changes working directory
-    of interpreter.
-    :param particles: matrix with parameters of particles
-    :param working_directory_name: name of directory in which process should work
-    :param madx_configuration:
-    :param shift: shift of ordinal numbers of particles
-    :return:
-    """
-    path_to_working_directory = os.path.join(os.getcwd(), working_directory_name)
-    beginning_directory = working_directory.create_and_get_into(path_to_working_directory)
-
-    __save_particles_to_file(particles)
-
-    number_of_particles = particles.shape[0]
-
-    configuration_file_name = madx_configuration.generate_madx_script(number_of_particles)
-
-    __run_madx(configuration_file_name)
-
-    raw_segments = __read_in_madx_output_file("trackone")
-
-    working_directory.leave_and_delete(beginning_directory)
-
-    segments = shift_ordinal_number_in_segments(raw_segments, shift)
-
     return segments
 
 
@@ -228,42 +270,6 @@ def __save_matrix_to_file(matrix, file_object):
     for n in matrix[i]:
         line += str(n) + " "
     file_object.write(line)
-
-
-def __run_parallel(particles, madx_configuration, number_of_workers=4):
-    """
-    Execute parallel threads which every:
-    - create its own working directory
-    - copy configuration file from to its working directory
-    - generate particles trajectory and return it
-    :param particles: matrix with particles' parameters
-    :param madx_configuration:
-    :param number_of_workers: max number of workers
-    :return: dictionary with segments- every segment is one matrix with particles
-    """
-    parts = []
-    particles = particles.T
-    part_size = int(particles.shape[0]/number_of_workers)
-    for index in range(number_of_workers-1):
-        begin = index * part_size
-        end = begin + part_size
-        part = particles[begin:end]
-        parts.append(part)
-
-    parts.append(particles[(number_of_workers-1)*part_size:])
-
-    with ProcessPoolExecutor(number_of_workers) as executor:
-        segments = {}
-        futures = []
-        for worker_number in range(number_of_workers):
-            worker_directory_name = "dir" + str(worker_number)
-            shift = part_size * worker_number
-            futures.append(executor.submit(__run_worker,
-                                           parts[worker_number], worker_directory_name,
-                                           madx_configuration, shift))
-        new_particles = __merge_output_from_workers(futures)
-        segments = merge_segments(segments, new_particles)
-        return segments
 
 
 def shift_ordinal_number_in_segments(segments, shift):
