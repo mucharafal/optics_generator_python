@@ -9,8 +9,7 @@ def transport(madx_configuration, particles):
     geometrical. Matrix format: x, theta x, y, theta y, pt
     :param particles:
     :param madx_configuration:
-    :return: dict with matrices describing position of particles on stations, matrix format:
-    ordinal number, turn, x, theta x, y, theta y, t, pt, e, s
+    :return: dict with matrices describing position of particles on stations
     """
     number_of_processes = 4
 

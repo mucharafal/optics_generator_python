@@ -9,3 +9,7 @@ class TwissConfiguration:
         """
         self.path_to_madx_script = path_to_madx_script
         self.s = s
+        if s == -1:
+            self.filter_by_s = False
+        else:
+            self.filter_by_s = True

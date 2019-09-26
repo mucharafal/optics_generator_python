@@ -9,6 +9,7 @@ def generate_configuration_file(madx_configuration, row):
     :param row: map with keys x, theta x, y, theta y, pt
     :return: name of created file
     """
+    # todo Beaware, that THETA_X = CROSSING_ANGLE!!! Have big impact on nominal optics
     file_name = "twiss_madx_script"
     with open(file_name, "w") as file_object:
         file_object.write("x = " + str(row[Parameters.X]) + ";\n")

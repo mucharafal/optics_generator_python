@@ -4,7 +4,6 @@ import numpy as np
 import utils.working_directory as working_directory
 from concurrent.futures import ProcessPoolExecutor
 from datetime import date
-from data.parameters_names import ParametersNames as Parameters
 
 
 def compute_trajectory(particles, madx_configuration, number_of_workers):
@@ -30,18 +29,7 @@ def __run_parallel(particles, madx_configuration, number_of_workers=4):
     :param number_of_workers: max number of workers
     :return: dictionary with segments- every segment is one matrix with particles
     """
-    parts, part_size = particles.split_on(number_of_workers)
-    # todo shift it to parts
-    # parts = []
-    # particles = particles.T
-    # part_size = int(particles.shape[0]/number_of_workers)
-    # for index in range(number_of_workers-1):
-    #     begin = index * part_size
-    #     end = begin + part_size
-    #     part = particles[begin:end]
-    #     parts.append(part)
-    #
-    # parts.append(particles[(number_of_workers-1)*part_size:])
+    parts, part_size = split_on(particles, number_of_workers)
 
     with ProcessPoolExecutor(number_of_workers) as executor:
         segments = {}
@@ -55,6 +43,20 @@ def __run_parallel(particles, madx_configuration, number_of_workers=4):
         new_particles = __merge_output_from_workers(futures)
         segments = merge_segments(segments, new_particles)
         return segments
+
+
+def split_on(number_of_workers, particles):
+    parts = []
+    particles = particles.T
+    part_size = int(particles.shape[0]/number_of_workers)
+    for index in range(number_of_workers-1):
+        begin = index * part_size
+        end = begin + part_size
+        part = particles[begin:end]
+        parts.append(part)
+
+    parts.append(particles[(number_of_workers-1)*part_size:])
+    return parts, part_size
 
 
 def __run_worker(particles, working_directory_name, madx_configuration, shift):
@@ -71,10 +73,7 @@ def __run_worker(particles, working_directory_name, madx_configuration, shift):
     path_to_working_directory = os.path.join(os.getcwd(), working_directory_name)
     beginning_directory = working_directory.create_and_get_into(path_to_working_directory)
 
-    raw_matrix_of_particles = particles.get_parameters(Parameters.X, Parameters.THETA_X, Parameters.Y,
-                                                       Parameters.THETA_Y, Parameters.T, Parameters.PT)
-
-    __save_particles_to_file(raw_matrix_of_particles)
+    __save_particles_to_file(particles)
 
     number_of_particles = particles.get_number_of_particles()
 
