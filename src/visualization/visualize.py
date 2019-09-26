@@ -4,15 +4,15 @@ import pandas as pd
 from data.units import unit_map, multiplier_for_unit, alternative_version
 
 
-def plot_from_one_matrix(x_name, y_name, matrix, mapping,
+def plot_from_one_matrix(x_name, y_name, particles,
                          title_sufix="", x_name_prefix="", y_name_prefix="",
                          plot_function=sns.lineplot, **additional_plot_function_arguments):
-    return plot_from_two_matrices(x_name, y_name, matrix, matrix, mapping, mapping,
+    return plot_from_two_matrices(x_name, y_name, particles, particles,
                                   title_sufix, x_name_prefix, y_name_prefix,
                                   plot_function, **additional_plot_function_arguments)
 
 
-def plot_from_two_matrices(x_name, y_name, x_matrix, y_matrix, x_matrix_mapping, y_matrix_mapping,
+def plot_from_two_matrices(x_name, y_name, x_matrix, y_matrix,
                            title_sufix="", x_name_prefix="", y_name_prefix="",
                            plot_function=sns.lineplot, **additional_plot_function_arguments):
     # todo reduce to use plot_dataset
@@ -26,12 +26,8 @@ def plot_from_two_matrices(x_name, y_name, x_matrix, y_matrix, x_matrix_mapping,
     title = y_name_prefix + y_alternative_version + " vs " + x_name_prefix + x_alternative_version
     title += "\n" + title_sufix
 
-    # Get vectors and their properties
-    x_index = x_matrix_mapping[x_name]
-    y_index = y_matrix_mapping[y_name]
-
-    vector_x = x_matrix.T[x_index] * multiplier_for_unit[x_name]
-    vector_y = y_matrix.T[y_index] * multiplier_for_unit[y_name]
+    vector_x = x_matrix.get_values_of(x_name).reshape((-1,)) * multiplier_for_unit[x_name]
+    vector_y = y_matrix.get_values_of(y_name).reshape((-1,)) * multiplier_for_unit[y_name]
 
     frame = pd.DataFrame(data={x_full_name: vector_x, y_full_name: vector_y})
 
@@ -49,13 +45,10 @@ def generate_dataset(x_name, y_name, hue_name, datasets):
     merged_dataframe = pd.DataFrame(data={x_name: np.empty((0,)), y_name: np.empty((0,)), hue_name: np.empty((0,))})
 
     for dataset_name in datasets:
-        matrix, index_mapping = datasets[dataset_name]
+        matrix = datasets[dataset_name]
 
-        x_index = index_mapping[x_name]
-        y_index = index_mapping[y_name]
-
-        x = matrix.T[x_index] * multiplier_for_unit[x_name]
-        y = matrix.T[y_index] * multiplier_for_unit[y_name]
+        x = matrix.get_values_of(x_name).reshape((-1,)) * multiplier_for_unit[x_name]
+        y = matrix.get_values_of(y_name).reshape((-1,)) * multiplier_for_unit[y_name]
         hue = np.full((len(x),), dataset_name)
 
         frame = pd.DataFrame(data={x_name: x, y_name: y, hue_name: hue})

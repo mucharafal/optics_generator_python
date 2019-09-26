@@ -15,8 +15,7 @@ ptc_twiss = {
     Parameters.L_Y: 10,
     Parameters.D_X: 11,
     Parameters.D_Y: 12,
-    Parameters.PT: 14,
+    Parameters.PT: 13,
     Parameters.V_X: 7,
     Parameters.V_Y: 8,
-    Parameters.CROSSING_ANGLE: 13
 }

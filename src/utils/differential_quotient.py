@@ -22,11 +22,10 @@ def compute_optical_function(universal_transporter, particles, delta_parameter_n
     :param delta_alternative_value: value used if standard way of computing delta return 0
     :return:
     """
-    particles_copy = np.copy(particles)
-    x1 = universal_transporter(particles_copy).T[columns_mapping[transported_parameter_name]]
-    delta_x = compute_delta(particles_copy, delta_parameter_name, delta_alternative_value)
-    particles_copy.T[columns_mapping[delta_parameter_name]] += delta_x
-    x2 = universal_transporter(particles_copy).T[columns_mapping[transported_parameter_name]]
+    x1 = universal_transporter(particles).get_coordinates_of(transported_parameter_name)
+    delta_x = compute_delta(particles, delta_parameter_name, delta_alternative_value)
+    shifted_particles = particles.shift_parameter(delta_parameter_name, delta_x)
+    x2 = universal_transporter(shifted_particles).get_coordinates_of(transported_parameter_name)
     optical_function = compute_differential(x2, x1, delta_x)
     particles_with_optical_function = add_column_to(particles, optical_function)
     return particles_with_optical_function

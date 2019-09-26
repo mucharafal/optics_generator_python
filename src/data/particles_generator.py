@@ -15,8 +15,7 @@ def get_mapping():
         Parameters.THETA_X: 1,
         Parameters.Y: 2,
         Parameters.THETA_Y: 3,
-        Parameters.CROSSING_ANGLE: 4,
-        Parameters.PT: 5,
+        Parameters.PT: 4,
     }
     return mapping
 
@@ -33,12 +32,11 @@ def generate_from_range(grid_configuration):
     theta_x_vector = np.linspace(conf.theta_x_min, conf.theta_x_max, conf.theta_x_resolution)
     y_vector = np.linspace(conf.y_min, conf.y_max, conf.y_resolution)
     theta_y_vector = np.linspace(conf.theta_y_min, conf.theta_y_max, conf.theta_y_resolution)
-    xa_vector = np.linspace(conf.xa_min, conf.xa_max, conf.xa_resolution)
     pt_vector = np.linspace(conf.pt_min, conf.pt_max, conf.pt_resolution)
 
     # Create grid, which is carthesian product of above coordinates vectors
-    grid = np.array(np.meshgrid(x_vector, theta_x_vector, y_vector, theta_y_vector, xa_vector, pt_vector))\
-        .T.reshape(-1, 6)
+    grid = np.array(np.meshgrid(x_vector, theta_x_vector, y_vector, theta_y_vector, pt_vector))\
+        .T.reshape(-1, 5)
 
     particles_object = Particles(grid, get_mapping())
 
@@ -52,11 +50,11 @@ def generate_particles_randomly(grid_configuration):
     :return: numpy matrix with number_of_particles x 5 shape
     """
     min_resolution = [grid_configuration.x_min, grid_configuration.theta_x_min, grid_configuration.y_min,
-                      grid_configuration.theta_y_min, grid_configuration.xa_min, grid_configuration.pt_min]
+                      grid_configuration.theta_y_min, grid_configuration.pt_min]
     max_resolution = [grid_configuration.x_max, grid_configuration.theta_x_max, grid_configuration.y_max,
-                      grid_configuration.theta_y_max, grid_configuration.xa_max, grid_configuration.pt_max]
+                      grid_configuration.theta_y_max, grid_configuration.pt_max]
 
-    number_of_parameters = 6
+    number_of_parameters = 5
     number_of_particles = grid_configuration.get_number_of_particles()
 
     max_vector = np.zeros((1, number_of_parameters))
