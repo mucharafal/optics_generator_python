@@ -1,14 +1,4 @@
 import numpy as np
-from data.parameters_names import ParametersNames as Parameters
-
-
-columns_mapping = {
-    Parameters.X: 0,
-    Parameters.THETA_X: 1,
-    Parameters.Y: 2,
-    Parameters.THETA_Y: 3,
-    Parameters.PT: 4
-}
 
 
 def compute_optical_function(universal_transporter, particles, delta_parameter_name, transported_parameter_name,
@@ -27,8 +17,7 @@ def compute_optical_function(universal_transporter, particles, delta_parameter_n
     shifted_particles = particles.shift_parameter(delta_parameter_name, delta_x)
     x2 = universal_transporter(shifted_particles).get_coordinates_of(transported_parameter_name)
     optical_function = compute_differential(x2, x1, delta_x)
-    particles_with_optical_function = add_column_to(particles, optical_function)
-    return particles_with_optical_function
+    return optical_function
 
 
 def compute_delta(particles, delta_parameter_name, alternative_value):
@@ -39,7 +28,7 @@ def compute_delta(particles, delta_parameter_name, alternative_value):
     :param alternative_value: return if delta is equal to zero
     :return:
     """
-    x = particles.T[columns_mapping[delta_parameter_name]]
+    x = particles.get_coordinates_of(delta_parameter_name)
     x_min = np.min(x)
     x_max = np.max(x)
     delta_x = (x_max - x_min) * 1e-5
@@ -48,8 +37,4 @@ def compute_delta(particles, delta_parameter_name, alternative_value):
 
 def compute_differential(vector1, vector2, delta_x):
     return (vector1 - vector2) / delta_x
-
-
-def add_column_to(matrix, column):
-    return np.append(matrix, np.reshape(column, (-1, 1)), axis=1)
 

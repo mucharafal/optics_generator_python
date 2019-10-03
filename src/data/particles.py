@@ -3,7 +3,12 @@ import numpy as np
 
 class Particles:
     def __init__(self, particles, mapping):
-        self.particles = particles
+        if particles.shape[0] == len(mapping.keys()):
+            self.particles = particles.T
+        elif particles.shape[1] == len(mapping.keys()):
+            self.particles = particles
+        else:
+            raise Exception("Incorrect sth")
         self.mapping = mapping
 
     def get_values_of(self, parameter_name):
@@ -11,7 +16,7 @@ class Particles:
         return self.particles.T[index].reshape(-1, 1)
 
     def get_number_of_particles(self):
-        return self.particles.shape()[0]
+        return self.particles.shape[0]
 
     def get_coordinates_of(self, *parameters):
         result_matrix = None
@@ -23,6 +28,12 @@ class Particles:
 
     def get_canonical_parameters(self, *parameters):
         return self.get_coordinates_of(*parameters)
+
+    def add_zeros_column(self, parameter):
+        particles = np.append(self.particles, np.zeros((self.particles.shape[0], 1)), axis=1)
+        mapping = self.mapping.copy()
+        mapping[parameter] = particles.shape[1] - 1
+        return Particles(particles, mapping)
 
 
 def transform_to_geometrical_coordinates(particles):

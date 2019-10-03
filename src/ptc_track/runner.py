@@ -29,7 +29,7 @@ def __run_parallel(particles, madx_configuration, number_of_workers=4):
     :param number_of_workers: max number of workers
     :return: dictionary with segments- every segment is one matrix with particles
     """
-    parts, part_size = split_on(particles, number_of_workers)
+    parts, part_size = split_on(number_of_workers, particles)
 
     with ProcessPoolExecutor(number_of_workers) as executor:
         segments = {}
@@ -47,7 +47,6 @@ def __run_parallel(particles, madx_configuration, number_of_workers=4):
 
 def split_on(number_of_workers, particles):
     parts = []
-    particles = particles.T
     part_size = int(particles.shape[0]/number_of_workers)
     for index in range(number_of_workers-1):
         begin = index * part_size
@@ -75,7 +74,7 @@ def __run_worker(particles, working_directory_name, madx_configuration, shift):
 
     __save_particles_to_file(particles)
 
-    number_of_particles = particles.get_number_of_particles()
+    number_of_particles = particles.shape[0]
 
     configuration_file_name = madx_configuration.generate_madx_script(number_of_particles)
 

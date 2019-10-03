@@ -20,9 +20,9 @@ void LHCOpticsApproximator::Init()
   out_polynomials.push_back(&theta_y_parametrisation);
 
   coord_names.clear();
-  coord_names.push_back(Parameters.X);
+  coord_names.push_back("x");
   coord_names.push_back("theta_x");
-  coord_names.push_back(Parameters.Y);
+  coord_names.push_back("y");
   coord_names.push_back("theta_y");
   coord_names.push_back("ksi");
 
@@ -670,17 +670,17 @@ void LHCOpticsApproximator::TestAperture(TTree *inp_tree, TTree *out_tree)  //x,
   double entry[7];
   double parametrization_out[5];
 
-  inp_tree->SetBranchAddress(Parameters.X, &(entry[0]) );
+  inp_tree->SetBranchAddress("x", &(entry[0]) );
   inp_tree->SetBranchAddress("theta_x", &(entry[1]) );
-  inp_tree->SetBranchAddress(Parameters.Y, &(entry[2]) );
+  inp_tree->SetBranchAddress("y", &(entry[2]) );
   inp_tree->SetBranchAddress("theta_y", &(entry[3]) );
   inp_tree->SetBranchAddress("ksi", &(entry[4]) );
   inp_tree->SetBranchAddress("mad_accept", &(entry[5]) );
   inp_tree->SetBranchAddress("par_accept", &(entry[6]) );
 
-  out_tree->SetBranchAddress(Parameters.X, &(entry[0]) );
+  out_tree->SetBranchAddress("x", &(entry[0]) );
   out_tree->SetBranchAddress("theta_x", &(entry[1]) );
-  out_tree->SetBranchAddress(Parameters.Y, &(entry[2]) );
+  out_tree->SetBranchAddress("y", &(entry[2]) );
   out_tree->SetBranchAddress("theta_y", &(entry[3]) );
   out_tree->SetBranchAddress("ksi", &(entry[4]) );
   out_tree->SetBranchAddress("mad_accept", &(entry[5]) );
@@ -827,12 +827,12 @@ void LHCOpticsApproximator::WriteHistograms(TH1D *err_hists[4], TH2D *err_inp_co
   gDirectory->cd(base_out_dir.c_str());
   gDirectory->mkdir(this->GetName());
   gDirectory->cd(this->GetName());
-  gDirectory->mkdir(Parameters.X);
+  gDirectory->mkdir("x");
   gDirectory->mkdir("theta_x");
-  gDirectory->mkdir(Parameters.Y);
+  gDirectory->mkdir("y");
   gDirectory->mkdir("theta_y");
 
-  gDirectory->cd(Parameters.X);
+  gDirectory->cd("x");
   err_hists[0]->Write("", TObject::kWriteDelete);
   for(int i=0; i<5; i++)
   {
@@ -850,7 +850,7 @@ void LHCOpticsApproximator::WriteHistograms(TH1D *err_hists[4], TH2D *err_inp_co
   }
 
   gDirectory->cd("..");
-  gDirectory->cd(Parameters.Y);
+  gDirectory->cd("y");
   err_hists[2]->Write("", TObject::kWriteDelete);
   for(int i=0; i<5; i++)
   {

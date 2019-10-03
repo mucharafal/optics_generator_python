@@ -23,3 +23,14 @@ class ParametersNames(enum.Enum):
     DELTA_PT = 18
     T = 19
     TURN = 20
+
+    @classmethod
+    def get_delta(cls, parameter):
+        mapping = {
+            ParametersNames.X: ParametersNames.DELTA_X,
+            ParametersNames.THETA_X: ParametersNames.DELTA_THETA_X,
+            ParametersNames.Y: ParametersNames.DELTA_Y,
+            ParametersNames.THETA_Y: ParametersNames.DELTA_THETA_Y,
+            ParametersNames.PT: ParametersNames.DELTA_PT
+        }
+        return mapping[parameter]
