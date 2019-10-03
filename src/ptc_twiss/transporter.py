@@ -27,5 +27,4 @@ def get_mapping():
 
 
 def get_transporter(configuration):
-    transporter = functools.partial(transport, madx_configuration=configuration)
-    return transporter
+    return lambda particles: transport(configuration, particles)

@@ -11,6 +11,8 @@ ptc_twiss = {
     Parameters.Y: 2,
     Parameters.THETA_X: 3,
     Parameters.THETA_Y: 4,
+    "sth": 5,
+    "sth1": 6,
     Parameters.L_X: 9,
     Parameters.L_Y: 10,
     Parameters.D_X: 11,

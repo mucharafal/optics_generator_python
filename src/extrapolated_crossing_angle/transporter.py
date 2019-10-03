@@ -16,7 +16,7 @@ def transport(particles, wanted_xa, configuration_madx_xa1, xa1,
         ax = (particles_xa_1 - particles_xa_2) / (xa1 - xa2) * (wanted_xa - xa2)
         b = particles_xa_2
         particles_with_xa = ax + b
-        new_places[place] = Particles(particles_with_xa, particles_xa_1.get_mapping())
+        new_places[place] = Particles(particles_with_xa, segments_xa_1[place].get_mapping())
 
     return new_places
 

@@ -8,7 +8,7 @@ class Particles:
         elif particles.shape[1] == len(mapping.keys()):
             self.particles = particles
         else:
-            raise Exception("Incorrect sth")
+            raise Exception("Incorrect mapping")
         self.mapping = mapping
 
     def get_values_of(self, parameter_name):
@@ -34,6 +34,16 @@ class Particles:
         mapping = self.mapping.copy()
         mapping[parameter] = particles.shape[1] - 1
         return Particles(particles, mapping)
+
+    def filter_equals(self, parameter, value):
+        particles = self.particles[np.isclose(self.particles.T[self.mapping[parameter]], value)]
+        return Particles(particles, self.mapping)
+
+    def get_matrix(self):
+        return self.particles
+
+    def get_mapping(self):
+        return self.mapping
 
 
 def transform_to_geometrical_coordinates(particles):
