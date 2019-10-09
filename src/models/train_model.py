@@ -4,7 +4,7 @@ import numpy as np
 import ROOT
 from concurrent.futures import ProcessPoolExecutor
 import data.grid_configuration as buc
-import utils.root_initializer as root_initializer
+import utilities.root_initializer as root_initializer
 import models.approximator as stub_app
 import xml.etree.ElementTree as ET
 import data.particles_generator as pg
@@ -144,7 +144,7 @@ def train_tmultidimfit(input_matrix, output_vector, max_pt_power, error):
 
 
 def initialize_tmultidimfit(parameters_number, max_pt_power):
-    # Need initialized ROOT (previous invoking utils.root_initializer.initialise)
+    # Need initialized ROOT (previous invoking utilities.root_initializer.initialise)
     from ROOT import TMultiDimFet
     from ROOT import TMultiDimFit_wrapper
 

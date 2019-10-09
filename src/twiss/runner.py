@@ -2,7 +2,7 @@ import ptc_track.runner as mr
 import numpy as np
 from concurrent.futures import ProcessPoolExecutor
 from twiss.madx_script_generator import generate_configuration_file
-from utils import working_directory
+from utilities import working_directory
 import os
 from data.parameters_names import ParametersNames as Parameters
 

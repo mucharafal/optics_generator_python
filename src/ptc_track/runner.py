@@ -1,7 +1,7 @@
 import os
 import subprocess
 import numpy as np
-import utils.working_directory as working_directory
+import utilities.working_directory as working_directory
 from concurrent.futures import ProcessPoolExecutor
 from datetime import date
 

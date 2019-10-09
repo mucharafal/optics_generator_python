@@ -12,6 +12,7 @@ def compare(input_dataset, transporters, transported_dimension, depended_value,
     list_of_datasets = to_list(datasets)
     compared = compare_with_others(list_of_datasets[0], list_of_datasets[1:], transported_dimension,
                                    depended_value)
+    print(compared)
     axes = visualize.plot_datasets(depended_value, Parameters.get_delta(transported_dimension), "Compare", compared,
                                    title_sufix, plot_function, s=1, markers=["x"], **kwargs)
     return axes

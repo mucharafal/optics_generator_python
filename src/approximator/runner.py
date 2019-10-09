@@ -1,7 +1,7 @@
 import ROOT
 from ROOT import gSystem, gInterpreter
 import numpy as np
-import utils.root_initializer as root_initializer
+import utilities.root_initializer as root_initializer
 
 
 approximators_counter = 0

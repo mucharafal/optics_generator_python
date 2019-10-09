@@ -1,5 +1,5 @@
 from data.parameters_names import ParametersNames as Parameters
-import utils.differential_quotient as optical_function_calculator
+import utilities.differential_quotient as optical_function_calculator
 
 
 def compute_v_x(transporter, particles):
