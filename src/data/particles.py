@@ -45,6 +45,19 @@ class Particles:
     def get_mapping(self):
         return self.mapping
 
+    def shift_parameter(self, parameter_name, shift_value):
+        particles = self.particles
+        parameter_index = self.mapping[parameter_name]
+        particles.T[parameter_index] = particles.T[parameter_index] + shift_value
+        return Particles(particles, self.mapping)
+
+    def add_column(self, parameter_name, values):
+        particles = np.append(self.particles, values, axis=1)
+        mapping = self.mapping.copy()
+        mapping[parameter_name] = particles.shape[1] - 1
+        return Particles(particles, mapping)
+
+
 
 def transform_to_geometrical_coordinates(particles):
     new_particles = np.copy(particles)
