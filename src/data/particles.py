@@ -58,7 +58,6 @@ class Particles:
         return Particles(particles, mapping)
 
 
-
 def transform_to_geometrical_coordinates(particles):
     new_particles = np.copy(particles)
     new_particles.T[1] /= 1 + new_particles.T[4]

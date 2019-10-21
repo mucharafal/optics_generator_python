@@ -34,3 +34,14 @@ class ParametersNames(enum.Enum):
             ParametersNames.PT: ParametersNames.DELTA_PT
         }
         return mapping[parameter]
+
+    @classmethod
+    def get_name_in_xml(cls, parameter):
+        mapping = {
+            ParametersNames.X: "x",
+            ParametersNames.THETA_X: "theta_x",
+            ParametersNames.Y: "y",
+            ParametersNames.THETA_Y: "theta_y"
+        }
+        return mapping[parameter]
+

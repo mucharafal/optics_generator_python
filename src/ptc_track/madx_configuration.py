@@ -1,4 +1,5 @@
 import ptc_track.madx_script_generator as msg
+import xml_parser.approximator_training_configuration as xml_parser
 
 
 class TrackConfiguration:
@@ -9,5 +10,6 @@ class TrackConfiguration:
         self.coordinates = coordinates
 
     def generate_madx_script(self, number_of_particles):
-        return msg.generate_configuration_file_from_source(self.path_to_xml_file, self.item_number,
-                                                           self.path_to_accelerator_configuration, number_of_particles)
+        approximator_training_configuration = \
+            xml_parser.get_approximator_configurations_from(self.path_to_xml_file)[self.item_number]
+        return msg.generate_madx_script(approximator_training_configuration.transport_configuration, number_of_particles)

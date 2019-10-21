@@ -37,3 +37,15 @@ class GridConfiguration:
         number_of_particles = self.pt_resolution * self.theta_y_resolution * self.y_resolution * \
             self.x_resolution * self.theta_x_resolution
         return number_of_particles
+
+    @staticmethod
+    def get_configuration_from_xml(xml_root_configuration):
+        xml_configuration = xml_root_configuration.attrib
+        return GridConfiguration(
+            float(xml_configuration["x_min"]), float(xml_configuration["x_max"]), 1,
+            float(xml_configuration["theta_x_min"]), float(xml_configuration["theta_x_max"]), 1,
+            float(xml_configuration["y_min"]), float(xml_configuration["y_max"]), 1,
+            float(xml_configuration["theta_y_min"]), float(xml_configuration["theta_y_max"]), 1,
+            float(xml_configuration["ksi_min"]), float(xml_configuration["ksi_max"]),
+            int(xml_configuration["tot_entries_number"])
+        )
