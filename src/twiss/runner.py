@@ -31,10 +31,8 @@ def transport(madx_configuration, dataset):
 def run_worker(madx_configuration, row, process_number):
     current_directory = os.getcwd()
     working_directory_name = os.path.join(current_directory, "twiss" + str(process_number))
-    print(working_directory_name)
     begin_directory = working_directory.create_and_get_into(working_directory_name)
     path_to_madx_script = generate_configuration_file(madx_configuration, row)
-    print(path_to_madx_script)
     mr.__run_madx(path_to_madx_script)
     matrix = read_in_twiss_output_file("twiss_output")
     matrix_with_pt = np.append(matrix, np.full((matrix.shape[0], 1), row[Parameters.PT]), axis=1)

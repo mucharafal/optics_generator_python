@@ -1,49 +1,116 @@
-import ptc_track.runner as mr
 import numpy as np
 from concurrent.futures import ProcessPoolExecutor
-from ptc_twiss.madx_script_generator import generate_configuration_file
-from utils import working_directory
-import os
 from data.parameters_names import ParametersNames as Parameters
+from ptc_track.runner import split_on
+from cpymad.madx import Madx
 
 
-def transport(madx_configuration, dataset):
+def transport(transport_configuration, particles):
     """
     Transport particles using ptc_twiss
-    :param madx_configuration: configuration for run madx with ptc_twiss command
-    :type madx_configuration: TwissConfiguration
-    :param dataset: matrix with columns: x, theta x, y, theta y, pt
-    :type dataset: np.array
+    :param transport_configuration: configuration for run madx with ptc_twiss command
+    :type transport_configuration: TransportConfiguration
+    :param particles: matrix with columns: x, theta x, y, theta y, pt
+    :type particles: np.array
     :return: matrix returned by ptc_twiss- results from processing next lines of
     """
-    result_matrix = None
-    number_of_workers = 4
+    result_matrix_with_duplicates = None
+    number_of_workers = 1
+
+    parts, part_size = split_on(number_of_workers, particles)
+
     with ProcessPoolExecutor(number_of_workers) as executor:
         futures = []
-        for i, raw_row in enumerate(dataset):
-            processed_row = process_row(raw_row)
-            futures.append(executor.submit(run_worker, madx_configuration, processed_row, i))
+        for worker_number in range(number_of_workers):
+            futures.append(executor.submit(run_worker, transport_configuration, parts[worker_number]))
         for future in futures:
-            result_matrix = future.result() if result_matrix is None else \
-                np.append(result_matrix, future.result(), axis=0)
+            result_matrix_with_duplicates = future.result() if result_matrix_with_duplicates is None else \
+                np.append(result_matrix_with_duplicates, future.result(), axis=0)
+
+    result_matrix = __remove_duplicates(result_matrix_with_duplicates)
+
     return result_matrix
 
 
-def run_worker(madx_configuration, row, process_number):
+def run_worker(transport_configuration, particles):
     # Create and get into working directory
-    current_directory = os.getcwd()
-    working_directory_name = os.path.join(current_directory, "twiss" + str(process_number))
-    begin_directory = working_directory.create_and_get_into(working_directory_name)
+    madx_interpreter = __initialize_madx_interpreter(transport_configuration)
+    return __transport_particles(madx_interpreter, particles)
 
-    path_to_madx_script = generate_configuration_file(madx_configuration, row)
 
-    mr.__run_madx(path_to_madx_script)
+def __initialize_madx_interpreter(transport_configuration):
+    end_place = transport_configuration.get_end_place_configuration()
 
-    matrix = read_in_twiss_output_file("twiss_output")
-    matrix_with_pt = np.append(matrix, np.full((matrix.shape[0], 1), row[Parameters.PT]), axis=1)
-    working_directory.leave_and_delete(begin_directory)
+    madx = Madx(stdout=False, command_log="log.madx")
+    __define_accelerator(madx, transport_configuration)
+    __define_end_place(madx, end_place)
+    __use_only_part_from_ip_to_station(madx, transport_configuration)
+    __include_errors_corrections(madx, transport_configuration)
+    __create_universe(madx)
+    __observe_places(madx, transport_configuration.get_scoring_place_names())
+    return madx
 
-    return matrix_with_pt
+
+def __define_accelerator(madx_interpreter, transport_configuration):
+    madx_interpreter.call(transport_configuration.accelerator_definition_file_name, chdir=True)
+
+
+def __define_end_place(madx_interpreter, end_place_configuration):
+    madx_interpreter.input(end_place_configuration.name + ": marker;")
+    madx_interpreter.input("seqedit, sequence=" + end_place_configuration.beam + ";")
+    madx_interpreter.input("install, element=" + end_place_configuration.name + ", at="
+                           + str(end_place_configuration.distance) + ", from=" +
+                           end_place_configuration.name_of_place_from + ";")
+    madx_interpreter.input("endedit;")
+
+
+def __use_only_part_from_ip_to_station(madx_interpreter, transport_configuration):
+    end_place = transport_configuration.get_end_place_configuration()
+    madx_interpreter.use(transport_configuration.get_end_place_configuration().beam,
+                         range=end_place.name_of_place_from + "/" + end_place.name)
+
+
+def __include_errors_corrections(madx_interpreter, transport_configuration):
+    madx_interpreter.call(transport_configuration.errors_definition_file_name, chdir=True)
+
+
+def __create_universe(madx_interpreter):
+    madx_interpreter.command.ptc_create_universe()
+    madx_interpreter.command.ptc_create_layout(model=2, method=6, nst=1, exact=True, resplit=True, thin=0.0005,
+                                               xbend=0.0005)
+    madx_interpreter.command.ptc_align()
+
+
+def __observe_places(madx_interpreter, places):
+    # madx_interpreter.input("select,flag=ptc_twiss,clear;")
+    #
+    # madx_interpreter.input("select, flag=ptc_twiss, pattern=\"^" + places[0] + "\";")
+    #
+    # places_hardcoded = ["IP5", "tcl*", "MCB.*", "MQ.*", "MB.*", "bmp*"]
+    # for place in places_hardcoded:
+    #     madx_interpreter.input("select, flag=ptc_twiss, pattern=\"^" + place + "\";")
+    #     print(place)
+    pass
+
+
+def __transport_particles(madx_interpreter, particles):
+    result_matrix = None
+    for row in particles:
+        transported_row = __transport_by_ptc_twiss(madx_interpreter, row)
+        result_matrix = transported_row if result_matrix is None else \
+            np.append(result_matrix, transported_row, axis=0)
+    return result_matrix
+
+
+def __transport_by_ptc_twiss(madx_interpreter, raw_row):
+    row = process_row(raw_row)
+    beta_ip5 = madx_interpreter.globals.beta_ip5     # todo get it from madx interpreter, should be in optics
+    delta_p = madx_interpreter.globals.delta_p
+    madx_interpreter.command.ptc_twiss(x=row[Parameters.X], px=row[Parameters.THETA_X], y=row[Parameters.Y],
+                                       py=row[Parameters.THETA_Y], pt=row[Parameters.PT], icase=5, no=6,
+                                       deltap_dependency=True, rmatrix=True, betx=beta_ip5, bety=beta_ip5,
+                                       deltap=delta_p)
+    return process_output_matrix(madx_interpreter.table.get("ptc_twiss"))
 
 
 def process_row(raw_row):
@@ -57,28 +124,15 @@ def process_row(raw_row):
     return row
 
 
-def read_in_twiss_output_file(file_name):
-    with open(file_name) as file_object:
-        # skip header
-        line = file_object.readline()
-        while line[0] != "*":
-            line = file_object.readline()
-        # Line with * has types of columns
-        parameters = line.split()
-        parameters = parameters[1:]
-        # skip '*'
-        file_object.readline()
-
-        matrix = None
-        columns_number = len(parameters)
-        values_vector = np.fromfile(file_object, count=columns_number, sep=" ")
-        while len(values_vector) > 0:
-            matrix = np.append(matrix, values_vector.reshape((-1, columns_number)), axis=0) if \
-                matrix is not None else \
-                values_vector.reshape((-1, columns_number))
-            values_vector = np.fromfile(file_object, count=columns_number, sep=" ")
-
-        return matrix
+def process_output_matrix(output_matrix):
+    matrix = np.array([output_matrix.s, output_matrix.x, output_matrix.y, output_matrix.px, output_matrix.py,
+                       output_matrix.x, output_matrix.y, output_matrix.re11, output_matrix.re33,
+                       output_matrix.re12, output_matrix.re34, output_matrix.disp1, output_matrix.disp3,
+                       output_matrix.pt]).T
+    return matrix
 
 
+def __remove_duplicates(matrix_with_duplicate_rows):
+    filtered_matrix = np.unique(matrix_with_duplicate_rows, axis=0)
+    return filtered_matrix
 

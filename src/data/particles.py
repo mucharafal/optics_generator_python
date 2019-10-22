@@ -46,7 +46,7 @@ class Particles:
         return self.mapping
 
     def shift_parameter(self, parameter_name, shift_value):
-        particles = self.particles
+        particles = np.copy(self.particles)
         parameter_index = self.mapping[parameter_name]
         particles.T[parameter_index] = particles.T[parameter_index] + shift_value
         return Particles(particles, self.mapping)

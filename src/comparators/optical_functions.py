@@ -63,10 +63,8 @@ def compare_two(bunch_configuration, transporter1, optical_function_of_transport
 
 
 def compute_norm(diff, values, madx_matrix, approximator_matrix):
-    print(diff.shape, values.shape)
     relative_diff = np.divide(diff, values.reshape((-1, 1)))
     abs_val_of__rel_diff = np.absolute(relative_diff)
-    print(abs_val_of__rel_diff.shape)
     max_diff = np.max(abs_val_of__rel_diff)
     return abs_val_of__rel_diff, madx_matrix, approximator_matrix
 

@@ -3,6 +3,7 @@ import ptc_twiss.transporter as ptg
 import ptc_twiss.matrix_indexes as tmi
 import numpy as np
 from data.particles import Particles
+import pandas as pd
 
 
 def compute_v_x(transporter, particles):
@@ -129,7 +130,8 @@ def prepare_matrix(particles, parameter_name):
     result_matrix = begin_parameters.get_canonical_parameters(Parameters.X, Parameters.THETA_X, Parameters.Y,
                                                               Parameters.THETA_Y, Parameters.PT)
     optical_function_values = end_parameters.get_canonical_parameters(parameter_name)
-    result_matrix = np.append(result_matrix, optical_function_values, axis=1)
+    optical_function_values_flipped = np.flipud(optical_function_values)
+    result_matrix = np.append(result_matrix, optical_function_values_flipped, axis=1)
     return Particles(result_matrix, get_mapping(parameter_name))
 
 
