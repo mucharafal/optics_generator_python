@@ -15,7 +15,7 @@ def transport(transport_configuration, particles):
     :return: matrix returned by ptc_twiss- results from processing next lines of
     """
     result_matrix_with_duplicates = None
-    number_of_workers = 1
+    number_of_workers = 4
 
     parts, part_size = split_on(number_of_workers, particles)
 
