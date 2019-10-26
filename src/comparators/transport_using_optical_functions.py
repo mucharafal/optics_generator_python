@@ -18,30 +18,18 @@ def compare_with(particles, reference_transporter,
     particles_and_difference = __append_difference(particles, difference)
     axes = visualize.plot_datasets(depended_value, Parameters.get_delta(transported_dimension), "Transporter",
                                    {"diff": particles_and_difference})
-    print("Reference dataset")
-    print(particles_transported_using_reference_transporter.particles)
-    print("Transported")
-    print(particles_transported_using_optical_function.particles)
-    print("Error")
-    print(particles_and_difference.particles)
     return axes
 
 
 def __get_optical_functions(particles, dx_function, dy_function, lx_function,
                             ly_function, vx_function, vy_function):
-    # todo refactor
-    print(particles.particles)
+
     dx = dx_function(particles).get_coordinates_of(Parameters.D_X)
     dy = dy_function(particles).get_coordinates_of(Parameters.D_Y)
     lx = lx_function(particles).get_coordinates_of(Parameters.L_X)
     ly = ly_function(particles).get_coordinates_of(Parameters.L_Y)
     vx = vx_function(particles).get_coordinates_of(Parameters.V_X)
     vy = vy_function(particles).get_coordinates_of(Parameters.V_Y)
-
-    print("Dx, Lx, Vy")
-    print(dx)
-    print(lx)
-    print(vx)
 
     particles_with_optical_functions = \
         particles.add_column(Parameters.D_X, dx).add_column(Parameters.D_Y, dy).add_column(Parameters.L_X, lx).\
@@ -66,11 +54,6 @@ def __transport_using_optical_functions(particles_with_optical_functions, refere
     v_y = particles_with_optical_functions.get_values_of(Parameters.V_Y)
     l_y = particles_with_optical_functions.get_values_of(Parameters.L_Y)
     d_y = particles_with_optical_functions.get_values_of(Parameters.D_Y)
-
-    print("Ksi")
-    print(ksi)
-    print("Dx")
-    print(d_x)
 
     values_in_zero = reference_transporter(Particles(np.array([[0, 0, 0, 0, 0]]), {Parameters.X: 0,
                                                                                    Parameters.THETA_X: 1,
