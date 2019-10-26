@@ -3,17 +3,17 @@ import numpy as np
 
 class Particles:
     def __init__(self, particles, mapping):
-        if particles.shape[0] == len(mapping.keys()):
-            self.particles = particles.T
-        elif particles.shape[1] == len(mapping.keys()):
-            self.particles = particles
+        if particles.shape[1] == len(mapping.keys()):
+            self.particles = np.copy(particles)
+        elif particles.shape[0] == len(mapping.keys()):
+            self.particles = np.copy(particles.T)
         else:
             raise Exception("Incorrect mapping")
         self.mapping = mapping
 
     def get_values_of(self, parameter_name):
         index = self.mapping[parameter_name]
-        return self.particles.T[index].reshape(-1, 1)
+        return np.copy(self.particles.T[index].reshape(-1, 1))
 
     def get_number_of_particles(self):
         return self.particles.shape[0]

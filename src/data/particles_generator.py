@@ -35,8 +35,7 @@ def generate_from_range(grid_configuration):
     pt_vector = np.linspace(conf.pt_min, conf.pt_max, conf.pt_resolution)
 
     # Create grid, which is carthesian product of above coordinates vectors
-    grid = np.array(np.meshgrid(x_vector, theta_x_vector, y_vector, theta_y_vector, pt_vector))\
-        .T.reshape(-1, 5)
+    grid = np.array(np.meshgrid(x_vector, theta_x_vector, y_vector, theta_y_vector, pt_vector)).T.reshape((-1, 5))
 
     particles_object = Particles(grid, get_mapping())
 
