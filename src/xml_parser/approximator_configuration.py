@@ -3,12 +3,14 @@ from data.parameters_names import ParametersNames as Parameters
 
 class ApproximatorConfiguration:
     def __init__(self, polynomials_type, parameters_configurations, term_selection_mode, common_terms,
-                 name_of_approximator):
+                 name_of_approximator, beam_name, beam_energy):
         self.polynomials_type = polynomials_type
         self.parameters_configurations = parameters_configurations
         self.term_selection_mode = term_selection_mode
         self.common_terms = common_terms
         self.name_of_approximator = name_of_approximator
+        self.beam_name = beam_name
+        self.beam_energy = beam_energy
 
     @staticmethod
     def get_configuration_from_xml(xml_root_configuration):
@@ -21,8 +23,10 @@ class ApproximatorConfiguration:
         common_terms = xml_configuration["common_terms"]
         name_of_approximator = xml_configuration["optics_parametrisation_name"]
         polynomials_type = xml_configuration["polynomials_type"]
+        beam_name = xml_configuration["beam"]
+        beam_energy = float(xml_configuration["nominal_beam_energy"])
         return ApproximatorConfiguration(polynomials_type, parameters_configurations, terms_selection_mode,
-                                         common_terms, name_of_approximator)
+                                         common_terms, name_of_approximator, beam_name, beam_energy)
 
 
 class ParameterApproximationConfiguration:

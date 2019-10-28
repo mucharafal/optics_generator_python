@@ -3,7 +3,7 @@ class ApertureConfiguration:
         self.name = name
         self.type = aperture_type
         self.rect_rx = rect_rx
-        self.rect_ty = rect_ry
+        self.rect_ry = rect_ry
         self.el_rx = el_rx
         self.el_ry = el_ry
 
@@ -12,10 +12,10 @@ class ApertureConfiguration:
         return ApertureConfiguration(
             xml_configuration["to_marker_name"],
             xml_configuration["ap_type"],
-            xml_configuration["rect_rx"],
-            xml_configuration["rect_ry"],
-            xml_configuration["el_rx"],
-            xml_configuration["el_ry"]
+            float(xml_configuration["rect_rx"]),
+            float(xml_configuration["rect_ry"]),
+            float(xml_configuration["el_rx"]),
+            float(xml_configuration["el_ry"])
         )
 
     @staticmethod
