@@ -1,4 +1,6 @@
 import xml_parser.approximator_training_configuration as xml_parser
+import transporters.ptc_twiss.optical_functions as optical_functions_module
+import transporters.ptc_twiss.transporter as transporter_module
 
 
 class TwissConfiguration:
@@ -21,3 +23,14 @@ class TwissConfiguration:
     def get_configuration_from_file(path_to_xml_configuration, item_number, s=None):
         configurations = xml_parser.get_approximator_configurations_from(path_to_xml_configuration)
         return TwissConfiguration(configurations[item_number].transport_configuration, s)
+
+    def get_configuration(self):
+        return self
+
+    @staticmethod
+    def get_module_with_optical_functions():
+        return optical_functions_module
+
+    @staticmethod
+    def get_module_transporter():
+        return transporter_module

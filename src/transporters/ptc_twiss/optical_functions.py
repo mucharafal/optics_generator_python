@@ -1,9 +1,8 @@
 from data.parameters_names import ParametersNames as Parameters
-import ptc_twiss.transporter as ptg
-import ptc_twiss.matrix_indexes as tmi
+import transporters.ptc_twiss.transporter as ptg
+import transporters.ptc_twiss.matrix_indexes as tmi
 import numpy as np
 from data.particles import Particles
-import pandas as pd
 
 
 def compute_v_x(transporter, particles):
@@ -74,7 +73,7 @@ def __compute_optical_function(transporter, particles, optical_function_name):
     :param optical_function_name: name of optical function, ie Parameters.D_X
     :return: matrix with columns: x, theta_x, y, theta_y, pt, optical function
     """
-    segments = ptg.transport(transporter, particles)
+    segments = transporter(particles)
     result = prepare_matrix(segments, optical_function_name)
     return result
 

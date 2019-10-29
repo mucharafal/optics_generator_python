@@ -1,7 +1,7 @@
 import numpy as np
 from concurrent.futures import ProcessPoolExecutor
 from data.parameters_names import ParametersNames as Parameters
-from ptc_track.runner import split_on
+from transporters.ptc_track.runner import split_on
 from cpymad.madx import Madx
 
 
@@ -135,4 +135,8 @@ def process_output_matrix(output_matrix):
 def __remove_duplicates(matrix_with_duplicate_rows):
     filtered_matrix = np.unique(matrix_with_duplicate_rows, axis=0)
     return filtered_matrix
+
+
+def get_initialized_madx(twiss_configuration):
+    return __initialize_madx_interpreter(twiss_configuration.transport_configuration)
 

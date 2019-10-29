@@ -1,5 +1,5 @@
-import ptc_track.transporter as ptc_track_transporter
-import ptc_track.madx_configuration as track_conf
+import transporters.ptc_track.transporter as ptc_track_transporter
+import transporters.ptc_track.configuration as track_conf
 import ROOT
 from concurrent.futures import ProcessPoolExecutor
 import utils.root_initializer as root_initializer
@@ -7,8 +7,8 @@ import data.particles_generator as pg
 from data.parameters_names import ParametersNames as Parameters
 
 
-def train_from_configuration(configuration_object, path_to_sources):
-    root_initializer.initialise(path_to_sources)
+def train_from_configuration(configuration_object):
+    root_initializer.initialise()
 
     # Generate data for approximator
     madx_configuration = track_conf.TrackConfiguration(configuration_object.transport_configuration)
@@ -33,8 +33,8 @@ def generate_training_dataset(madx_configuration, training_sample_configuration)
 
     approximator_segment_name = madx_configuration.approximator_transport_configuration.end_place.name
 
-    approximator_dataset = TrainingDataset(output_segments["start"], output_segments["end"], approximator_segment_name)
-    apertures_datasets = [TrainingDataset(output_segments["start"], aperture_segment, aperture_name)
+    approximator_dataset = TrainingDataset(input_matrix, output_segments["end"], approximator_segment_name)
+    apertures_datasets = [TrainingDataset(input_matrix, aperture_segment, aperture_name)
                           for aperture_name, aperture_segment in output_segments.items()
                           if aperture_name not in ["start", "end", approximator_segment_name, approximator_segment_name.upper()]]
 
@@ -117,7 +117,6 @@ def train_tmultidimfit(input_vectors, output_vector, parameter_configuration):
 def initialize_tmultidimfit(parameters_number, max_pt_power):
     # Need initialized ROOT (previous invoking utils.root_initializer.initialise)
     from ROOT import TMultiDimFet
-    from ROOT import TMultiDimFit_wrapper
 
     approximator = TMultiDimFet(parameters_number, 0, ROOT.option)
 

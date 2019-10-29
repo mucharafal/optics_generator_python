@@ -1,4 +1,4 @@
-import ptc_track.runner as mr
+import transporters.ptc_track.runner as mr
 import numpy as np
 from concurrent.futures import ProcessPoolExecutor
 from twiss.madx_script_generator import generate_configuration_file

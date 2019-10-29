@@ -1,4 +1,4 @@
-import ptc_track.runner as mr
+import transporters.ptc_track.runner as mr
 from data.parameters_names import ParametersNames as Parameters
 from data.particles import Particles
 

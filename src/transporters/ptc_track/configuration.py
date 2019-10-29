@@ -1,5 +1,7 @@
-import ptc_track.madx_script_generator as msg
+import transporters.ptc_track.madx_script_generator as msg
 import xml_parser.approximator_training_configuration as xml_parser
+import transporters.ptc_track.optical_functions as optical_functions_module
+import transporters.ptc_track.transporter as transporter_module
 
 
 class TrackConfiguration:
@@ -15,3 +17,14 @@ class TrackConfiguration:
         approximator_configuration = xml_parser.get_approximator_configurations_from(path_to_xml_file)[item_number]
         approximator_transport_configuration = approximator_configuration.transport_configuration
         return TrackConfiguration(approximator_transport_configuration, coordinates)
+
+    def get_configuration(self):
+        return self
+
+    @staticmethod
+    def get_module_with_optical_functions():
+        return optical_functions_module
+
+    @staticmethod
+    def get_module_transporter():
+        return transporter_module

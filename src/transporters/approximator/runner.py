@@ -7,17 +7,14 @@ import utils.root_initializer as root_initializer
 approximators_counter = 0
 
 
-def get_approximator(path_to_project, path_to_file, approximator_name):
+def get_approximator(path_to_file, approximator_name):
     """
     Get approximator_test from file.
-    :param path_to_project: path to optics_generator_python. Needed files from it:
-    - properly initialized folder root_libs
-    - src/root_classes/include
     :param path_to_file: path to file with serialized LHCOpticsApproximator object
     :param approximator_name: name of approximator_test in ROOT file
     :return: approximator_test object
     """
-    root_initializer.initialise(path_to_project)
+    root_initializer.initialise()
 
     global approximators_counter
     root_pointer_name = "apr" + str(approximators_counter)

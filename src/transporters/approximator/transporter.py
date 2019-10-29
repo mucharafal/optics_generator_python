@@ -1,4 +1,4 @@
-import approximator.runner as ra
+import transporters.approximator.runner as ra
 from data.parameters_names import ParametersNames as Parameters
 from data.particles import Particles
 

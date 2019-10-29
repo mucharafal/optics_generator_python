@@ -2,14 +2,15 @@ import visualization.visualize as visualize
 from data.parameters_names import ParametersNames as Parameters
 from data.particles import Particles
 import numpy as np
+import transporters.transporters_factory as transporters_factory
+import transporters.optical_functions_factory as optical_functions_factory
 
 
-def compare_with(particles, reference_transporter,
-                 dx_function, dy_function, lx_function, ly_function, vx_function, vy_function,
+def compare_with(particles, reference_transporter_configuration, optical_functions_base_configuration,
                  transported_dimension, depended_value):
-    particles_with_optical_functions = __get_optical_functions(particles, dx_function, dy_function, lx_function,
-                                                               ly_function, vx_function, vy_function)
+    particles_with_optical_functions = __get_optical_functions(particles, optical_functions_base_configuration)
 
+    reference_transporter = transporters_factory.get_transporter(reference_transporter_configuration)
     particles_transported_using_reference_transporter = reference_transporter(particles)["end"]
     particles_transported_using_optical_function = __transport_using_optical_functions(particles_with_optical_functions,
                                                                                        reference_transporter)
@@ -21,19 +22,16 @@ def compare_with(particles, reference_transporter,
     return axes
 
 
-def __get_optical_functions(particles, dx_function, dy_function, lx_function,
-                            ly_function, vx_function, vy_function):
+def __get_optical_functions(particles, transporter_configuration):
 
-    dx = dx_function(particles).get_coordinates_of(Parameters.D_X)
-    dy = dy_function(particles).get_coordinates_of(Parameters.D_Y)
-    lx = lx_function(particles).get_coordinates_of(Parameters.L_X)
-    ly = ly_function(particles).get_coordinates_of(Parameters.L_Y)
-    vx = vx_function(particles).get_coordinates_of(Parameters.V_X)
-    vy = vy_function(particles).get_coordinates_of(Parameters.V_Y)
-
-    particles_with_optical_functions = \
-        particles.add_column(Parameters.D_X, dx).add_column(Parameters.D_Y, dy).add_column(Parameters.L_X, lx).\
-        add_column(Parameters.L_Y, ly).add_column(Parameters.V_X, vx).add_column(Parameters.V_Y, vy)
+    optical_functions = [Parameters.D_X, Parameters.D_Y, Parameters.L_X, Parameters.L_Y, Parameters.V_X, Parameters.V_Y]
+    particles_with_optical_functions = particles
+    for optical_function_name in optical_functions:
+        optical_function = optical_functions_factory.get_optical_function(optical_function_name,
+                                                                          transporter_configuration)
+        optical_function_values = optical_function(particles).get_coordinates_of(optical_function_name)
+        particles_with_optical_functions = particles_with_optical_functions.add_column(optical_function_name,
+                                                                                       optical_function_values)
 
     return particles_with_optical_functions
 
