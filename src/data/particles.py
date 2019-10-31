@@ -1,4 +1,5 @@
 import numpy as np
+from data.parameters_names import ParametersNames as Parameters
 
 
 class Particles:
@@ -57,9 +58,23 @@ class Particles:
         mapping[parameter_name] = particles.shape[1] - 1
         return Particles(particles, mapping)
 
+    def override_column(self, parameter_name, values):
+        matrix = np.copy(self.particles)
+        parameter_index = self.mapping[parameter_name]
+        matrix[parameter_index] = values
+        return Particles(matrix, self.mapping)
+
 
 def transform_to_geometrical_coordinates(particles):
-    new_particles = np.copy(particles)
-    new_particles.T[1] /= 1 + new_particles.T[4]
-    new_particles.T[3] /= 1 + new_particles.T[4]
+    theta_x = particles.get_values_of(Parameters.THETA_X)
+    theta_y = particles.get_values_of(Parameters.THETA_Y)
+    ksi = particles.get_values_of(Parameters.PT)
+
+    theta_x /= 1 + ksi
+    theta_y /= 1 + ksi
+
+    new_particles = particles\
+        .override_column(Parameters.THETA_X, theta_x)\
+        .override_column(Parameters.THETA_Y, theta_y)
+
     return new_particles
