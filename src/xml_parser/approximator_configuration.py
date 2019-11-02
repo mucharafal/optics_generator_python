@@ -39,7 +39,9 @@ class ParameterApproximationConfiguration:
     def get_configuration_from_xml(xml_configuration, parameter):
         parameter_string = Parameters.get_name_in_xml(parameter)
 
+        # Max degree of pt term in polynomial
         parameter_max_degree_key = "max_degree_" + parameter_string
+        # Precision to reduce number of terms in polynomial
         parameter_precision_key = "precision_" + parameter_string
 
         max_degree = int(xml_configuration[parameter_max_degree_key])

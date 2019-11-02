@@ -13,10 +13,10 @@ class TwissConfiguration:
         end contains all records from input file
         """
         self.transport_configuration = transport_configuration
-        self.s = s
         if s is None:
             self.filter_by_s = False
         else:
+            self.s = s
             self.filter_by_s = True
 
     @staticmethod

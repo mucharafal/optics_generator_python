@@ -27,14 +27,14 @@ def train_from_configuration(configuration_object):
 
 def generate_training_dataset(madx_configuration, training_sample_configuration):
     # Generate beginning positions
-    input_matrix = pg.generate_particles_randomly(training_sample_configuration)
+    input_particles = pg.generate_particles_randomly(training_sample_configuration)
 
-    output_segments = ptc_track_transporter.transport(madx_configuration, input_matrix)
+    output_segments = ptc_track_transporter.transport(madx_configuration, input_particles)
 
     approximator_segment_name = madx_configuration.approximator_transport_configuration.end_place.name
 
-    approximator_dataset = TrainingDataset(input_matrix, output_segments["end"], approximator_segment_name)
-    apertures_datasets = [TrainingDataset(input_matrix, aperture_segment, aperture_name)
+    approximator_dataset = TrainingDataset(input_particles, output_segments["end"], approximator_segment_name)
+    apertures_datasets = [TrainingDataset(input_particles, aperture_segment, aperture_name)
                           for aperture_name, aperture_segment in output_segments.items()
                           if aperture_name not in ["start", "end", approximator_segment_name, approximator_segment_name.upper()]]
 

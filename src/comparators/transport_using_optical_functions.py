@@ -6,8 +6,9 @@ import transporters.transporters_factory as transporters_factory
 import transporters.optical_functions_factory as optical_functions_factory
 
 
-def compare_with(particles, reference_transporter_configuration, optical_functions_base_configuration,
-                 transported_dimension, depended_value):
+def compare_transport_by_optical_functions_with(particles, reference_transporter_configuration,
+                                                optical_functions_base_configuration, transported_dimension,
+                                                depended_value):
     particles_with_optical_functions = __get_optical_functions(particles, optical_functions_base_configuration)
 
     reference_transporter = transporters_factory.get_transporter(reference_transporter_configuration)

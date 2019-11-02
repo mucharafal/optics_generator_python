@@ -1,11 +1,11 @@
 class TransportConfiguration:
     def __init__(self, end_place, observed_places_names, accelerator_definition_file_name, errors_definition_file_name,
                  madx_script_file_name):
+        self.end_place = end_place
+        self.observed_places_names = observed_places_names
         self.accelerator_definition_file_name = accelerator_definition_file_name
         self.errors_definition_file_name = errors_definition_file_name
         self.madx_script_file_name = madx_script_file_name
-        self.end_place = end_place
-        self.observed_places_names = observed_places_names
 
     def get_scoring_place_names(self):
         return self.observed_places_names
