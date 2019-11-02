@@ -148,18 +148,18 @@ for child in config:
     #bunch_configuration=buc.GridConfiguration.get_configuration_from_xml(config)
     particles = pg.generate_from_range(bunch_configuration)
 
-    fig = plt.gcf()
+    #fig = plt.gcf()
     #fig.set_size_inches(5, 5)
 
     title_sufix = "2016 optics\nError over training scope\nC++ code"
 
     #beginning of title is geberated automatically based on what the plot represents
-    axes = transport.compare(particles, transporters, Parameters.Y, Parameters.PT, plot_function=sns.scatterplot, title_sufix=title_sufix)
+    #axes = transport.compare(particles, transporters, Parameters.Y, Parameters.PT, plot_function=sns.scatterplot, title_sufix=title_sufix)
     #axes.set_ylim(-4,4) #to be removed, various optics can have various ranges
     # axes.set_yticks(list(-12.5 + x * 2.5 for x in range(11)))
     axes = plt.gca()
 
-    fig = plt.gcf()
+    #fig = plt.gcf()
     #fig.set_size_inches(40,20) #to be removed, various optics can have various ranges
 
     title_sufix = r"-450 $\mu$rad < $\theta_x < 450 \mu$rad"
@@ -181,22 +181,26 @@ for child in config:
     #fig.set_size_inches(5, 5)
     axes = transport.compare(particles, transporters, Parameters.X, Parameters.PT, title_sufix=title_sufix)
     fig.savefig(os.path.join(stat_path,title_sufix+"_X_PT"))
+    plt.clf()
     #axes.set_ylim(-2, 2)
 
     fig = plt.gcf()
     #fig.set_size_inches(5, 5)
     axes = transport.compare(particles, transporters, Parameters.THETA_X, Parameters.PT, title_sufix=title_sufix)
     fig.savefig(os.path.join(stat_path,title_sufix+"_THETA_X_PT"))
+    plt.clf()
     #axes.set_ylim(-10, 10)
 
     fig = plt.gcf()
     #fig.set_size_inches(5, 5)
     axes = transport.compare(particles, transporters, Parameters.Y, Parameters.PT, title_sufix=title_sufix)
     fig.savefig(os.path.join(stat_path,title_sufix+"_Y_PT"))
+    plt.clf()
     #axes.set_ylim(-4, 4)
 
     fig = plt.gcf()
     #fig.set_size_inches(5, 5)
     axes = transport.compare(particles, transporters, Parameters.THETA_Y, Parameters.PT, title_sufix=title_sufix)
     fig.savefig(os.path.join(stat_path,title_sufix+"_THETA_Y_PT"))
+    plt.clf()
     #axes.set_ylim(-40, 40)
