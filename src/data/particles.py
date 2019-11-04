@@ -27,9 +27,6 @@ class Particles:
 
         return result_matrix
 
-    def get_canonical_parameters(self, *parameters):
-        return self.get_coordinates_of(*parameters)
-
     def add_zeros_column(self, parameter):
         particles = np.append(self.particles, np.zeros((self.particles.shape[0], 1)), axis=1)
         mapping = self.mapping.copy()
