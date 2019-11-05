@@ -1,4 +1,4 @@
-import approximator.runner as ra
+import transporters.approximator.runner as ra
 from data.parameters_names import ParametersNames as Parameters
 from data.particles import Particles
 
@@ -10,8 +10,8 @@ def transport(approximator, particles):
 
     segments["start"] = particles
 
-    matrix_for_transporter = particles.get_coordinates_of(Parameters.X, Parameters.THETA_X, Parameters.Y, Parameters.THETA_Y,
-                                                          Parameters.PT)
+    matrix_for_transporter = particles.get_coordinates_of(Parameters.X, Parameters.THETA_X, Parameters.Y,
+                                                          Parameters.THETA_Y, Parameters.PT)
 
     transported_particles = ra.transport(approximator, matrix_for_transporter)
     segments["end"] = Particles(transported_particles, get_mapping())

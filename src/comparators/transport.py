@@ -3,6 +3,7 @@ import numpy as np
 import seaborn as sns
 from data.parameters_names import ParametersNames as Parameters
 from data.particles import Particles
+import transporters.transporters_factory as transporters_factory
 
 
 def compare(input_dataset, transporters, transported_dimension, depended_value,
@@ -20,7 +21,8 @@ def compare(input_dataset, transporters, transported_dimension, depended_value,
 def transport(dataset, transporters):
     results = {}
     for key in transporters:
-        transporter = transporters[key]
+        transporter_configuration = transporters[key]
+        transporter = transporters_factory.get_transporter(transporter_configuration)
         results[key] = transporter(dataset)
     return results
 

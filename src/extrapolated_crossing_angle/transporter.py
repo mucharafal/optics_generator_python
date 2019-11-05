@@ -1,4 +1,4 @@
-import ptc_track.transporter as ptg
+import transporters.ptc_track.transporter as ptg
 from data.particles import Particles
 
 

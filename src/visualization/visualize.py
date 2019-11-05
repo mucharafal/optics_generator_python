@@ -83,6 +83,8 @@ def plot_datasets(x_name, y_name, legend_title, datasets, title_sufix="",
 
     frame = generate_dataset(x_name, y_name, legend_title, datasets)
 
+    # print(frame) # useful if you want to print all plotted values
+
     title = y_alternative_version + " vs " + x_alternative_version
     title += "\n" + title_sufix
 
