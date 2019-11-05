@@ -12,10 +12,11 @@ def compute_optical_function(universal_transporter, particles, delta_parameter_n
     :param delta_alternative_value: value used if standard way of computing delta return 0
     :return:
     """
-    x1 = universal_transporter(particles)["end"].get_coordinates_of(transported_parameter_name)
-    delta_x = compute_delta(particles, delta_parameter_name, delta_alternative_value)
-    shifted_particles = particles.shift_parameter(delta_parameter_name, delta_x)
-    x2 = universal_transporter(shifted_particles)["end"].get_coordinates_of(transported_parameter_name)
+    particles_canonical = particles.get_canonical_coordinates()
+    x1 = universal_transporter(particles_canonical)["end"].get_canonical_coordinates_of(transported_parameter_name)
+    delta_x = compute_delta(particles_canonical, delta_parameter_name, delta_alternative_value)
+    shifted_particles = particles_canonical.shift_parameter(delta_parameter_name, delta_x)
+    x2 = universal_transporter(shifted_particles)["end"].get_canonical_coordinates_of(transported_parameter_name)
     optical_function = compute_differential(x2, x1, delta_x)
     return optical_function
 
@@ -28,7 +29,7 @@ def compute_delta(particles, delta_parameter_name, alternative_value):
     :param alternative_value: return if delta is equal to zero
     :return:
     """
-    x = particles.get_coordinates_of(delta_parameter_name)
+    x = particles.get_canonical_coordinates_of(delta_parameter_name)
     x_min = np.min(x)
     x_max = np.max(x)
     delta_x = (x_max - x_min) * 1e-5

@@ -1,8 +1,7 @@
 from data.parameters_names import ParametersNames as Parameters
-import transporters.ptc_twiss.transporter as ptg
 import transporters.ptc_twiss.matrix_indexes as tmi
 import numpy as np
-from data.particles import Particles
+from data.particles import CanonicalCoordinates
 
 
 def compute_v_x(transporter, particles):
@@ -126,12 +125,12 @@ def prepare_matrix(particles, parameter_name):
     """
     begin_parameters = particles["start"]
     end_parameters = particles["end"]
-    result_matrix = begin_parameters.get_coordinates_of(Parameters.X, Parameters.THETA_X, Parameters.Y,
-                                                        Parameters.THETA_Y, Parameters.PT)
-    optical_function_values = end_parameters.get_coordinates_of(parameter_name)
+    result_matrix = begin_parameters.get_canonical_coordinates_of(Parameters.X, Parameters.THETA_X, Parameters.Y,
+                                                                  Parameters.THETA_Y, Parameters.PT)
+    optical_function_values = end_parameters.get_canonical_coordinates_of(parameter_name)
     optical_function_values_flipped = np.flipud(optical_function_values)
     result_matrix = np.append(result_matrix, optical_function_values_flipped, axis=1)
-    return Particles(result_matrix, get_mapping(parameter_name))
+    return CanonicalCoordinates(result_matrix, get_mapping(parameter_name))
 
 
 def get_mapping(parameter_name):

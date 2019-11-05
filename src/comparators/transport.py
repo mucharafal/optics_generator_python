@@ -2,7 +2,7 @@ import visualization.visualize as visualize
 import numpy as np
 import seaborn as sns
 from data.parameters_names import ParametersNames as Parameters
-from data.particles import Particles
+from data.particles import CanonicalCoordinates
 import transporters.transporters_factory as transporters_factory
 
 
@@ -39,18 +39,18 @@ def compare_with_others(reference_dataset, others_datasets, transported_dimensio
         return {}
     reference_dataset_name = reference_dataset[0]
     dataset = reference_dataset[1]
-    reference_values = dataset["end"].get_coordinates_of(transported_dimension)
+    reference_values = dataset["end"].get_canonical_coordinates_of(transported_dimension)
     result = {}
     for dataset_pack in others_datasets:
         (dataset_name, obtained_dataset) = dataset_pack
         name = reference_dataset_name + " - " + dataset_name
-        obtained_values = obtained_dataset["end"].get_coordinates_of(transported_dimension)
+        obtained_values = obtained_dataset["end"].get_canonical_coordinates_of(transported_dimension)
         absolute_difference = obtained_values - reference_values
         matrix = np.append(absolute_difference.reshape((-1, 1)),
-                           dataset["start"].get_coordinates_of(depended_value),
+                           dataset["start"].get_canonical_coordinates_of(depended_value),
                            axis=1)
         new_matrix_mapping = {Parameters.get_delta(transported_dimension): 0, depended_value: 1}
-        result[name] = Particles(matrix, new_matrix_mapping)
+        result[name] = CanonicalCoordinates(matrix, new_matrix_mapping)
     return dict(result, **compare_with_others(others_datasets[0], others_datasets[1:], transported_dimension,
                                               depended_value))
 
