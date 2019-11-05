@@ -18,7 +18,7 @@ def main(path_to_xml_file, path_to_optics):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) == 4:
+    if len(sys.argv) == 3:
         main(sys.argv[1], sys.argv[2])
     else:
         print("Help:\n"
