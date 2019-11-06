@@ -1,18 +1,12 @@
-import transporters.ptc_twiss.configuration as twiss_configuration_gen
 import transporters.ptc_track.configuration as track_configuration_gen
 import transporters.approximator.configuration as approximator_configuration_gen
-import visualization.optics_parameter_visualisation as plotter
 import data.grid_configuration as grid_configuration_module
 import os
 import shutil
 import sys
-import data.particles_generator as pg
 import xml_parser.approximator_training_configuration as app_conf
-import matplotlib.pyplot as plt
 import seaborn as sns
 import comparators.transport as transport
-import models.train_model as tram
-import models.approximator as stub_app
 import matplotlib.pyplot as plt
 from data.parameters_names import ParametersNames as Parameters
 
@@ -41,7 +35,6 @@ path_to_approximator = os.path.join(path_to_project, optic_folder_name, serializ
 
 path_to_optic = os.path.join(path_to_project, optic_folder_name)
 
-title_sufix = r"2016"
 transporter1 = "ptc_track"
 transporter2 = "approximator"
 
@@ -59,12 +52,10 @@ for configuration in configurations:
     }
 
     test_sample_configuration = grid_configuration_module.GridConfiguration.get_configuration_from_xml(configuration)
-    particles = pg.generate_from_range(test_sample_configuration)
+    particles = test_sample_configuration.generate_randomly()
 
-    title_sufix = "2016 optics\nError over training scope\nC++ code\n"
-    axes = plt.gca()
-
-    title_sufix += r"-450 $\mu$rad < $\theta_x < 450 \mu$rad"
+    title_sufix = optic_folder_name + "\nError over training scope\n"
+    title_sufix += configuration.attrib.get("to_marker_name") + "; s = " + str(s)
 
     stat_path = os.path.join(output_path, "Station_"+str(s))
 
@@ -74,10 +65,11 @@ for configuration in configurations:
     def save_plot_of(transported_parameter, depended_parameter, file_name):
         fig = plt.gcf()
         transport.compare(particles, transporters, transported_parameter, depended_parameter, title_sufix=title_sufix)
-        fig.savefig(os.path.join(stat_path, file_name))
+        fig.savefig(os.path.join(stat_path, file_name + ".jpg"))
         plt.clf()
 
-    save_plot_of(Parameters.X, Parameters.PT, title_sufix + "_X_PT")
-    save_plot_of(Parameters.THETA_X, Parameters.PT, title_sufix + "_THETA_X_PT")
-    save_plot_of(Parameters.Y, Parameters.PT, title_sufix + "_Y_PT")
-    save_plot_of(Parameters.THETA_Y, Parameters.PT, title_sufix + "_THETA_Y_PT")
+    file_name_begin = title_sufix.replace("\n", "_") + "DELTA_"
+    save_plot_of(Parameters.X, Parameters.PT, file_name_begin + "_X_vs_PT")
+    save_plot_of(Parameters.THETA_X, Parameters.PT, file_name_begin + "_THETA_X_vs_PT")
+    save_plot_of(Parameters.Y, Parameters.PT, file_name_begin + "_Y_vs_PT")
+    save_plot_of(Parameters.THETA_Y, Parameters.PT, file_name_begin + "_THETA_Y_vs_PT")
