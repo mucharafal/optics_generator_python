@@ -1,5 +1,6 @@
 import numpy as np
 from data.parameters_names import ParametersNames as Parameters
+from pandas import DataFrame
 
 
 class Particles:
@@ -60,6 +61,11 @@ class Particles:
         parameter_index = self.mapping[parameter_name]
         matrix[parameter_index] = values
         return Particles(matrix, self.mapping)
+
+    def to_pandas_data_frame(self):
+        columns = {parameter_name: self.get_values_of(parameter_name).reshape((-1,)) for parameter_name in self.mapping}
+        data_frame = DataFrame(columns)
+        return data_frame
 
 
 def transform_to_geometrical_coordinates(particles):
