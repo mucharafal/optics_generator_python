@@ -5,20 +5,20 @@ DISTRO := $(or $(if $(wildcard /etc/debian_version), ubuntu), \
 DISTRO := $(strip $(DISTRO))
 
 check_install = @which $1 1>/dev/null 2>&1 \
-				&& echo "✔ $1" \
-				|| echo "✘ no '$1' installed, run 'make $1' to fix"
+                && echo "✔ $1" \
+                || echo "✘ no '$1' installed, run 'make $1' to fix"
 check_python3 = @python3 -c "import $1" 1>/dev/null 2>&1 \
-				&& echo "✔ python3: $1" \
-				|| echo "✘ python3: no package '$1', run $2 to fix"
+                && echo "✔ python3: $1" \
+                || echo "✘ python3: no package '$1', run $2 to fix"
 check_pythonpath = @echo $$PYTHONPATH | grep $(PROJECT_DIR)/src 1>/dev/null 2>&1 \
-				   && echo "✔ env: PYTHONPATH" \
-				   || echo "✘ env: PYTHONPATH: run 'export PYTHONPATH=\$$PYTHONPATH:$(PROJECT_DIR)/src' to fix"
+                && echo "✔ env: PYTHONPATH" \
+                || echo "✘ env: PYTHONPATH: run 'export PYTHONPATH=\$$PYTHONPATH:$(PROJECT_DIR)/src' to fix"
 check_rootlibs = @[[ -d root_libs ]] \
-				 && echo "✔ root: root_libs" \
-				 || echo "✘ no 'root_libs', run 'make shared' inside src/root_classes/src to fix"
+                && echo "✔ root: root_libs" \
+                || echo "✘ no 'root_libs', run 'make shared' inside src/root_classes/src to fix"
 check_rootimport = @root -l -q -e 'gSystem->Load("$1")' 1>/dev/null 2>&1 \
-				&& echo "✔ root: $1" \
-				|| echo "✘ root: no '$1', 'export LD_LIBRARY_PATH=\$$LD_LIBRARY_PATH:`pwd`/root_libs' to fix"
+                && echo "✔ root: $1" \
+                || echo "✘ root: no '$1', 'export LD_LIBRARY_PATH=\$$LD_LIBRARY_PATH:`pwd`/root_libs' to fix"
 
 .PHONY: help
 help:
