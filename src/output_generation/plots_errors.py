@@ -62,9 +62,11 @@ for configuration in configurations:
     if not os.path.isdir(stat_path):
         os.makedirs(stat_path)
 
+    errors = transport.compare(particles, transporters)
+
     def save_plot_of(transported_parameter, depended_parameter, file_name):
         fig = plt.gcf()
-        transport.compare(particles, transporters, transported_parameter, depended_parameter, title_sufix=title_sufix)
+        transport.plot(errors, transported_parameter, depended_parameter, title_sufix=title_sufix)
         fig.savefig(os.path.join(stat_path, file_name + ".jpg"))
         plt.clf()
 
