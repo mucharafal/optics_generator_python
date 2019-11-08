@@ -1,24 +1,26 @@
 import visualization.visualize as visualize
-import numpy as np
-import seaborn as sns
 from data.parameters_names import ParametersNames as Parameters
 from data.particles import Particles
 import transporters.transporters_factory as transporters_factory
+import seaborn as sns
 
 
-def compare(input_dataset, transporters, transported_dimension, depended_value,
-            title_sufix="", plot_function=sns.scatterplot, **kwargs):
+def compare(input_dataset, transporters):
     # datasets["approximator"] = segments: segment_name -> segment_matrix
-    datasets = transport(input_dataset, transporters)
-    list_of_datasets = to_list(datasets)
-    compared = compare_with_others(list_of_datasets[0], list_of_datasets[1:], transported_dimension,
-                                   depended_value)
-    axes = visualize.plot_datasets(depended_value, Parameters.get_delta(transported_dimension), "Compare", compared,
-                                   title_sufix, plot_function, s=1, markers=["x"], **kwargs)
-    return axes
+    datasets = __transport(input_dataset, transporters)
+    list_of_datasets = __to_list(datasets)
+    dict_with_differences = __compare_with_others(list_of_datasets[0], list_of_datasets[1:])
+    dict_with_differences_with_beginning_positions = {key: __merge_particles(particles, input_dataset)
+                                                      for key, particles in dict_with_differences.items()}
+    return dict_with_differences_with_beginning_positions
 
 
-def transport(dataset, transporters):
+def plot(datasets, transported_dimension, depended_value, **kwargs):
+    return visualize.plot_datasets(depended_value, Parameters.get_delta(transported_dimension), "Compare", datasets,
+                                   s=1, markers=["x"], plot_function = sns.scatterplot, **kwargs)
+
+
+def __transport(dataset, transporters):
     results = {}
     for key in transporters:
         transporter_configuration = transporters[key]
@@ -27,32 +29,47 @@ def transport(dataset, transporters):
     return results
 
 
-def to_list(map):
+def __to_list(map):
     result_list = []
     for key in map:
         result_list.append((key, map[key]))
     return result_list
 
 
-def compare_with_others(reference_dataset, others_datasets, transported_dimension, depended_value):
+def __compare_with_others(reference_dataset, others_datasets):
     if not others_datasets:
         return {}
     reference_dataset_name = reference_dataset[0]
-    dataset = reference_dataset[1]
-    reference_values = dataset["end"].get_coordinates_of(transported_dimension)
+    reference_values = reference_dataset[1]["end"]
     result = {}
     for dataset_pack in others_datasets:
         (dataset_name, obtained_dataset) = dataset_pack
         name = reference_dataset_name + " - " + dataset_name
-        obtained_values = obtained_dataset["end"].get_coordinates_of(transported_dimension)
-        absolute_difference = obtained_values - reference_values
-        matrix = np.append(absolute_difference.reshape((-1, 1)),
-                           dataset["start"].get_coordinates_of(depended_value),
-                           axis=1)
-        new_matrix_mapping = {Parameters.get_delta(transported_dimension): 0, depended_value: 1}
-        result[name] = Particles(matrix, new_matrix_mapping)
-    return dict(result, **compare_with_others(others_datasets[0], others_datasets[1:], transported_dimension,
-                                              depended_value))
+        obtained_values = obtained_dataset["end"]
+        difference = __subtract_particles(obtained_values, reference_values)
+        result[name] = difference
+    return dict(result, **__compare_with_others(others_datasets[0], others_datasets[1:]))
+
+
+def __subtract_particles(particles1, particles2):
+    common_keys = set(particles1.get_mapping().keys()).intersection(set(particles2.get_mapping().keys()))
+    output_object = Particles.empty()
+    for key in common_keys:
+        values_from_first  = particles1.get_values_of(key)
+        values_from_second = particles2.get_values_of(key)
+        difference = values_from_first - values_from_second
+        delta_of_key = Parameters.get_delta(key)
+        output_object = output_object.add_column(delta_of_key, difference)
+
+    return output_object
+
+
+def __merge_particles(particles1, particles2):
+    output_particles = particles1
+    for key in particles2.get_mapping():
+        output_particles = output_particles.add_column(key, particles2.get_values_of(key))
+
+    return output_particles
 
 
 

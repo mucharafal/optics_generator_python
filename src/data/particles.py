@@ -1,10 +1,14 @@
 import numpy as np
 from data.parameters_names import ParametersNames as Parameters
+from pandas import DataFrame
+import visualization.visualize as plotter
 
 
 class Particles:
     def __init__(self, particles, mapping):
-        if particles.shape[1] == len(mapping.keys()):
+        if particles is None:
+            self.particles = None
+        elif particles.shape[1] == len(mapping.keys()):
             self.particles = np.copy(particles)
         elif particles.shape[0] == len(mapping.keys()):
             self.particles = np.copy(particles.T)
@@ -28,10 +32,8 @@ class Particles:
         return result_matrix
 
     def add_zeros_column(self, parameter):
-        particles = np.append(self.particles, np.zeros((self.particles.shape[0], 1)), axis=1)
-        mapping = self.mapping.copy()
-        mapping[parameter] = particles.shape[1] - 1
-        return Particles(particles, mapping)
+        vector_to_add = np.zeros((self.particles.shape[0], 1))
+        return self.add_column(parameter, vector_to_add)
 
     def filter_equals(self, parameter, value):
         particles = self.particles[np.isclose(self.particles.T[self.mapping[parameter]], value)]
@@ -50,7 +52,10 @@ class Particles:
         return Particles(particles, self.mapping)
 
     def add_column(self, parameter_name, values):
-        particles = np.append(self.particles, values, axis=1)
+        if self.particles is None:
+            particles = values.reshape((-1, 1))
+        else:
+            particles = np.append(self.particles, values, axis=1)
         mapping = self.mapping.copy()
         mapping[parameter_name] = particles.shape[1] - 1
         return Particles(particles, mapping)
@@ -60,6 +65,18 @@ class Particles:
         parameter_index = self.mapping[parameter_name]
         matrix[parameter_index] = values
         return Particles(matrix, self.mapping)
+
+    def to_pandas_data_frame(self):
+        columns = {parameter_name: self.get_values_of(parameter_name).reshape((-1,)) for parameter_name in self.mapping}
+        data_frame = DataFrame(columns)
+        return data_frame
+
+    def plot(self, x, y, *args, **kwargs):
+        return plotter.plot_from_one_matrix(x, y, self, *args, **kwargs)
+
+    @staticmethod
+    def empty():
+        return Particles(None, dict())
 
 
 def transform_to_geometrical_coordinates(particles):
