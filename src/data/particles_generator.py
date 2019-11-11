@@ -8,20 +8,6 @@ There is two ways generating:
 """
 
 
-def get_mapping(parameters):
-    mapping = {}
-    for index in range(len(parameters)):
-        mapping[parameters[index].parameter_name] = index
-    return mapping
-
-
-def get_vector(parameter_configuration):
-    min = parameter_configuration.minimal_value
-    max = parameter_configuration.maximal_value
-    resolution = parameter_configuration.resolution
-    return np.linspace(min, max, resolution)
-
-
 def generate_from_range(grid_configuration):
     """
     Generate carthesian product of parameters of given range.
@@ -30,12 +16,12 @@ def generate_from_range(grid_configuration):
     """
     # Create and initialize vectors with coordinates of particles in grid
 
-    vectors = [get_vector(parameter) for parameter in grid_configuration.parameters]
+    vectors = [__get_vector(parameter) for parameter in grid_configuration.parameters]
 
     # Create grid, which is carthesian product of above coordinates vectors
     grid = np.array(np.meshgrid(*vectors)).T.reshape((-1, 5))
 
-    mapping = get_mapping(grid_configuration.parameters)
+    mapping = __get_mapping(grid_configuration.parameters)
 
     particles_object = Particles(grid, mapping)
 
@@ -61,6 +47,23 @@ def generate_particles_randomly(grid_configuration):
 
     grid = (max_values_vector - min_values_vector) * np.random.random_sample((number_of_particles, number_of_parameters)) + min_values_vector
 
-    particles_object = Particles(grid, get_mapping(parameters))
+    particles_object = Particles(grid, __get_mapping(parameters))
 
     return particles_object
+
+
+def __get_mapping(parameters):
+    mapping = {}
+    for index in range(len(parameters)):
+        mapping[parameters[index].parameter_name] = index
+    return mapping
+
+
+def __get_vector(parameter_configuration):
+    min = parameter_configuration.minimal_value
+    max = parameter_configuration.maximal_value
+    resolution = parameter_configuration.resolution
+    return np.linspace(min, max, resolution)
+
+
+
