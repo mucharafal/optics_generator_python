@@ -42,7 +42,7 @@ class TestParticles(TestCase):
         l = np.array([2, 3, 4]).reshape((-1, 1))
         array = np.append(k, l, axis=1)
         particles = Particles(array, {"x": 0, "y": 1})
-        received_x = particles.get_coordinates_of("x")
+        received_x = particles.get_default_coordinates_of("x")
         assert np.allclose(received_x, k)
 
     def test_get_second_parameter_with_get_coordinates_of(self):
@@ -50,7 +50,7 @@ class TestParticles(TestCase):
         l = np.array([2, 3, 4]).reshape((-1, 1))
         array = np.append(k, l, axis=1)
         particles = Particles(array, {"x": 0, "y": 1})
-        received_y = particles.get_coordinates_of("y")
+        received_y = particles.get_default_coordinates_of("y")
         assert np.allclose(received_y, l)
 
     def test_get_all_parameters_with_get_coordinates_of(self):
@@ -58,7 +58,7 @@ class TestParticles(TestCase):
         l = np.array([2, 3, 4]).reshape((-1, 1))
         array = np.append(k, l, axis=1)
         particles = Particles(array, {"x": 0, "y": 1})
-        received_x_and_y = particles.get_coordinates_of("x", "y")
+        received_x_and_y = particles.get_default_coordinates_of("x", "y")
         assert np.allclose(received_x_and_y, array)
 
     def test_get_all_parameters_in_different_order_with_get_coordinates_of(self):
@@ -66,7 +66,7 @@ class TestParticles(TestCase):
         l = np.array([2, 3, 4]).reshape((-1, 1))
         array = np.append(k, l, axis=1)
         particles = Particles(array, {"x": 0, "y": 1})
-        received_y_and_x = particles.get_coordinates_of("y", "x")
+        received_y_and_x = particles.get_default_coordinates_of("y", "x")
         l_and_k = np.append(l, k, axis=1)
         assert np.allclose(received_y_and_x, l_and_k)
 

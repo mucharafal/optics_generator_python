@@ -1,6 +1,6 @@
 import xml.etree.ElementTree as ET
 from xml_parser.approximator_configuration import ApproximatorConfiguration
-from data.grid_configuration import GridConfiguration
+from data.grid_configuration import CanonicalCoordinatesGridConfiguration
 from xml_parser.transport_configuration import TransportConfiguration
 from xml_parser.aperture_configuration import ApertureConfiguration
 
@@ -20,7 +20,8 @@ class ApproximatorTrainingConfiguration:
     @staticmethod
     def get_configuration_from(xml_configuration):
         approximator_configuration = ApproximatorConfiguration.get_configuration_from_xml(xml_configuration)
-        training_sample_configuration = GridConfiguration.get_configuration_from_xml(xml_configuration)
+        training_sample_configuration = CanonicalCoordinatesGridConfiguration.\
+            get_configuration_from_xml(xml_configuration)
         transport_configuration = TransportConfiguration.get_configuration_from_xml(xml_configuration)
         apertures_configurations = ApertureConfiguration.get_configurations_from_xml(xml_configuration)
         destination_file_name = xml_configuration.attrib["optics_parametrisation_file"]
