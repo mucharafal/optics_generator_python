@@ -1,6 +1,6 @@
 import transporters.ptc_track.runner as mr
 from data.parameters_names import ParametersNames as Parameters
-from data.particles import Particles
+from data.particles import CanonicalCoordinates
 
 
 def transport(madx_configuration, particles):
@@ -15,12 +15,12 @@ def transport(madx_configuration, particles):
 
     particles_with_t = particles.add_zeros_column(Parameters.T)
 
-    raw_begin_positions = particles_with_t.get_coordinates_of(Parameters.X, Parameters.THETA_X, Parameters.Y,
-                                                              Parameters.THETA_Y, Parameters.T, Parameters.PT)
+    raw_begin_positions = particles_with_t.get_canonical_coordinates_of(Parameters.X, Parameters.THETA_X, Parameters.Y,
+                                                                        Parameters.THETA_Y, Parameters.T, Parameters.PT)
 
     raw_segments = mr.compute_trajectory(raw_begin_positions, madx_configuration, number_of_processes)
 
-    segments = {segment_name: Particles(segment, get_mapping()) for segment_name, segment in raw_segments.items()}
+    segments = {segment_name: CanonicalCoordinates(segment, get_mapping()) for segment_name, segment in raw_segments.items()}
 
     return segments
 

@@ -26,8 +26,8 @@ def plot_from_two_matrices(x_name, y_name, x_matrix, y_matrix,
     title = y_name_prefix + y_alternative_version + " vs " + x_name_prefix + x_alternative_version
     title += "\n" + title_sufix
 
-    vector_x = x_matrix.get_values_of(x_name).reshape((-1,)) * multiplier_for_unit[x_name]
-    vector_y = y_matrix.get_values_of(y_name).reshape((-1,)) * multiplier_for_unit[y_name]
+    vector_x = x_matrix.get_canonical_coordinates_of(x_name).reshape((-1,)) * multiplier_for_unit[x_name]
+    vector_y = y_matrix.get_canonical_coordinates_of(y_name).reshape((-1,)) * multiplier_for_unit[y_name]
 
     frame = pd.DataFrame(data={x_full_name: vector_x, y_full_name: vector_y})
 
@@ -47,8 +47,8 @@ def generate_dataset(x_name, y_name, hue_name, datasets):
     for dataset_name in datasets:
         matrix = datasets[dataset_name]
 
-        x = matrix.get_values_of(x_name).reshape((-1,)) * multiplier_for_unit[x_name]
-        y = matrix.get_values_of(y_name).reshape((-1,)) * multiplier_for_unit[y_name]
+        x = matrix.get_canonical_coordinates_of(x_name).reshape((-1,)) * multiplier_for_unit[x_name]
+        y = matrix.get_canonical_coordinates_of(y_name).reshape((-1,)) * multiplier_for_unit[y_name]
         hue = np.full((len(x),), dataset_name)
 
         frame = pd.DataFrame(data={x_name: x, y_name: y, hue_name: hue})

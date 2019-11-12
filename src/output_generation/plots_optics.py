@@ -17,6 +17,39 @@ if len(sys.argv) < 5:
     print("name of the xml config file\nname of the directory where the output will be stored")
     exit()
 
+
+def get_particles():
+    x_min = 0
+    x_max = 0
+    x_resolution = 1
+
+    theta_x_min = 0
+    theta_x_max = 0
+    theta_x_resolution = 1
+
+    y_min = 0
+    y_max = 0
+    y_resolution = 1
+
+    theta_y_min = 0
+    theta_y_max = 0
+    theta_y_resolution = 1
+
+    pt_min = -0.15
+    pt_max = 0
+    pt_resolution = 11
+
+    grid_configuration = grid_configuration_module.CanonicalCoordinatesGridConfiguration.by_boundary(
+        x_min, x_max, x_resolution,
+        theta_x_min, theta_x_max, theta_x_resolution,
+        y_min, y_max, y_resolution,
+        theta_y_min, theta_y_max, theta_y_resolution,
+        pt_min, pt_max, pt_resolution)
+
+    particles = grid_configuration.generate_grid()
+    return particles
+
+
 sns.set_style("whitegrid")
 path_to_project = sys.argv[1]
 folder_name = sys.argv[2]
@@ -43,11 +76,9 @@ for configuration in configurations:
     track_configuration = track_configuration_gen.TrackConfiguration.get_track_configuration_from_xml_file(path_to_xml_file, item_number)
     approximator_configuration = approximator_configuration_gen.ApproximatorConfiguration(path_to_approximator, approximator_name)
 
-    grid_configuration = grid_configuration_module.GridConfiguration.get_configuration_from_xml(configuration)
-    grid_120_name = r"$\theta_x = 120\mu$rad "
-    particles = grid_configuration.generate_grid()
+    particles = get_particles()
 
-    title_sufix = "2017_nominal; " + r"$\theta_x$=XA; $\xi$=0"
+    title_sufix = folder_name
     stat_path = os.path.join(output_path, "Station_"+str(s))
 
     if not os.path.isdir(stat_path):
@@ -75,3 +106,5 @@ for configuration in configurations:
     save_plot_of(Parameters.PT, Parameters.L_Y, title_sufix + "PT_L_Y")
     save_plot_of(Parameters.PT, Parameters.V_X, title_sufix + "PT_V_X")
     save_plot_of(Parameters.PT, Parameters.V_Y, title_sufix + "PT_V_Y")
+
+
