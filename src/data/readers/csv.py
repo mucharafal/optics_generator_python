@@ -1,11 +1,11 @@
-from data.particles import Particles
+from data.particles import CanonicalCoordinates
 import pandas
 
 
 def read_in(file_name, *columns_parameters):
     matrix = __read_in_matrix(file_name)
     mapping = __generate_mapping(columns_parameters)
-    return Particles(matrix, mapping)
+    return CanonicalCoordinates(matrix, mapping)
 
 
 def __read_in_matrix(file_name):

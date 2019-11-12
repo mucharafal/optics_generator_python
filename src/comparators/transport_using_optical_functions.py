@@ -1,6 +1,6 @@
 import visualization.visualize as visualize
 from data.parameters_names import ParametersNames as Parameters
-from data.particles import Particles
+from data.particles import CanonicalCoordinates
 import numpy as np
 import transporters.transporters_factory as transporters_factory
 import transporters.optical_functions_factory as optical_functions_factory
@@ -30,7 +30,7 @@ def __get_optical_functions(particles, transporter_configuration):
     for optical_function_name in optical_functions:
         optical_function = optical_functions_factory.get_optical_function(optical_function_name,
                                                                           transporter_configuration)
-        optical_function_values = optical_function(particles).get_coordinates_of(optical_function_name)
+        optical_function_values = optical_function(particles).get_canonical_coordinates_of(optical_function_name)
         particles_with_optical_functions = particles_with_optical_functions.add_column(optical_function_name,
                                                                                        optical_function_values)
 
@@ -54,7 +54,7 @@ def __transport_using_optical_functions(particles_with_optical_functions, refere
     l_y = particles_with_optical_functions.get_values_of(Parameters.L_Y)
     d_y = particles_with_optical_functions.get_values_of(Parameters.D_Y)
 
-    values_in_zero = reference_transporter(Particles(np.array([[0, 0, 0, 0, 0]]), {Parameters.X: 0,
+    values_in_zero = reference_transporter(CanonicalCoordinates(np.array([[0, 0, 0, 0, 0]]), {Parameters.X: 0,
                                                                                    Parameters.THETA_X: 1,
                                                                                    Parameters.Y: 2,
                                                                                    Parameters.THETA_Y: 3,
@@ -65,7 +65,7 @@ def __transport_using_optical_functions(particles_with_optical_functions, refere
 
     array_with_positions = np.append(new_x, new_y, axis=1)
 
-    return Particles(array_with_positions, {Parameters.X: 0, Parameters.Y: 1})
+    return CanonicalCoordinates(array_with_positions, {Parameters.X: 0, Parameters.Y: 1})
 
 
 def __compute_difference(first_particles, second_particles):
@@ -74,7 +74,7 @@ def __compute_difference(first_particles, second_particles):
 
     array_with_positions = np.append(difference_x, difference_y, axis=1)
 
-    return Particles(array_with_positions, {Parameters.DELTA_X: 0, Parameters.DELTA_Y: 1})
+    return CanonicalCoordinates(array_with_positions, {Parameters.DELTA_X: 0, Parameters.DELTA_Y: 1})
 
 
 def __append_difference(particles, difference):

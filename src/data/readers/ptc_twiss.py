@@ -1,6 +1,6 @@
 import numpy as np
 from data.parameters_names import ParametersNames as Parameters
-from data.particles import Particles
+from data.particles import CanonicalCoordinates
 
 
 def read_in_output_file(file_name):
@@ -13,7 +13,7 @@ def read_in_output_file(file_name):
         file_object.readline()
         matrix = __get_matrix_from_file_object(file_object, len(parameters_mapping))
 
-        return Particles(matrix, parameters_mapping)
+        return CanonicalCoordinates(matrix, parameters_mapping)
 
 
 def __skip_header(file_object):

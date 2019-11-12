@@ -74,9 +74,9 @@ class Particles:
     def plot(self, x, y, *args, **kwargs):
         return plotter.plot_from_one_matrix(x, y, self, *args, **kwargs)
 
-    @staticmethod
-    def empty():
-        return Particles(None, dict())
+    @classmethod
+    def empty(cls):
+        return cls(None, dict())
 
 
 class GeometricalCoordinates(Particles):
