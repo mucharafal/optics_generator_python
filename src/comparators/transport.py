@@ -1,6 +1,6 @@
 import visualization.visualize as visualize
 from data.parameters_names import ParametersNames as Parameters
-from data.particles import Particles
+from data.particles import CanonicalCoordinates
 import transporters.transporters_factory as transporters_factory
 import seaborn as sns
 
@@ -53,10 +53,10 @@ def __compare_with_others(reference_dataset, others_datasets):
 
 def __subtract_particles(particles1, particles2):
     common_keys = set(particles1.get_mapping().keys()).intersection(set(particles2.get_mapping().keys()))
-    output_object = Particles.empty()
+    output_object = CanonicalCoordinates.empty()
     for key in common_keys:
-        values_from_first  = particles1.get_values_of(key)
-        values_from_second = particles2.get_values_of(key)
+        values_from_first  = particles1.get_canonical_coordinates_of(key)
+        values_from_second = particles2.get_canonical_coordinates_of(key)
         difference = values_from_first - values_from_second
         delta_of_key = Parameters.get_delta(key)
         output_object = output_object.add_column(delta_of_key, difference)

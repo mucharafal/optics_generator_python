@@ -1,5 +1,5 @@
 import numpy as np
-from data.particles import Particles
+from data.particles import CanonicalCoordinates, GeometricalCoordinates
 """
 File include some methods to generate matrix with parameters of particles.
 There is two ways generating:
@@ -23,7 +23,8 @@ def generate_from_range(grid_configuration):
 
     mapping = __get_mapping(grid_configuration.parameters)
 
-    particles_object = Particles(grid, mapping)
+    particles_object = CanonicalCoordinates(grid, mapping) if grid_configuration.if_canonical_coordinates() else \
+        GeometricalCoordinates(grid, mapping)
 
     return particles_object
 
@@ -47,7 +48,10 @@ def generate_particles_randomly(grid_configuration):
 
     grid = (max_values_vector - min_values_vector) * np.random.random_sample((number_of_particles, number_of_parameters)) + min_values_vector
 
-    particles_object = Particles(grid, __get_mapping(parameters))
+    mapping = __get_mapping(grid_configuration.parameters)
+
+    particles_object = CanonicalCoordinates(grid, mapping) if grid_configuration.if_canonical_coordinates() else \
+        GeometricalCoordinates(grid, mapping)
 
     return particles_object
 

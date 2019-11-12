@@ -30,20 +30,20 @@ class GridConfiguration:
     def generate_grid(self):
         return particles_generator.generate_from_range(self)
 
-    @staticmethod
-    def from_sigma(x_mean, sigma_x, x_resolution,
+    @classmethod
+    def from_sigma(cls, x_mean, sigma_x, x_resolution,
                    theta_x_mean, sigma_theta_x, theta_x_resolution,
                    y_mean, sigma_y, y_resolution,
                    theta_y_mean, sigma_theta_y, theta_y_resolution,
                    pt_mean, sigma_pt, pt_resolution):
-        return GridConfiguration.by_boundary(x_mean - sigma_x, x_mean + sigma_x, x_resolution,
+        return cls.by_boundary(x_mean - sigma_x, x_mean + sigma_x, x_resolution,
                                              theta_x_mean - sigma_theta_x, theta_x_mean + sigma_theta_x, theta_x_resolution,
                                              y_mean - sigma_y, y_mean + sigma_y, y_resolution,
                                              theta_y_mean - sigma_theta_y, theta_y_mean + sigma_theta_y, theta_y_resolution,
                                              pt_mean - sigma_pt, pt_mean + sigma_pt, pt_resolution)
 
-    @staticmethod
-    def by_boundary(x_min, x_max, x_resolution,
+    @classmethod
+    def by_boundary(cls, x_min, x_max, x_resolution,
                     theta_x_min, theta_x_max, theta_x_resolution,
                     y_min, y_max, y_resolution,
                     theta_y_min, theta_y_max, theta_y_resolution,
@@ -53,13 +53,13 @@ class GridConfiguration:
         y_configuration = ParameterConfiguration(Parameters.Y, y_min, y_max, y_resolution)
         theta_y_configuration = ParameterConfiguration(Parameters.THETA_Y, theta_y_min, theta_y_max, theta_y_resolution)
         pt_configuration = ParameterConfiguration(Parameters.PT, pt_min, pt_max, pt_resolution)
-        return GridConfiguration(x_configuration, theta_x_configuration, y_configuration, theta_y_configuration,
+        return cls(x_configuration, theta_x_configuration, y_configuration, theta_y_configuration,
                                  pt_configuration)
 
-    @staticmethod
-    def get_configuration_from_xml(xml_root_configuration):
+    @classmethod
+    def get_configuration_from_xml(cls, xml_root_configuration):
         xml_configuration = xml_root_configuration.attrib
-        return GridConfiguration.by_boundary(
+        return cls.by_boundary(
             float(xml_configuration["x_min"]), float(xml_configuration["x_max"]), 1,
             float(xml_configuration["theta_x_min"]), float(xml_configuration["theta_x_max"]), 1,
             float(xml_configuration["y_min"]), float(xml_configuration["y_max"]), 1,
@@ -67,3 +67,21 @@ class GridConfiguration:
             float(xml_configuration["ksi_min"]), float(xml_configuration["ksi_max"]),
             int(xml_configuration["tot_entries_number"])
         )
+
+
+class CanonicalCoordinatesGridConfiguration(GridConfiguration):
+    def __init__(self, *parameters):
+        super().__init__(*parameters)
+
+    @staticmethod
+    def if_canonical_coordinates():
+        return True
+
+
+class GeometricalCoordinatesGridConfiguration(GridConfiguration):
+    def __init__(self, *parameters):
+        super().__init__(*parameters)
+
+    @staticmethod
+    def if_canonical_coordinates():
+        return False
