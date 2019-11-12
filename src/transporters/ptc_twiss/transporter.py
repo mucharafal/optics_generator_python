@@ -13,7 +13,8 @@ def transport(madx_configuration, particles):
     start_segments_matrix = transported[np.isclose(transported.T[indexes.ptc_twiss[Parameters.S]], 0)]
     segments["start"] = CanonicalCoordinates(start_segments_matrix, get_mapping())
     if madx_configuration.filter_by_s:
-        filtered_matrix = transported[np.isclose(transported.T[indexes.ptc_twiss[Parameters.S]], madx_configuration.s)]
+        filtered_matrix = transported[np.isclose(transported.T[indexes.ptc_twiss[Parameters.S]], madx_configuration.s,
+                                                 rtol=1e-7)]
         segments["end"] = CanonicalCoordinates(filtered_matrix, get_mapping())
         return segments
     else:

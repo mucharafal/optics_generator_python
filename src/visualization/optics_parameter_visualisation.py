@@ -4,7 +4,7 @@ import transporters.optical_functions_factory as optical_functions_factory
 
 
 def plot_optical_functions(particles, transporters,
-                           vector_x_name, optic_parameter_name, title="",
+                           vector_x_name, optic_parameter_name,
                            plot_function=sns.lineplot, **kwargs):
     """
     Plot optical functions specified in configuration
@@ -18,12 +18,12 @@ def plot_optical_functions(particles, transporters,
     :return:
     """
     return plot_optical_functions_with_different_datasets({"": particles}, transporters,
-                                                          vector_x_name, optic_parameter_name, title,
+                                                          vector_x_name, optic_parameter_name,
                                                           plot_function, **kwargs)
 
 
 def plot_optical_functions_with_different_datasets(datasets, transporters,
-                                                   vector_x_name, optic_parameter_name, title="",
+                                                   vector_x_name, optic_parameter_name,
                                                    plot_function=sns.lineplot, **kwargs):
     """
     Plot optical functions specified in configuration
@@ -51,7 +51,7 @@ def plot_optical_functions_with_different_datasets(datasets, transporters,
             new_datasets[key] = create_dataset(transporters[transporter_name],
                                                particles)
 
-    return visualize.plot_datasets(vector_x_name, optic_parameter_name, "transporters", new_datasets, title,
-                                   plot_function, **kwargs)
+    return visualize.plot_datasets(vector_x_name, optic_parameter_name, "transporters", new_datasets,
+                                   plot_function=plot_function, **kwargs)
 
 
