@@ -1,4 +1,14 @@
 #!/bin/python3
+import sys
+
+if __name__ == "__main__" and len(sys.argv) != 3:
+    print("Help:\n"
+          "./make_parameterization.py arg1 arg2\n"
+          "arg1- path to xml file\n"
+          "arg2- path to folder with optics (2017_matched ie)")
+    exit()
+
+
 import models.train_model as trainer
 from ROOT import TObject, TFile
 import os
@@ -20,8 +30,4 @@ def main(path_to_xml_file, path_to_optics):
 if __name__ == "__main__":
     if len(sys.argv) == 3:
         main(sys.argv[1], sys.argv[2])
-    else:
-        print("Help:\n"
-              "./make_parametrisation.py arg1 arg2 arg3\n"
-              "arg1- path to xml file\n"
-              "arg2- path to folder with optics (2017_matched ie)\n")
+

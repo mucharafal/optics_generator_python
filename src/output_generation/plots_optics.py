@@ -1,3 +1,13 @@
+import sys
+
+
+if len(sys.argv) < 5:
+    print("not enough arguments specified")
+    print("arguments needed:\npath to the directory with the whole project\nname of directory containing used optic")
+    print("name of the xml config file\nname of the directory where the output will be stored")
+    exit()
+
+
 import transporters.ptc_twiss.configuration as twiss_configuration_gen
 import transporters.ptc_track.configuration as track_configuration_gen
 import transporters.approximator.configuration as approximator_configuration_gen
@@ -10,12 +20,6 @@ import xml_parser.approximator_training_configuration as app_conf
 import matplotlib.pyplot as plt
 import seaborn as sns
 from data.parameters_names import ParametersNames as Parameters
-
-if len(sys.argv) < 5:
-    print("not enough arguments specified")
-    print("arguments needed:\npath to the directory with the whole project\nname of directory containing used optic")
-    print("name of the xml config file\nname of the directory where the output will be stored")
-    exit()
 
 
 def get_particles():

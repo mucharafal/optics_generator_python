@@ -1,20 +1,24 @@
-import transporters.ptc_track.configuration as track_configuration_gen
-import transporters.approximator.configuration as approximator_configuration_gen
-import data.grid_configuration as grid_configuration_module
-import os
-import shutil
 import sys
-import xml_parser.approximator_training_configuration as app_conf
-import seaborn as sns
-import comparators.transport as transport
-import matplotlib.pyplot as plt
-from data.parameters_names import ParametersNames as Parameters
+
 
 if len(sys.argv) < 5:
     print("not enough arguments specified")
     print("arguments needed:\npath to the directory with the whole project\nname of directory containing used optic")
     print("name of the xml config file\nname of the directory where the output will be stored")
     exit()
+
+
+import transporters.ptc_track.configuration as track_configuration_gen
+import transporters.approximator.configuration as approximator_configuration_gen
+import data.grid_configuration as grid_configuration_module
+import os
+import shutil
+import xml_parser.approximator_training_configuration as app_conf
+import seaborn as sns
+import comparators.transport as transport
+import matplotlib.pyplot as plt
+from data.parameters_names import ParametersNames as Parameters
+
 
 sns.set_style("whitegrid")
 path_to_project = sys.argv[1]
@@ -51,7 +55,8 @@ for configuration in configurations:
         transporter2: approximator_configuration
     }
 
-    test_sample_configuration = grid_configuration_module.GridConfiguration.get_configuration_from_xml(configuration)
+    test_sample_configuration = grid_configuration_module.CanonicalCoordinatesGridConfiguration\
+        .get_configuration_from_xml(configuration)
     particles = test_sample_configuration.generate_randomly()
 
     title_sufix = optic_folder_name + "\nError over training scope\n"
