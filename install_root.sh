@@ -1,6 +1,10 @@
 #!/bin/bash
-# Automatic installation of ROOT package
+# Automatic check and installation of ROOT package
 # Should work for version 18.04 on ubuntu, fedora and CentOS7
+
+INSTALL_PATH=$(pwd)
+PYTHON=python3
+ROOT_VERSION=6.18.04
 
 echo "Checking linux distribution..."
 distr=unrecognized
@@ -17,14 +21,11 @@ else
     echo "✘ ROOT     not installed"
 fi
 
-if $(python3 -c "import ROOT" 1>/dev/null 2>&1); then
-    echo "✔ pyROOT   installed for python3"; echo "Complete!"
-    exit 0
-elif $(python -c "import ROOT" 1>/dev/null 2>&1); then
-    echo "✔ pyROOT   installed for python"; echo "Complete!"
+if $($PYTHON -c "import ROOT" 1>/dev/null 2>&1); then
+    echo "✔ pyROOT   installed for $PYTHON"; echo "Complete!"
     exit 0
 else
-    echo "✘ pyROOT   not installed for any python version"
+    echo "✘ pyROOT   not installed for $PYTHON"
 fi
 
 
@@ -46,22 +47,36 @@ case $distro in
             git cmake gcc-c++ gcc binutils \
             libX11-devel libXpm-devel libXft-devel libXext-devel ;;
     *)
-        echo "Linux version not recognized. Follow the steps on https://root.cern.ch/build-prerequisites"
+        echo "Linux distribution not recognized. Follow the steps on https://root.cern.ch/build-prerequisites"
         exit 1 ;;
 esac
 
-read -r -p "Do you want to install ROOT for python3 [y/N]? " answer
-if [[ $answer != [yY]?([eE][sS]) ]]; then
-    echo "Nothing to do, finishing..."
-    exit 0 
-fi
 
-echo "Installing ROOT in `pwd`"
-wget -L -O root.tar.gz https://root.cern/download/root_v6.18.04.source.tar.gz
-tar -zxf root.tar.gz -C root
+echo ""
+echo "Ready to install ROOT in '$INSTALL_PATH'"
+echo "If you want to install it somewhere else, change \$INSTALL_PATH variable in this script"
+echo "or run $0 from your desired directory."
+echo "Also, if you want to use pyROOT bindings for other version than '$PYTHON', change"
+echo "\$PYTHON variable in this script."
+echo ""
+echo "Installation requires around 4 GB of free memory."
+read -r -p "Proceed? [y/N] " answer
+[[ $answer != [yY]?([eE][sS]) ]] && { echo "Complete!"; exit 0; }
+
+cd "$INSTALL_PATH" || { echo "error: '$INSTALL_PATH' is not a directory"; exit 1; }
+wget -L -O root.tar.gz https://root.cern/download/root_v$ROOT_VERSION.source.tar.gz
+tar -zxf root.tar.gz
 rm root.tar.gz
-cd root
+[[ -d root-$ROOT_VERSION ]] || { echo "error: no such directory '$INSTALL_PATH/root-$ROOT_VERSION'"; exit 1; }
+cd root-$ROOT_VERSION
 mkdir obj
 cd obj
-cmake -DPYTHON_EXECUTABLE=$(which python3) ..
-cmake --build -j4 .
+cmake -DPYTHON_EXECUTABLE=$(which $PYTHON) ..
+cmake --build -j4 . 
+
+if [[ $? -eq 0 ]]; then
+    echo "ROOT successfully installed in '$INSTALL_PATH/root-$ROOT_VERSION'"
+    echo "Run '$INSTALL_PATH/root-$ROOT_VERSION/obj/bin/thisroot.sh' to add binary to your $PATH"
+    exit 0
+fi
+

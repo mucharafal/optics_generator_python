@@ -18,8 +18,8 @@ check_rootimport = @root -l -q -e 'gSystem->Load("$1")' 1>/dev/null 2>&1 \
 
 .PHONY: help
 help:
-	@echo -e "* \e[0;36mcheck\e[m       if all prerequisities are installed"
-	@echo -e "* \e[0;36mmadx\e[m        install MAD-X"
+	@echo -e "* check       if all prerequisities are installed"
+	@echo -e "* madx        install MAD-X"
 
 .PHONY: check
 check:
