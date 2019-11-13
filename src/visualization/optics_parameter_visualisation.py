@@ -3,7 +3,11 @@ import visualization.visualize as visualize
 import transporters.optical_functions_factory as optical_functions_factory
 
 
-def plot_optical_functions(particles, transporters,
+def plot_optical_functions(datasets, x_axis_parameter, optical_function_name, **kwargs):
+    return visualize.plot_datasets(x_axis_parameter, optical_function_name, "transporters", datasets, **kwargs)
+
+
+def generate_and_plot_optical_functions(particles, transporters,
                            vector_x_name, optic_parameter_name,
                            plot_function=sns.lineplot, **kwargs):
     """
@@ -17,14 +21,14 @@ def plot_optical_functions(particles, transporters,
     :param plot_function: plot function used to plot ie seaborn.lineplot or scatterplot
     :return:
     """
-    return plot_optical_functions_with_different_datasets({"": particles}, transporters,
+    return generate_and_plot_optical_functions_with_different_datasets({"": particles}, transporters,
                                                           vector_x_name, optic_parameter_name,
                                                           plot_function, **kwargs)
 
 
-def plot_optical_functions_with_different_datasets(datasets, transporters,
-                                                   vector_x_name, optic_parameter_name,
-                                                   plot_function=sns.lineplot, **kwargs):
+def generate_and_plot_optical_functions_with_different_datasets(datasets, transporters,
+                                                                vector_x_name, optic_parameter_name,
+                                                                plot_function=sns.lineplot, **kwargs):
     """
     Plot optical functions specified in configuration
     :param datasets: map, where key is name of dataset, value- configuration of dataset

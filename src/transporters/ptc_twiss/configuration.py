@@ -3,8 +3,8 @@ import transporters.ptc_twiss.optical_functions as optical_functions_module
 import transporters.ptc_twiss.transporter as transporter_module
 
 
-class TwissConfiguration:
-    def __init__(self, transport_configuration, s=None):
+class PtcTwissConfiguration:
+    def __init__(self, transport_configuration, if_filter_by_s=False):
         """
         Constructor of TwissConfiguration object.
         :param transport_configuration: object with configuration
@@ -13,16 +13,13 @@ class TwissConfiguration:
         end contains all records from input file
         """
         self.transport_configuration = transport_configuration
-        if s is None:
-            self.filter_by_s = False
-        else:
-            self.s = s
-            self.filter_by_s = True
+        self.filter_by_s = if_filter_by_s
+        self.s = transport_configuration.end_place.distance
 
     @staticmethod
-    def get_configuration_from_file(path_to_xml_configuration, item_number, s=None):
+    def get_configuration_from_file(path_to_xml_configuration, item_number, if_filter_by_s=False):
         configurations = xml_parser.get_approximator_configurations_from(path_to_xml_configuration)
-        return TwissConfiguration(configurations[item_number].transport_configuration, s)
+        return PtcTwissConfiguration(configurations[item_number].transport_configuration, if_filter_by_s)
 
     def get_configuration(self):
         return self

@@ -11,7 +11,7 @@ def train_from_configuration(configuration_object):
     root_initializer.initialise()
 
     # Generate data for approximator
-    madx_configuration = track_conf.TrackConfiguration(configuration_object.transport_configuration)
+    madx_configuration = track_conf.PtcTrackConfiguration(configuration_object.transport_configuration)
     training_sample_configuration = configuration_object.training_sample_configuration
     approximator_dataset, apertures_datasets = generate_training_dataset(madx_configuration,
                                                                          training_sample_configuration)
