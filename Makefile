@@ -1,11 +1,12 @@
+PYTHON = python3
 PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
 check_install = @which "$1" 1>/dev/null 2>&1 \
                 && echo "✔ $1" \
 				|| echo "✘ no '$1' installed, run $2 to fix"
-check_python3 = @python3 -c "import $1" 1>/dev/null 2>&1 \
-                && echo "✔ python3: $1" \
-                || echo "✘ python3: no package '$1', run $2 to fix"
+check_python = @$(PYTHON) -c "import $1" 1>/dev/null 2>&1 \
+                && echo "✔ $(PYTHON): $1" \
+                || echo "✘ $(PYTHON): no package '$1', run $2 to fix"
 check_pythonpath = @echo $$PYTHONPATH | grep "$(PROJECT_DIR)/src" 1>/dev/null 2>&1 \
                 && echo "✔ env: PYTHONPATH" \
                 || echo "✘ env: PYTHONPATH: run 'export PYTHONPATH=\$$PYTHONPATH:$(PROJECT_DIR)/src' to fix"
@@ -29,9 +30,9 @@ check:
 	$(call check_install,root,'./install_root.sh')
 	$(call check_rootlibs)
 	$(call check_rootimport,LHCOpticsApproximator.so)
-	$(call check_python3,ROOT,'./install_root.sh')
-	$(call check_python3,cpymad,'python3 -m pip install --user cpymad')
-	$(call check_python3,jupyter,'python3 -m pip install --user jupyter')
+	$(call check_python,ROOT,'./install_root.sh')
+	$(call check_python,cpymad,'$(PYTHON) -m pip install --user cpymad')
+	$(call check_python,jupyter,'$(PYTHON) -m pip install --user jupyter')
 	$(call check_pythonpath)
 
 .PHONY: madx

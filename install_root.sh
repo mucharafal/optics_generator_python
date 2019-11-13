@@ -76,7 +76,8 @@ cmake --build -j4 .
 
 if [[ $? -eq 0 ]]; then
     echo "ROOT successfully installed in '$INSTALL_PATH/root-$ROOT_VERSION'"
-    echo "Run '$INSTALL_PATH/root-$ROOT_VERSION/obj/bin/thisroot.sh' to add binary to your $PATH"
+    echo "Run 'source $INSTALL_PATH/root-$ROOT_VERSION/obj/bin/thisroot.sh' and start using ROOT"
+    echo "Complete!"
     exit 0
 fi
 
