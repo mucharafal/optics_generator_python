@@ -3,3 +3,17 @@
 root_libs/*
 src/*/__pycache__/
 notebooks/.sys*
+
+src/models/dir0/
+
+src/models/dir1/
+
+src/models/dir2/
+
+src/models/dir3/
+
+src/transporters/approximator/__pycache__/
+
+src/transporters/ptc_track/__pycache__/
+
+src/transporters/ptc_twiss/__pycache__/

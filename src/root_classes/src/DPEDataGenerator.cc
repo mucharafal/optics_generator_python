@@ -108,8 +108,8 @@ void DPEDataGenerator::CreateOutputROOTFile(std::vector<std::string> scoring_pla
 	tree_mass_info_.mass_lab = ip_mass_lab;
 	labels = ip_mass_lab;
 	
-	std::string x_lab = "x";
-	std::string y_lab = "y";
+	std::string x_lab = Parameters.X;
+	std::string y_lab = Parameters.Y;
 	std::string px_lab = "px";
 	std::string py_lab = "py";
 	std::string pz_lab = "pz";

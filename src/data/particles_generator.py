@@ -1,4 +1,5 @@
 import numpy as np
+from data.particles import CanonicalCoordinates, GeometricalCoordinates
 """
 File include some methods to generate matrix with parameters of particles.
 There is two ways generating:
@@ -7,72 +8,66 @@ There is two ways generating:
 """
 
 
-def generate_from_range(beam_configuration):
+def generate_from_range(grid_configuration):
     """
     Generate carthesian product of parameters of given range.
-    :param: BunchConfiguration beam_configuration
+    :param: GridConfiguration grid_configuration
     :return:
     """
     # Create and initialize vectors with coordinates of particles in grid
-    conf = beam_configuration
-    x_vector = np.linspace(conf.x_min, conf.x_max, conf.number_of_x_values)
-    theta_x_vector = np.linspace(conf.theta_x_min, conf.theta_x_max, conf.number_of_theta_x_values)
-    y_vector = np.linspace(conf.y_min, conf.y_max, conf.number_of_y_values)
-    theta_y_vector = np.linspace(conf.theta_y_min, conf.theta_y_max, conf.number_of_theta_y_values)
-    pt_vector = np.linspace(conf.pt_min, conf.pt_max, conf.number_of_pt_values)
+
+    vectors = [__get_vector(parameter) for parameter in grid_configuration.parameters]
 
     # Create grid, which is carthesian product of above coordinates vectors
-    grid = np.array(np.meshgrid(x_vector, theta_x_vector, y_vector, theta_y_vector, pt_vector))\
-        .T.reshape(-1, 5)
+    grid = np.array(np.meshgrid(*vectors)).T.reshape((-1, 5))
 
-    return grid
+    mapping = __get_mapping(grid_configuration.parameters)
 
+    particles_object = CanonicalCoordinates(grid, mapping) if grid_configuration.if_canonical_coordinates() else \
+        GeometricalCoordinates(grid, mapping)
 
-def generate_particles_randomly_with_angle(beam_configuration, x_angle_min, x_angle_max, y_angle_min, y_angle_max):
-    """
-    Deprecated. Remove t parameter. Angles in such form are useless for ptc_track.
-    Generate matrix. WARNING- to file part.in are saved only parameters: x, theta x,
-    y, theta y, t, pt. Angles should be only in returned matrix.
-    :param beam_configuration- configuration of beam- min and max values of parameters, number of particles
-    :return: matrix with columns
-    """
-    grid = generate_particles_randomly(beam_configuration)
-    max_vector = np.array([[x_angle_max, y_angle_max]])
-    min_vector = np.array([[x_angle_min, y_angle_min]])
-    angles = (max_vector - min_vector) * np.random.random_sample((beam_configuration.get_number_of_particles(), 2)) + \
-             min_vector
-
-    # add values of x angle to theta x
-    grid.T[1] += angles.T[0]
-    # add values of y angle to theta y
-    grid.T[3] += angles.T[1]
-
-    grid = np.append(grid, angles, axis=1)
-
-    return grid
+    return particles_object
 
 
-def generate_particles_randomly(beam_configuration):
+def generate_particles_randomly(grid_configuration):
     """
     Generate matrix with random values of parameters from given ranges
-    :param beam_configuration
+    :param grid_configuration
     :return: numpy matrix with number_of_particles x 5 shape
     """
-    min_values = [beam_configuration.x_min, beam_configuration.theta_x_min, beam_configuration.y_min,
-                  beam_configuration.theta_y_min, beam_configuration.pt_min]
-    max_values = [beam_configuration.x_max, beam_configuration.theta_x_max, beam_configuration.y_max,
-                  beam_configuration.theta_y_max, beam_configuration.pt_max]
+    parameters = grid_configuration.parameters
 
-    number_of_parameters = 5
-    number_of_particles = beam_configuration.get_number_of_particles()
+    min_values = [parameter.minimal_value for parameter in parameters]
+    max_values = [parameter.maximal_value for parameter in parameters]
 
-    max_vector = np.zeros((1, number_of_parameters))
-    min_vector = np.zeros((1, number_of_parameters))
+    min_values_vector = np.array(min_values)
+    max_values_vector = np.array(max_values)
 
-    # TODO refactor
-    for i in range(number_of_parameters):
-        max_vector[0][i] = max_values[i]
-        min_vector[0][i] = min_values[i]
+    number_of_parameters = len(parameters)
+    number_of_particles = grid_configuration.get_number_of_particles()
 
-    grid = (max_vector - min_vector) * np.random.random_sample((number_of_particles, number_of_parameters)) + min_vector
-    return grid
+    grid = (max_values_vector - min_values_vector) * np.random.random_sample((number_of_particles, number_of_parameters)) + min_values_vector
+
+    mapping = __get_mapping(grid_configuration.parameters)
+
+    particles_object = CanonicalCoordinates(grid, mapping) if grid_configuration.if_canonical_coordinates() else \
+        GeometricalCoordinates(grid, mapping)
+
+    return particles_object
+
+
+def __get_mapping(parameters):
+    mapping = {}
+    for index in range(len(parameters)):
+        mapping[parameters[index].parameter_name] = index
+    return mapping
+
+
+def __get_vector(parameter_configuration):
+    min = parameter_configuration.minimal_value
+    max = parameter_configuration.maximal_value
+    resolution = parameter_configuration.resolution
+    return np.linspace(min, max, resolution)
+
+
+
