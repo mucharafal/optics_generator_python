@@ -31,16 +31,16 @@ class GridConfiguration:
         return particles_generator.generate_from_range(self)
 
     @classmethod
-    def from_sigma(cls, x_mean, sigma_x, x_resolution,
-                   theta_x_mean, sigma_theta_x, theta_x_resolution,
-                   y_mean, sigma_y, y_resolution,
-                   theta_y_mean, sigma_theta_y, theta_y_resolution,
-                   pt_mean, sigma_pt, pt_resolution):
-        return cls.by_boundary(x_mean - sigma_x, x_mean + sigma_x, x_resolution,
-                                             theta_x_mean - sigma_theta_x, theta_x_mean + sigma_theta_x, theta_x_resolution,
-                                             y_mean - sigma_y, y_mean + sigma_y, y_resolution,
-                                             theta_y_mean - sigma_theta_y, theta_y_mean + sigma_theta_y, theta_y_resolution,
-                                             pt_mean - sigma_pt, pt_mean + sigma_pt, pt_resolution)
+    def from_delta(cls, x_mean, x_delta, x_resolution,
+                   theta_x_mean, theta_x_delta, theta_x_resolution,
+                   y_mean, y_delta, y_resolution,
+                   theta_y_mean, theta_y_delta, theta_y_resolution,
+                   pt_mean, pt_delta, pt_resolution):
+        return cls.by_boundary(x_mean - x_delta, x_mean + x_delta, x_resolution,
+                               theta_x_mean - theta_x_delta, theta_x_mean + theta_x_delta, theta_x_resolution,
+                               y_mean - y_delta, y_mean + y_delta, y_resolution,
+                               theta_y_mean - theta_y_delta, theta_y_mean + theta_y_delta, theta_y_resolution,
+                               pt_mean - pt_delta, pt_mean + pt_delta, pt_resolution)
 
     @classmethod
     def by_boundary(cls, x_min, x_max, x_resolution,
