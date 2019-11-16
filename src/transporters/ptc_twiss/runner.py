@@ -1,8 +1,10 @@
 import numpy as np
+import transporters.ptc_twiss.matrix_indexes as indexes
 from concurrent.futures import ProcessPoolExecutor
 from data.parameters_names import ParametersNames as Parameters
 from transporters.ptc_track.runner import split_on
 from cpymad.madx import Madx
+from data.particles import CanonicalCoordinates
 
 
 def transport(transport_configuration, particles):
@@ -110,7 +112,7 @@ def __transport_by_ptc_twiss(madx_interpreter, raw_row):
                                        py=row[Parameters.THETA_Y], pt=row[Parameters.PT], icase=5, no=6,
                                        deltap_dependency=True, rmatrix=True, betx=beta_ip5, bety=beta_ip5,
                                        deltap=delta_p)
-    return process_output_matrix(madx_interpreter.table.get("ptc_twiss"))
+    return __process_output_matrix(madx_interpreter.table.get("ptc_twiss"))
 
 
 def process_row(raw_row):
@@ -124,7 +126,7 @@ def process_row(raw_row):
     return row
 
 
-def process_output_matrix(output_matrix):
+def __process_output_matrix(output_matrix):
     matrix = np.array([output_matrix.s, output_matrix.x, output_matrix.y, output_matrix.px, output_matrix.py,
                        output_matrix.x, output_matrix.y, output_matrix.re11, output_matrix.re33,
                        output_matrix.re12, output_matrix.re34, output_matrix.disp1, output_matrix.disp3,
@@ -140,3 +142,8 @@ def __remove_duplicates(matrix_with_duplicate_rows):
 def get_initialized_madx(twiss_configuration):
     return __initialize_madx_interpreter(twiss_configuration.transport_configuration)
 
+
+def get_particles_object_from_output(twisslike_output):
+    matrix = __process_output_matrix(twisslike_output)
+    mapping = indexes.ptc_twiss
+    return CanonicalCoordinates(matrix, mapping)
