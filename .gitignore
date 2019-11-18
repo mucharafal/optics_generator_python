@@ -17,3 +17,8 @@ src/transporters/approximator/__pycache__/
 src/transporters/ptc_track/__pycache__/
 
 src/transporters/ptc_twiss/__pycache__/
+
+src/data/readers/__pycache__/
+
+src/output_generation/internal_mag_pot.txt
+src/output_generation/log.madx

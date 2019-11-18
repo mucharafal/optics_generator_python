@@ -17,4 +17,4 @@ _commands ()
   return 0
 }
 
-complete -F _commands -o filenames ./commands.sh
+complete -o default -o bashdefault -o filenames -F _commands  ./commands.sh
