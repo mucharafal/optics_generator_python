@@ -1,6 +1,6 @@
 import xml_parser.approximator_training_configuration as xml_parser
-import transporters.ptc_twiss.optical_functions as optical_functions_module
-import transporters.ptc_twiss.transporter as transporter_module
+import transporters.madx.ptc_twiss.optical_functions as optical_functions_module
+import transporters.madx.ptc_twiss.transporter as transporter_module
 
 
 class PtcTwissConfiguration:

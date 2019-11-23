@@ -1,7 +1,7 @@
-import transporters.ptc_track.madx_script_generator as msg
+import transporters.madx.ptc_track.madx_script_generator as msg
 import xml_parser.approximator_training_configuration as xml_parser
-import transporters.ptc_track.optical_functions as optical_functions_module
-import transporters.ptc_track.transporter as transporter_module
+import transporters.madx.ptc_track.optical_functions as optical_functions_module
+import transporters.madx.ptc_track.transporter as transporter_module
 
 
 class PtcTrackConfiguration:

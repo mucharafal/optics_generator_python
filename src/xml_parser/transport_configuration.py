@@ -1,11 +1,12 @@
+import os
+
+
 class TransportConfiguration:
-    def __init__(self, end_place, observed_places_names, accelerator_definition_file_name, errors_definition_file_name,
-                 madx_script_file_name):
+    def __init__(self, end_place, observed_places_names, madx_output_script_file_name, madx_input_script_file_name):
         self.end_place = end_place
         self.observed_places_names = observed_places_names
-        self.accelerator_definition_file_name = accelerator_definition_file_name
-        self.errors_definition_file_name = errors_definition_file_name
-        self.madx_script_file_name = madx_script_file_name
+        self.madx_output_script_file_name = madx_output_script_file_name
+        self.madx_template_name = madx_input_script_file_name
 
     def get_scoring_place_names(self):
         return self.observed_places_names
@@ -14,14 +15,15 @@ class TransportConfiguration:
         return self.end_place
 
     @staticmethod
-    def get_configuration_from_xml(xml_configuration):
+    def get_configuration_from_xml(xml_configuration, path_to_folder_with_optic):
         end_place = EndPlace.get_end_place_from(xml_configuration.attrib)
         observed_places_names = [end_place.name] + [aperture_xml_configuration.attrib["to_marker_name"]
                                                     for aperture_xml_configuration in xml_configuration]
+        madx_template_file_name = xml_configuration.attrib["base_mad_conf_file"]
+        path_to_madx_template = os.path.join(path_to_folder_with_optic, madx_template_file_name)
         return TransportConfiguration(end_place, observed_places_names,
-                                      xml_configuration.attrib["lhc_definition_file_name"],
-                                      xml_configuration.attrib["errors_definition_file_name"],
-                                      xml_configuration.attrib["processed_mad_conf_file"])
+                                      xml_configuration.attrib["processed_mad_conf_file"],
+                                      path_to_madx_template)
 
 
 class EndPlace:
