@@ -1,20 +1,21 @@
-import sys
+import argparse
+import logging
+
+parser = argparse.ArgumentParser(description="Generator plots of optical functions")
+parser.add_argument("path to xml", metavar='path', type=str, help="Path to xml file")
+parser.add_argument("name of folder with plots", metavar='folder name', type=str, help="Name of folder where plots will be stored")
+parser.add_argument("-v", "--verbose", dest='logging-level', action='store_const', const=logging.DEBUG, default=logging.INFO, help="Verbosity of program, if set, logs from madx will be created")
+args = parser.parse_args()
 
 
-if len(sys.argv) < 4:
-    print("not enough arguments specified")
-    print("arguments needed:")
-    print("path to the directory with optic")
-    print("name of the xml config file")
-    print("name of the directory where the output will be stored")
-    exit()
+logger = logging.getLogger()
+logger.setLevel(getattr(args, "logging-level"))
 
 
 import visualization.optics_parameter_visualisation as plotter
 import data.grid_configuration as grid_configuration_module
 import os
 import shutil
-import sys
 import xml_parser.approximator_training_configuration as app_conf
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -55,18 +56,16 @@ def get_particles():
     particles = grid_configuration.generate_grid()
     return particles
 
-
 sns.set_style("whitegrid")
-path_to_optic = sys.argv[1]
-xml_file_name = sys.argv[2]
-output_dir = sys.argv[3]
+path_to_xml_file = getattr(args, "path to xml")
+path_to_optic = os.path.split(path_to_xml_file)[0]
+output_dir = getattr(args, "name of folder with plots")
 
 output_path = os.path.join(output_dir, "Optics_plots")
 if os.path.isdir(output_path):
     shutil.rmtree(output_path)
 os.makedirs(output_path)
 
-path_to_xml_file = os.path.join(path_to_optic, xml_file_name)
 configurations = app_conf.get_xml_configuration_from_file(path_to_xml_file)
 
 serialized_approximator_file_name=configurations[0].attrib.get("optics_parametrisation_file")

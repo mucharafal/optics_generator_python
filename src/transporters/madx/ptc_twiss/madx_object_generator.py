@@ -1,6 +1,7 @@
 from cpymad.madx import Madx
 import transporters.madx.parser as madx_script_parser
 import uuid
+import logging
 
 
 def generate_madx_object(transport_configuration):
@@ -13,11 +14,21 @@ def __get_header():
 
 
 def __initialize_madx_interpreter(transport_configuration):
-    random_sequence = str(uuid.uuid4())
-    madx = Madx(stdout=False, command_log=random_sequence + "log.madx")
+    command_log = __get_command_log_name()
+    madx = Madx(stdout=False, command_log=command_log)
     __define_accelerator(madx, transport_configuration)
     __create_universe(madx)
     return madx
+
+
+def __get_command_log_name():
+    logger = logging.getLogger()
+    if logger.isEnabledFor(logging.DEBUG):
+        random_sequence = str(uuid.uuid4())
+        command_log = "ptc_twiss_output" + random_sequence + "log.madx"
+    else:
+        command_log = "/dev/null"
+    return command_log
 
 
 def __define_accelerator(madx_interpreter, transport_configuration):
