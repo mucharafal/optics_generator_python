@@ -1,5 +1,5 @@
 from data.parameters_names import ParametersNames as Parameters
-import transporters.ptc_twiss.matrix_indexes as tmi
+import transporters.madx.ptc_twiss.matrix_indexes as tmi
 import numpy as np
 from data.particles import CanonicalCoordinates
 

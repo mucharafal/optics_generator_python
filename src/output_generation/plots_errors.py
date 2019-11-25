@@ -18,7 +18,7 @@ import seaborn as sns
 import comparators.transport as transport
 import matplotlib.pyplot as plt
 from data.parameters_names import ParametersNames as Parameters
-from transporters.ptc_track.configuration import PtcTrackConfiguration
+from transporters.madx.ptc_track.configuration import PtcTrackConfiguration
 from transporters.approximator.configuration import ApproximatorConfiguration
 
 sns.set_style("whitegrid")
