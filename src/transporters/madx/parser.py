@@ -1,6 +1,6 @@
 def get_configuration(transport_configuration):
     madx_template_file_name = transport_configuration.madx_template_name
-    marker_definition_and_use_command = __get_use_command(transport_configuration)
+    marker_definition_and_use_command = __get_command(transport_configuration)
     with open(madx_template_file_name, "r") as madx_file:
         return __parse(madx_file, marker_definition_and_use_command)
 
