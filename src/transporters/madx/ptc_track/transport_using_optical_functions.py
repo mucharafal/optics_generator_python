@@ -1,4 +1,4 @@
-import transporters.ptc_track.optical_functions as optical_functions
+import transporters.madx.ptc_track.optical_functions as optical_functions
 import numpy as np
 
 

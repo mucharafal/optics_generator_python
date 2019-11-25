@@ -19,8 +19,8 @@ import xml_parser.approximator_training_configuration as app_conf
 import matplotlib.pyplot as plt
 import seaborn as sns
 from data.parameters_names import ParametersNames as Parameters
-from transporters.ptc_twiss.configuration import PtcTwissConfiguration
-from transporters.ptc_track.configuration import PtcTrackConfiguration
+from transporters.madx.ptc_twiss.configuration import PtcTwissConfiguration
+from transporters.madx.ptc_track.configuration import PtcTrackConfiguration
 from transporters.approximator.configuration import ApproximatorConfiguration
 
 

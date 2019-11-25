@@ -1,5 +1,5 @@
-import transporters.ptc_track.transporter as ptc_track_transporter
-import transporters.ptc_track.configuration as track_conf
+import transporters.madx.ptc_track.transporter as ptc_track_transporter
+import transporters.madx.ptc_track.configuration as track_conf
 import ROOT
 from concurrent.futures import ProcessPoolExecutor
 import utils.root_initializer as root_initializer

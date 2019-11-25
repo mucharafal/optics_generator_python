@@ -1,5 +1,5 @@
 import transporters.approximator.optical_functions as aop
-import transporters.ptc_track.optical_functions as mop
+import transporters.madx.ptc_track.optical_functions as mop
 import numpy as np
 import visualization.visualize as visualizer
 import seaborn as sns

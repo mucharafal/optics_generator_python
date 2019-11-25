@@ -1,6 +1,6 @@
-import transporters.ptc_twiss.runner as tr
+import transporters.madx.ptc_twiss.runner as tr
 import numpy as np
-import transporters.ptc_twiss.matrix_indexes as indexes
+import transporters.madx.ptc_twiss.matrix_indexes as indexes
 from data.parameters_names import ParametersNames as Parameters
 from data.particles import CanonicalCoordinates
 
