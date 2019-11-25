@@ -1,9 +1,9 @@
 import numpy as np
-import transporters.ptc_twiss.matrix_indexes as indexes
+import transporters.madx.ptc_twiss.matrix_indexes as indexes
+import transporters.madx.ptc_twiss.madx_object_generator as madx_object_generator
 from concurrent.futures import ProcessPoolExecutor
 from data.parameters_names import ParametersNames as Parameters
-from transporters.ptc_track.runner import split_on
-from cpymad.madx import Madx
+from transporters.madx.ptc_track.runner import split_on
 from data.particles import CanonicalCoordinates
 
 
@@ -36,63 +36,8 @@ def transport(transport_configuration, particles):
 
 def run_worker(transport_configuration, particles):
     # Create and get into working directory
-    madx_interpreter = __initialize_madx_interpreter(transport_configuration)
+    madx_interpreter = madx_object_generator.generate_madx_object(transport_configuration)
     return __transport_particles(madx_interpreter, particles)
-
-
-def __initialize_madx_interpreter(transport_configuration):
-    end_place = transport_configuration.get_end_place_configuration()
-
-    madx = Madx(stdout=False, command_log="log.madx")
-    __define_accelerator(madx, transport_configuration)
-    __define_end_place(madx, end_place)
-    __use_only_part_from_ip_to_station(madx, transport_configuration)
-    __include_errors_corrections(madx, transport_configuration)
-    __create_universe(madx)
-    __observe_places(madx, transport_configuration.get_scoring_place_names())
-    return madx
-
-
-def __define_accelerator(madx_interpreter, transport_configuration):
-    madx_interpreter.call(transport_configuration.accelerator_definition_file_name, chdir=True)
-
-
-def __define_end_place(madx_interpreter, end_place_configuration):
-    madx_interpreter.input(end_place_configuration.name + ": marker;")
-    madx_interpreter.input("seqedit, sequence=" + end_place_configuration.beam + ";")
-    madx_interpreter.input("install, element=" + end_place_configuration.name + ", at="
-                           + str(end_place_configuration.distance) + ", from=" +
-                           end_place_configuration.name_of_place_from + ";")
-    madx_interpreter.input("endedit;")
-
-
-def __use_only_part_from_ip_to_station(madx_interpreter, transport_configuration):
-    end_place = transport_configuration.get_end_place_configuration()
-    madx_interpreter.use(transport_configuration.get_end_place_configuration().beam,
-                         range=end_place.name_of_place_from + "/" + end_place.name)
-
-
-def __include_errors_corrections(madx_interpreter, transport_configuration):
-    madx_interpreter.call(transport_configuration.errors_definition_file_name, chdir=True)
-
-
-def __create_universe(madx_interpreter):
-    madx_interpreter.command.ptc_create_universe()
-    madx_interpreter.command.ptc_create_layout(model=2, method=6, nst=1, exact=True, resplit=True, thin=0.0005,
-                                               xbend=0.0005)
-    madx_interpreter.command.ptc_align()
-
-
-def __observe_places(madx_interpreter, places):
-    # madx_interpreter.input("select,flag=ptc_twiss,clear;")
-    #
-    # madx_interpreter.input("select, flag=ptc_twiss, pattern=\"^" + places[0] + "\";")
-    #
-    # places_hardcoded = ["IP5", "tcl*", "MCB.*", "MQ.*", "MB.*", "bmp*"]
-    # for place in places_hardcoded:
-    #     madx_interpreter.input("select, flag=ptc_twiss, pattern=\"^" + place + "\";")
-    #     print(place)
-    pass
 
 
 def __transport_particles(madx_interpreter, particles):
@@ -140,10 +85,10 @@ def __remove_duplicates(matrix_with_duplicate_rows):
 
 
 def get_initialized_madx(twiss_configuration):
-    return __initialize_madx_interpreter(twiss_configuration.transport_configuration)
+    return madx_object_generator.generate_madx_object(twiss_configuration.transport_configuration)
 
 
-def get_particles_object_from_output(twisslike_output):
-    matrix = __process_output_matrix(twisslike_output)
+def get_particles_object_from_output(ptc_twiss_like_output):
+    matrix = __process_output_matrix(ptc_twiss_like_output)
     mapping = indexes.ptc_twiss
     return CanonicalCoordinates(matrix, mapping)
