@@ -1,5 +1,6 @@
 from cpymad.madx import Madx
 import transporters.madx.parser as madx_script_parser
+import uuid
 
 
 def generate_madx_object(transport_configuration):
@@ -12,7 +13,8 @@ def __get_header():
 
 
 def __initialize_madx_interpreter(transport_configuration):
-    madx = Madx(stdout=False, command_log="log.madx")
+    random_sequence = str(uuid.uuid4())
+    madx = Madx(stdout=False, command_log=random_sequence + "log.madx")
     __define_accelerator(madx, transport_configuration)
     __create_universe(madx)
     return madx
