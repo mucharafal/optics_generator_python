@@ -1,12 +1,15 @@
 #!/bin/python3
-import sys
+import argparse
+import logging
 
-if __name__ == "__main__" and len(sys.argv) != 3:
-    print("Help:\n"
-          "./make_parameterization.py arg1 arg2\n"
-          "arg1- path to xml file\n"
-          "arg2- path to folder with optics (2017_matched ie)")
-    exit()
+parser = argparse.ArgumentParser(description="Generator plots of optical functions")
+parser.add_argument("path to xml", metavar='path', type=str, help="Path to xml file")
+parser.add_argument("-v", "--verbose", dest='logging-level', action='store_const', const=logging.DEBUG, default=logging.INFO, help="Verbosity of program, if set, logs from madx will be created")
+args = parser.parse_args()
+
+
+logger = logging.getLogger()
+logger.setLevel(getattr(args, "logging-level"))
 
 
 import models.train_model as trainer
@@ -29,5 +32,7 @@ def main(path_to_xml_file, path_to_optics):
 
 if __name__ == "__main__":
     if len(sys.argv) == 3:
-        main(sys.argv[1], sys.argv[2])
+        path_to_xml_file = getattr(args, "path to xml")
+        path_to_optic = os.path.split(path_to_xml_file)[0]
+        main(path_to_xml_file, path_to_optic)
 

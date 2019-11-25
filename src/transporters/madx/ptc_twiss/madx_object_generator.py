@@ -25,7 +25,7 @@ def __get_command_log_name():
     logger = logging.getLogger()
     if logger.isEnabledFor(logging.DEBUG):
         random_sequence = str(uuid.uuid4())
-        command_log = random_sequence + "log.madx"
+        command_log = "ptc_twiss_output" + random_sequence + "log.madx"
     else:
         command_log = "/dev/null"
     return command_log
