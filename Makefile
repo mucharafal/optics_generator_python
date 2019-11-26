@@ -1,3 +1,4 @@
+DESTDIR ?= ~/bin
 PYTHON = python3
 PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
@@ -20,7 +21,7 @@ check_rootimport = @root -l -q -e 'gSystem->Load("$1")' 1>/dev/null 2>&1 \
 .PHONY: help
 help:
 	@echo -e "* check       if all prerequisities are installed"
-	@echo -e "* madx        install MAD-X"
+	@echo -e "* madx        install MAD-X. Run 'make madx DESTDIR=your/dir' to specify destination path (default ~/bin)"
 
 .PHONY: check
 check:
@@ -31,16 +32,23 @@ check:
 	$(call check_rootlibs)
 	$(call check_rootimport,LHCOpticsApproximator.so)
 	$(call check_python,ROOT,'./install_root.sh')
-	$(call check_python,cpymad,'$(PYTHON) -m pip install --user cpymad')
-	$(call check_python,jupyter,'$(PYTHON) -m pip install --user jupyter')
+	$(call check_python,cpymad,'make cpymad')
+	$(call check_python,pandas,'make pandas')
+	$(call check_python,seaborn,'make seaborn')
+	$(call check_python,jupyter,'make jupyter')
 	$(call check_pythonpath)
 
 .PHONY: madx
 madx:
 	wget -L -O madx https://madx.web.cern.ch/madx/releases/last-rel/madx-linux64-gnu
-	mkdir -p ~/.local/bin
-	install madx ~/.local/bin/madx
+	mkdir -p $(DESTDIR)
+	install madx $(DESTDIR)/madx
 	-rm madx
+
+cpymad: ; $(PYTHON) -m pip install --user cpymad
+pandas: ; $(PYTHON) -m pip install --user pandas
+seaborn: ; $(PYTHON) -m pip install --user seaborn
+jupyter: ; $(PYTHON) -m pip install --user jupyter
 
 # TODO: this part is hard-coded and may not work properly
 .PHONY: set-paths
