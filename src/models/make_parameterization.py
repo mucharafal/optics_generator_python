@@ -31,8 +31,7 @@ def main(path_to_xml_file, path_to_optics):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) == 3:
-        path_to_xml_file = getattr(args, "path to xml")
-        path_to_optic = os.path.split(path_to_xml_file)[0]
-        main(path_to_xml_file, path_to_optic)
+    path_to_xml_file = getattr(args, "path to xml")
+    path_to_optic = os.path.split(path_to_xml_file)[0]
+    main(path_to_xml_file, path_to_optic)
 
