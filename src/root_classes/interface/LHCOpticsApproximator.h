@@ -3,10 +3,10 @@
 
 #include <string>
 #include <iostream>
-#include "TNamed.h"
+//#include "TNamed.h"
 #include "TTree.h"
-#include "TH1D.h"
-#include "TH2D.h"
+//#include "TH1D.h"
+//#include "TH2D.h"
 #include "TFile.h"
 
 #include "TMultiDimFet.h"
@@ -36,7 +36,7 @@ class LHCApertureApproximator;
 //class finds the parametrisation of MADX proton transport and transports the protons according to it
 //5 phase space variables are taken in to confoguration:
 //x, y, theta_x, theta_y, ksi
-class LHCOpticsApproximator : public TNamed
+class LHCOpticsApproximator //: public TNamed
 {
   public:
     LHCOpticsApproximator();
@@ -45,8 +45,8 @@ class LHCOpticsApproximator : public TNamed
         std::string beam_direction, double nominal_beam_energy);
     LHCOpticsApproximator(std::string name, std::string title, TMultiDimFet::EMDFPolyType polynom_type, std::string beam_direction, double nominal_beam_energy,
         TMultiDimFet *given_x_parametrisation, TMultiDimFet *given_theta_x_parametrisation, TMultiDimFet *given_y_parametrisation, TMultiDimFet *given_theta_y_parametrisation);
-    LHCOpticsApproximator(const LHCOpticsApproximator &org);
-    LHCOpticsApproximator & operator=(const LHCOpticsApproximator &org);
+    //(const LHCOpticsApproximator &org);
+    //LHCOpticsApproximator & operator=(const LHCOpticsApproximator &org);
 
     enum polynomials_selection{AUTOMATIC, PREDEFINED};
     enum beam_type{lhcb1, lhcb2};
@@ -103,19 +103,19 @@ class LHCOpticsApproximator : public TNamed
     void SetDefaultAproximatorSettings(TMultiDimFet &approximator, variable_type var_type, int max_degree);
     void SetTermsManually(TMultiDimFet &approximator, variable_type variable, int max_degree, bool common_terms);
 
-    void AllocateErrorHists(TH1D *err_hists[4]);
-    void AllocateErrorInputCorHists(TH2D *err_inp_cor_hists[4][5]);
-    void AllocateErrorOutputCorHists(TH2D *err_out_cor_hists[4][5]);
+    //void AllocateErrorHists(TH1D *err_hists[4]);
+    //void AllocateErrorInputCorHists(TH2D *err_inp_cor_hists[4][5]);
+    //void AllocateErrorOutputCorHists(TH2D *err_out_cor_hists[4][5]);
 
-    void DeleteErrorHists(TH1D *err_hists[4]);
-    void DeleteErrorCorHistograms(TH2D *err_cor_hists[4][5]);
+    //void DeleteErrorHists(TH1D *err_hists[4]);
+    //void DeleteErrorCorHistograms(TH2D *err_cor_hists[4][5]);
 
-    void FillErrorHistograms(double errors[4], TH1D *err_hists[4]);
-    void FillErrorDataCorHistograms(double errors[4], double var[5], TH2D *err_cor_hists[4][5]);
+    //void FillErrorHistograms(double errors[4], TH1D *err_hists[4]);
+    //void FillErrorDataCorHistograms(double errors[4], double var[5], TH2D *err_cor_hists[4][5]);
 
-    void WriteHistograms(TH1D *err_hists[4], TH2D *err_inp_cor_hists[4][5], TH2D *err_out_cor_hists[4][5], TFile *f_out, std::string base_out_dir);
+    //void WriteHistograms(TH1D *err_hists[4], TH2D *err_inp_cor_hists[4][5], TH2D *err_out_cor_hists[4][5], TFile *f_out, std::string base_out_dir);
 
-    ClassDef(LHCOpticsApproximator,1) // Proton transport approximator
+    ClassDef(LHCOpticsApproximator,2) // Proton transport approximator
 };
 
 

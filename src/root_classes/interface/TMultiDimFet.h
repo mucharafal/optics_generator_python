@@ -21,89 +21,276 @@
 //#endif
 
 #include <vector>
-#ifndef ROOT_TMultiDimFit_wrapper
-#include "TMultiDimFit_wrapper.h" //what to do ?
-#endif
+//#ifndef ROOT_TMultiDimFit_wrapper
+//#include "TMultiDimFit_wrapper.h"
+//#endif
 
+/////////////////////////////////////
+/////////////////////////////
+///////////////////////////
+////////////////////////////
+///////////////////////
 
 //#include "Rtypes.h"
-//#include "RtypesCore.h"
-//#include "DllImport.h"
-//#include "snprintf.h"   // part of stdio.h on systems that have it
-//#include "strlcpy.h"    // part of string.h on systems that have it
-
-//#include "TGenericClassInfo.h"
-//#include "TIsAProxy.h"
+//#include "TMathBase.h"
 
 //#include "TError.h"
 
-//#include "TMath.h"
-//#include "Riostream.h"
-//#include "TString.h"
-//#include <Math/SpecFuncMathCore.h>
-//#include <Math/PdfFuncMathCore.h>
-//#include <Math/ProbFuncMathCore.h>
-// end of tmath - #include <Math/Types.h>
-
-//#include "TMathBase.h"
-//#include "TObject.h"
-
-//#include "TBuffer.h"
-//#include "TClass.h"
-
-//#include "TMatrixFfwd.h"
-//#include "TMatrixFSymfwd.h"
-//#include "TMatrixFSparsefwd.h"
-
-//#include "TMatrixDfwd.h"
-//#include "TMatrixDSymfwd.h"
-//#include "TMatrixDSparsefwd.h"
-//#include "TMatrixDUtils.h"
-
-//#include "TMatrixTUtils.h"
-//#include "TMatrixDUtilsfwd.h"
+//#include "TROOT.h"
 
 //#include "TMatrixT.h"
 //#include "TMatrixTSym.h"
 //#include "TMatrixTSparse.h"
-//#include "TVectorT.h"
-//#include "TMatrixTUtils.h"
 
-//#include "TMatrixTLazy.h"
-//#include "TMatrixTSymCramerInv.h"
-
-//#include "TDecompLU.h"
-//#include "TMatrixDSymEigen.h"
-//#include "TDecompBase.h"
-//#include "TObject.h"
-
-//#include "TMatrixTCramerInv.h"
-//#include "TMatrixDEigen.h"
-
-//#include "TMatrixTBase.h"
-//#include "TObject.h"
-//#include "TMathBase.h"
-//#include "TMatrixFBasefwd.h"
-//#include "TMatrixDBasefwd.h"
-
-//#include "TString.h"
-//#include "ROOT/RStringView.hxx"
-//#include "RConfigure.h"
-//#include "ROOT/TypeTraits.hxx"
-//#include "ROOT/RSpan.hxx"
-
-//#include "TROOT.h"
-//#include "TClass.h"
-
-//#include "TVectorT.h"
-//#include "TVectorDfwd.h"
 //#include "TMatrixD.h"
 //#include "TMatrixDSym.h"
 //#include "TMatrixDSparse.h"
 
-/////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////
+//#include "TObject.h"
+//#include "TString.h"
+
+#ifndef ROOT_RConfigure
+#define ROOT_RConfigure
+
+/* Configurations file for linuxx8664gcc */
+#ifdef R__HAVE_CONFIG
+#define ROOTPREFIX    "$(ROOTSYS)"
+#define ROOTBINDIR    "$(ROOTSYS)/bin"
+#define ROOTLIBDIR    "$(ROOTSYS)/lib"
+#define ROOTINCDIR    "$(ROOTSYS)/include"
+#define ROOTETCDIR    "$(ROOTSYS)/etc"
+#define ROOTDATADIR   "$(ROOTSYS)/."
+#define ROOTDOCDIR    "$(ROOTSYS)/."
+#define ROOTMACRODIR  "$(ROOTSYS)/macros"
+#define ROOTTUTDIR    "$(ROOTSYS)/tutorials"
+#define ROOTSRCDIR    "$(ROOTSYS)/src"
+#define ROOTICONPATH  "$(ROOTSYS)/icons"
+#define TTFFONTDIR    "$(ROOTSYS)/fonts"
+#endif
+
+#define EXTRAICONPATH ""
+
+#define R__HAS_SETRESUID   /**/
+#undef R__HAS_MATHMORE   /**/
+#define R__HAS_PTHREAD    /**/
+#define R__HAS_XFT    /**/
+#undef R__HAS_COCOA    /**/
+#undef R__HAS_VC    /**/
+#define R__HAS_VDT    /**/
+#undef R__HAS_VECCORE    /**/
+#undef R__USE_CXXMODULES   /**/
+#undef R__USE_LIBCXX    /**/
+#undef R__HAS_STD_STRING_VIEW   /**/
+#undef R__HAS_STD_EXPERIMENTAL_STRING_VIEW   /**/
+#undef R__HAS_STOD_STRING_VIEW /**/
+#undef R__HAS_STD_APPLY /**/
+#undef R__HAS_STD_INVOKE /**/
+#undef R__HAS_STD_INDEX_SEQUENCE /**/
+#define R__HAS_ATTRIBUTE_ALWAYS_INLINE /**/
+#define R__HAS_ATTRIBUTE_NOINLINE /**/
+#undef R__EXTERN_LLVMDIR /**/
+#define R__USE_IMT   /**/
+#undef R__COMPLETE_MEM_TERMINATION /**/
+#undef R__HAS_CEFWEB  /**/
+#undef R__HAS_QT5WEB  /**/
+#undef R__HAS_DAVIX  /**/
+
+#if defined(R__HAS_VECCORE) && defined(R__HAS_VC)
+#ifndef VECCORE_ENABLE_VC
+#define VECCORE_ENABLE_VC
+#endif
+#endif
+
+#undef R__HAS_DEFAULT_LZ4  /**/
+#define R__HAS_DEFAULT_ZLIB  /**/
+#undef R__HAS_DEFAULT_LZMA  /**/
+#undef R__HAS_CLOUDFLARE_ZLIB /**/
+
+#undef R__HAS_TMVACPU /**/
+#undef R__HAS_TMVAGPU /**/
+
+
+#endif
+
+// @(#)root/base:$Id$
+// Author: Fons Rademakers   23/1/02
+
+/*************************************************************************
+ * Copyright (C) 1995-2012, Rene Brun and Fons Rademakers.               *
+ * All rights reserved.                                                  *
+ *                                                                       *
+ * For the licensing terms see $ROOTSYS/LICENSE.                         *
+ * For the list of contributors see $ROOTSYS/README/CREDITS.             *
+ *************************************************************************/
+
+#ifndef ROOT_Riostream
+#define ROOT_Riostream
+
+
+//////////////////////////////////////////////////////////////////////////
+//                                                                      //
+// Riostream                                                            //
+//                                                                      //
+// Backward compatibility header, #includes fstream, iostream, iomanip. //
+//                                                                      //
+//////////////////////////////////////////////////////////////////////////
+
+#include <fstream>
+#include <iostream>
+#include <iomanip>
+
+#endif
+
+/* @(#)root/base:$Id$ */
+
+/*************************************************************************
+ * Copyright (C) 1995-2014, Rene Brun and Fons Rademakers.               *
+ * All rights reserved.                                                  *
+ *                                                                       *
+ * For the licensing terms see $ROOTSYS/LICENSE.                         *
+ * For the list of contributors see $ROOTSYS/README/CREDITS.             *
+ *************************************************************************/
+
+#ifndef ROOT_RtypesCore
+#define ROOT_RtypesCore
+
+//////////////////////////////////////////////////////////////////////////
+//                                                                      //
+// RtypesCore                                                           //
+//                                                                      //
+// Basic types used by ROOT and required by TInterpreter.               //
+//                                                                      //
+//////////////////////////////////////////////////////////////////////////
+
+
+#include <ROOT/RConfig.hxx>
+
+#include <stddef.h> // size_t, NULL
+
+//---- Tag used by rootcling to determine constructor used for I/O.
+
+class TRootIOCtor;
+
+//---- types -------------------------------------------------------------------
+
+typedef char           Char_t;      //Signed Character 1 byte (char)
+typedef unsigned char  UChar_t;     //Unsigned Character 1 byte (unsigned char)
+typedef short          Short_t;     //Signed Short integer 2 bytes (short)
+typedef unsigned short UShort_t;    //Unsigned Short integer 2 bytes (unsigned short)
+#ifdef R__INT16
+typedef long           Int_t;       //Signed integer 4 bytes
+typedef unsigned long  UInt_t;      //Unsigned integer 4 bytes
+#else
+typedef int            Int_t;       //Signed integer 4 bytes (int)
+typedef unsigned int   UInt_t;      //Unsigned integer 4 bytes (unsigned int)
+#endif
+#ifdef R__B64    // Note: Long_t and ULong_t are currently not portable types
+typedef int            Seek_t;      //File pointer (int)
+typedef long           Long_t;      //Signed long integer 8 bytes (long)
+typedef unsigned long  ULong_t;     //Unsigned long integer 8 bytes (unsigned long)
+#else
+typedef int            Seek_t;      //File pointer (int)
+typedef long           Long_t;      //Signed long integer 4 bytes (long)
+typedef unsigned long  ULong_t;     //Unsigned long integer 4 bytes (unsigned long)
+#endif
+typedef float          Float_t;     //Float 4 bytes (float)
+typedef float          Float16_t;   //Float 4 bytes written with a truncated mantissa
+typedef double         Double_t;    //Double 8 bytes
+typedef double         Double32_t;  //Double 8 bytes in memory, written as a 4 bytes float
+typedef long double    LongDouble_t;//Long Double
+typedef char           Text_t;      //General string (char)
+typedef bool           Bool_t;      //Boolean (0=false, 1=true) (bool)
+typedef unsigned char  Byte_t;      //Byte (8 bits) (unsigned char)
+typedef short          Version_t;   //Class version identifier (short)
+typedef const char     Option_t;    //Option string (const char)
+typedef int            Ssiz_t;      //String size (int)
+typedef float          Real_t;      //TVector and TMatrix element type (float)
+#if defined(R__WIN32) && !defined(__CINT__)
+typedef __int64          Long64_t;  //Portable signed long integer 8 bytes
+typedef unsigned __int64 ULong64_t; //Portable unsigned long integer 8 bytes
+#else
+typedef long long          Long64_t; //Portable signed long integer 8 bytes
+typedef unsigned long long ULong64_t;//Portable unsigned long integer 8 bytes
+#endif
+typedef double         Axis_t;      //Axis values type (double)
+typedef double         Stat_t;      //Statistics type (double)
+
+typedef short          Font_t;      //Font number (short)
+typedef short          Style_t;     //Style number (short)
+typedef short          Marker_t;    //Marker number (short)
+typedef short          Width_t;     //Line width (short)
+typedef short          Color_t;     //Color number (short)
+typedef short          SCoord_t;    //Screen coordinates (short)
+typedef double         Coord_t;     //Pad world coordinates (double)
+typedef float          Angle_t;     //Graphics angle (float)
+typedef float          Size_t;      //Attribute size (float)
+
+//---- constants ---------------------------------------------------------------
+
+const Bool_t kTRUE  = true;
+const Bool_t kFALSE = false;
+
+const Int_t     kMaxUChar    = 256;
+const Int_t     kMaxChar     = kMaxUChar >> 1;
+const Int_t     kMinChar     = -kMaxChar - 1;
+
+const Int_t     kMaxUShort   = 65534;
+const Int_t     kMaxShort    = kMaxUShort >> 1;
+const Int_t     kMinShort    = -kMaxShort - 1;
+
+const UInt_t    kMaxUInt     = UInt_t(~0);
+const Int_t     kMaxInt      = Int_t(kMaxUInt >> 1);
+const Int_t     kMinInt      = -kMaxInt - 1;
+
+const ULong_t   kMaxULong    = ULong_t(~0);
+const Long_t    kMaxLong     = Long_t(kMaxULong >> 1);
+const Long_t    kMinLong     = -kMaxLong - 1;
+
+const ULong64_t kMaxULong64  = ULong64_t(~0LL);
+const Long64_t  kMaxLong64   = Long64_t(kMaxULong64 >> 1);
+const Long64_t  kMinLong64   = -kMaxLong64 - 1;
+
+const size_t    kBitsPerByte = 8;
+const Ssiz_t    kNPOS        = ~(Ssiz_t)0;
+
+#endif
+
+
+
+/* @(#)root/base:$Id$ */
+
+/*************************************************************************
+ * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
+ * All rights reserved.                                                  *
+ *                                                                       *
+ * For the licensing terms see $ROOTSYS/LICENSE.                         *
+ * For the list of contributors see $ROOTSYS/README/CREDITS.             *
+ *************************************************************************/
+
+/*
+  This include file defines the DllImport macro
+  to build DLLs under Windows OS.
+
+  They are defined as dummy for UNIX's
+*/
+
+#ifndef ROOT_DllImport
+#define ROOT_DllImport
+
+#ifndef __CINT__
+# if defined(WIN32)
+#  define R__DllImport  __declspec( dllimport )
+# else
+#  define R__DllImport
+# endif
+#  define R__EXTERN       R__DllImport extern
+#else
+# define R__EXTERN extern
+#endif
+
+
+#endif
+
 
 /* @(#)root/base:$Id$ */
 
@@ -132,7 +319,6 @@
 
 //#include "snprintf.h"   // part of stdio.h on systems that have it
 //#include "strlcpy.h"    // part of string.h on systems that have it
-
 
 #include <atomic>
 #include <stdio.h>
@@ -298,11 +484,11 @@ namespace ROOT {
 
 // The macros below use TGenericClassInfo and TInstrumentedIsAProxy, so let's
 // ensure they are included.
-//#include "TGenericClassInfo.h"
+#include "TGenericClassInfo.h"
 
 typedef std::atomic<TClass*> atomic_TClass_ptr;
 
-//#include "TIsAProxy.h"
+#include "TIsAProxy.h"
 
 namespace ROOT { namespace Internal {
 
@@ -602,35 +788,1588 @@ inline char *R__STRTOK_R(char *str, const char *delim, char **saveptr)
 
 #endif
 
+
+#ifndef ROOT_TObject
+#define ROOT_TObject
+
+class TObject{
+public:
+   UInt_t         fUniqueID;   ///< object unique identifier
+   UInt_t         fBits;       ///< bit field status word
+
+    enum {
+      kIsOnHeap      = 0x01000000,    ///< object is on heap
+      kNotDeleted    = 0x02000000,    ///< object has not been deleted
+      kZombie        = 0x04000000,    ///< object ctor failed
+      kInconsistent  = 0x08000000,    ///< class overload Hash but does call RecursiveRemove in destructor
+  //  kCheckedHash   = 0x10000000,    ///< CheckedHash has check for the consistency of Hash/RecursiveRemove
+      kBitMask       = 0x00ffffff
+   };
+
+   //----- bit manipulation
+   //void     SetBit(UInt_t f, Bool_t set);
+   void     SetBit(UInt_t f) { fBits |= f & kBitMask; }
+   void     ResetBit(UInt_t f) { fBits &= ~(f & kBitMask); }
+   R__ALWAYS_INLINE Bool_t TestBit(UInt_t f) const { return (Bool_t) ((fBits & f) != 0); }
+   //Int_t    TestBits(UInt_t f) const { return (Int_t) (fBits & f); }
+   //void     InvertBit(UInt_t f) { fBits ^= f & kBitMask; }
+};
+
+#endif
+
 // @(#)root/base:$Id$
-// Author: Fons Rademakers   23/1/02
+// Author: Fons Rademakers   04/08/95
 
 /*************************************************************************
- * Copyright (C) 1995-2012, Rene Brun and Fons Rademakers.               *
+ * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
  * All rights reserved.                                                  *
  *                                                                       *
  * For the licensing terms see $ROOTSYS/LICENSE.                         *
  * For the list of contributors see $ROOTSYS/README/CREDITS.             *
  *************************************************************************/
 
-#ifndef ROOT_Riostream
-#define ROOT_Riostream
-
+#ifndef ROOT_TString
+#define ROOT_TString
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
-// Riostream                                                            //
+// TString                                                              //
 //                                                                      //
-// Backward compatibility header, #includes fstream, iostream, iomanip. //
+// Basic string class.                                                  //
+//                                                                      //
+// Cannot be stored in a TCollection... use TObjString instead.         //
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#include <fstream>
-#include <iostream>
-#include <iomanip>
+//#include "TMathBase.h"
+
+#include "ROOT/RStringView.hxx"
+#include "ROOT/TypeTraits.hxx"
+
+#include <iosfwd>
+#include <stdarg.h>
+#include <stdio.h>
+#include <string>
+
+//class TRegexp;
+//class TPRegexp;
+class TString;
+//class TSubString;
+//class TObjArray;
+//class TVirtualMutex;
+//class TBufferFile;
+/*
+TString operator+(const TString &s1, const TString &s2);
+TString operator+(const TString &s,  const char *cs);
+TString operator+(const char *cs, const TString &s);
+TString operator+(const TString &s, char c);
+TString operator+(char c, const TString &s);
+Bool_t  operator==(const TString &s1, const TString &s2);
+Bool_t  operator==(const TString &s1, const char *s2);
+Bool_t  operator==(const TSubString &s1, const TSubString &s2);
+Bool_t  operator==(const TSubString &s1, const TString &s2);
+Bool_t  operator==(const TSubString &s1, const char *s2);
+*/
+/*
+template<class T>
+struct is_signed_numeral : std::integral_constant<bool,
+   std::is_integral<T>::value && std::is_signed<T>::value
+> {};
+
+template<class T>
+struct is_unsigned_numeral : std::integral_constant<bool,
+   std::is_integral<T>::value && !std::is_signed<T>::value
+> {};
+
+template<class T>
+using is_float_numeral = std::is_floating_point<T>;
+*/
+
+//////////////////////////////////////////////////////////////////////////
+//                                                                      //
+//  TSubString                                                          //
+//                                                                      //
+//  The TSubString class allows selected elements to be addressed.      //
+//  There are no public constructors.                                   //
+//                                                                      //
+//////////////////////////////////////////////////////////////////////////
+/*
+class TSubString {
+
+//friend class TStringLong;
+friend class TString;
+
+friend Bool_t operator==(const TSubString &s1, const TSubString &s2);
+friend Bool_t operator==(const TSubString &s1, const TString &s2);
+friend Bool_t operator==(const TSubString &s1, const char *s2);
+
+private:
+   TString      &fStr;           // Referenced string
+   Ssiz_t        fBegin;         // Index of starting character
+   Ssiz_t        fExtent;        // Length of TSubString
+
+   // NB: the only constructor is private
+   TSubString(const TString &s, Ssiz_t start, Ssiz_t len);
+
+protected:
+   void          SubStringError(Ssiz_t, Ssiz_t, Ssiz_t) const;
+   void          AssertElement(Ssiz_t i) const;  // Verifies i is valid index
+
+public:
+   TSubString(const TSubString &s)
+     : fStr(s.fStr), fBegin(s.fBegin), fExtent(s.fExtent) { }
+
+   TSubString   &operator=(const char *s);       // Assignment from a char*
+   TSubString   &operator=(const TString &s);    // Assignment from a TString
+   TSubString   &operator=(const TSubString &s); // Assignment from a TSubString
+   char         &operator()(Ssiz_t i);           // Index with optional bounds checking
+   char         &operator[](Ssiz_t i);           // Index with bounds checking
+   char          operator()(Ssiz_t i) const;     // Index with optional bounds checking
+   char          operator[](Ssiz_t i) const;     // Index with bounds checking
+
+   operator std::string_view() const { return std::string_view(Data(),fExtent); }
+   operator std::string() const { return std::string(Data(),fExtent); }
+
+   const char   *Data() const;
+   Ssiz_t        Length() const          { return fExtent; }
+   Ssiz_t        Start() const           { return fBegin; }
+   TString&      String()                { return fStr; }
+   void          ToLower();              // Convert self to lower-case
+   void          ToUpper();              // Convert self to upper-case
+
+   // For detecting null substrings
+   Bool_t        IsNull() const          { return fBegin == kNPOS; }
+   int           operator!() const       { return fBegin == kNPOS; }
+};
+*/
+
+//////////////////////////////////////////////////////////////////////////
+//                                                                      //
+//  TString                                                             //
+//                                                                      //
+//////////////////////////////////////////////////////////////////////////
+class TString {
+/*
+friend class TStringLong;
+friend class TSubString;
+friend class TBufferFile;
+
+friend TString operator+(const TString &s1, const TString &s2);
+friend TString operator+(const TString &s,  const char *cs);
+friend TString operator+(const char *cs, const TString &s);
+friend TString operator+(const TString &s, char c);
+friend TString operator+(char c, const TString &s);
+
+template<class T>
+friend typename std::enable_if<ROOT::TypeTraits::IsSignedNumeral<T>::value,TString>::type
+operator+(TString s, T i);
+template<class T>
+friend typename std::enable_if<ROOT::TypeTraits::IsUnsignedNumeral<T>::value,TString>::type
+operator+(TString s, T u);
+template<class T>
+friend typename std::enable_if<ROOT::TypeTraits::IsFloatNumeral<T>::value,TString>::type
+operator+(TString s, T f);
+template<class T>
+friend typename std::enable_if<ROOT::TypeTraits::IsSignedNumeral<T>::value,TString>::type
+operator+(T i, const TString &s);
+template<class T>
+friend typename std::enable_if<ROOT::TypeTraits::IsUnsignedNumeral<T>::value,TString>::type
+operator+(T u, const TString &s);
+template<class T>
+friend typename std::enable_if<ROOT::TypeTraits::IsFloatNumeral<T>::value,TString>::type
+operator+(T f, const TString &s);
+
+friend Bool_t  operator==(const TString &s1, const TString &s2);
+friend Bool_t  operator==(const TString &s1, const char *s2);
+*/
+private:
+#ifdef R__BYTESWAP
+   enum { kShortMask = 0x01, kLongMask  = 0x1 };
+#else
+   enum { kShortMask = 0x80, kLongMask  = 0x80000000 };
+#endif
+
+   struct LongStr_t
+   {
+      Ssiz_t    fCap;    // Max string length (including null)
+      Ssiz_t    fSize;   // String length (excluding null)
+      char     *fData;   // Long string data
+   };
+
+   enum { kMinCap = (sizeof(LongStr_t) - 1)/sizeof(char) > 2 ?
+                    (sizeof(LongStr_t) - 1)/sizeof(char) : 2 };
+
+   struct ShortStr_t
+   {
+      unsigned char fSize;           // String length (excluding null)
+      char          fData[kMinCap];  // Short string data
+   };
+
+   union UStr_t { LongStr_t fL; ShortStr_t fS; };
+
+   enum { kNwords = sizeof(UStr_t) / sizeof(Ssiz_t)};
+
+   struct RawStr_t
+   {
+      Ssiz_t fWords[kNwords];
+   };
+
+   struct Rep_t
+   {
+      union
+      {
+         LongStr_t  fLong;
+         ShortStr_t fShort;
+         RawStr_t   fRaw;
+      };
+   };
+
+protected:
+#ifndef __CINT__
+   Rep_t          fRep;           //! String data
+#endif
+/*
+   // Special concatenation constructor
+   TString(const char *a1, Ssiz_t n1, const char *a2, Ssiz_t n2);
+   void           AssertElement(Ssiz_t nc) const; // Index in range
+   void           Clobber(Ssiz_t nc);             // Remove old contents
+   void           InitChar(char c);               // Initialize from char
+
+   enum { kAlignment = 16 };
+   static Ssiz_t  Align(Ssiz_t s) { return (s + (kAlignment-1)) & ~(kAlignment-1); }
+   static Ssiz_t  Recommend(Ssiz_t s) { return (s < kMinCap ? kMinCap : Align(s+1)) - 1; }
+   static Ssiz_t  AdjustCapacity(Ssiz_t oldCap, Ssiz_t newCap); */
+
+private:
+   Bool_t         IsLong() const { return Bool_t(fRep.fShort.fSize & kShortMask); }
+#ifdef R__BYTESWAP
+   void           SetShortSize(Ssiz_t s) { fRep.fShort.fSize = (unsigned char)(s << 1); }
+   Ssiz_t         GetShortSize() const { return fRep.fShort.fSize >> 1; }
+#else
+   void           SetShortSize(Ssiz_t s) { fRep.fShort.fSize = (unsigned char)s; }
+   Ssiz_t         GetShortSize() const { return fRep.fShort.fSize; }
+#endif
+   void           SetLongSize(Ssiz_t s) { fRep.fLong.fSize = s; }
+   Ssiz_t         GetLongSize() const { return fRep.fLong.fSize; }
+   //void           SetSize(Ssiz_t s) { IsLong() ? SetLongSize(s) : SetShortSize(s); }
+   //void           SetLongCap(Ssiz_t s) { fRep.fLong.fCap = kLongMask | s; }
+   //Ssiz_t         GetLongCap() const { return fRep.fLong.fCap & ~kLongMask; }
+   //void           SetLongPointer(char *p) { fRep.fLong.fData = p; }
+   //char          *GetLongPointer() { return fRep.fLong.fData; }
+   //const char    *GetLongPointer() const { return fRep.fLong.fData; }
+   //char          *GetShortPointer() { return fRep.fShort.fData; }
+   //const char    *GetShortPointer() const { return fRep.fShort.fData; }
+   //char          *GetPointer() { return IsLong() ? GetLongPointer() : GetShortPointer(); }
+   //const char    *GetPointer() const { return IsLong() ? GetLongPointer() : GetShortPointer(); }
+/*#ifdef R__BYTESWAP
+   static Ssiz_t  MaxSize() { return kMaxInt - 1; }
+#else
+   static Ssiz_t  MaxSize() { return (kMaxInt >> 1) - 1; }
+#endif
+   void           UnLink() const { if (IsLong()) delete [] fRep.fLong.fData; }
+   void           Zero() {
+      Ssiz_t (&a)[kNwords] = fRep.fRaw.fWords;
+      for (UInt_t i = 0; i < kNwords; ++i)
+         a[i] = 0;
+   }
+   char          *Init(Ssiz_t capacity, Ssiz_t nchar);
+   void           Clone(Ssiz_t nc); // Make self a distinct copy w. capacity nc
+   void           FormImp(const char *fmt, va_list ap);
+   UInt_t         HashCase() const;
+   UInt_t         HashFoldCase() const; */
+
+public:
+   //enum EStripType   { kLeading = 0x1, kTrailing = 0x2, kBoth = 0x3 };
+   enum ECaseCompare { kExact, kIgnoreCase };
+   //static const Ssiz_t kNPOS = ::kNPOS;
+
+   TString();                           // Null string
+   explicit TString(Ssiz_t ic);         // Suggested capacity
+   TString(const TString &s);           // Copy constructor
+   TString(TString &&s) noexcept;       // Move constructor
+   TString(const char *s);              // Copy to embedded null
+   TString(const char *s, Ssiz_t n);    // Copy past any embedded nulls
+   TString(const std::string &s);
+   TString(char c);
+   TString(char c, Ssiz_t s);
+   TString(const std::string_view &sub);
+   //TString(const TSubString &sub);
+
+   virtual ~TString();
+    /*
+   // ROOT I/O interface
+   virtual void     FillBuffer(char *&buffer) const;
+   virtual void     ReadBuffer(char *&buffer);
+   virtual Int_t    Sizeof() const;
+
+   static TString  *ReadString(TBuffer &b, const TClass *clReq);
+   static void      WriteString(TBuffer &b, const TString *a);
+
+   friend TBuffer &operator<<(TBuffer &b, const TString *obj);
+
+   // C I/O interface
+   Bool_t   Gets(FILE *fp, Bool_t chop=kTRUE);
+   void     Puts(FILE *fp);
+
+   // Type conversion
+   operator const char*() const { return GetPointer(); }
+#if (__cplusplus >= 201700L) && (!defined(__clang_major__) || __clang_major__ > 5)
+   // Clang 5.0 support for explicit conversion is still inadequate even in c++17 mode.
+   // (It leads to extraneous ambiguous overload errors)
+   explicit operator std::string() const { return std::string(GetPointer(),Length()); }
+   explicit operator ROOT::Internal::TStringView() const { return ROOT::Internal::TStringView(GetPointer(),Length()); }
+   operator std::string_view() const { return std::string_view(GetPointer(),Length()); }
+#else
+   operator ROOT::Internal::TStringView() const { return ROOT::Internal::TStringView(GetPointer(),Length()); }
+#endif */
+    /*
+   // Assignment
+   TString    &operator=(char s);                // Replace string
+   TString    &operator=(const char *s);
+   TString    &operator=(const TString &s);
+   TString    &operator=(TString &&s) noexcept;
+   TString    &operator=(const std::string &s);
+   TString    &operator=(const std::string_view &s);
+   TString    &operator=(const TSubString &s);
+   TString    &operator+=(const char *s);        // Append string
+   TString    &operator+=(const TString &s);
+   TString    &operator+=(char c);
+
+   template<class T>
+   typename std::enable_if<ROOT::TypeTraits::IsSignedNumeral<T>::value,TString>::type
+              &operator+=(T i);
+   template<class T>
+   typename std::enable_if<ROOT::TypeTraits::IsUnsignedNumeral<T>::value,TString>::type
+              &operator+=(T u);
+   template<class T>
+   typename std::enable_if<ROOT::TypeTraits::IsFloatNumeral<T>::value,TString>::type
+              &operator+=(T f); */
+    /*
+   // Indexing operators
+   char         &operator[](Ssiz_t i);         // Indexing with bounds checking
+   char         &operator()(Ssiz_t i);         // Indexing with optional bounds checking
+   char          operator[](Ssiz_t i) const;
+   char          operator()(Ssiz_t i) const;
+   TSubString    operator()(Ssiz_t start, Ssiz_t len) const;   // Sub-string operator
+   TSubString    operator()(const TRegexp &re) const;          // Match the RE
+   TSubString    operator()(const TRegexp &re, Ssiz_t start) const;
+   TSubString    operator()(TPRegexp &re) const;               // Match the Perl compatible Regular Expression
+   TSubString    operator()(TPRegexp &re, Ssiz_t start) const;
+   TSubString    SubString(const char *pat, Ssiz_t start = 0,
+                           ECaseCompare cmp = kExact) const;
+
+   // Non-static member functions
+   TString     &Append(const char *cs);
+   TString     &Append(const char *cs, Ssiz_t n);
+   TString     &Append(const TString &s);
+   TString     &Append(const TString &s, Ssiz_t n);
+   TString     &Append(char c, Ssiz_t rep = 1);   // Append c rep times
+   Int_t        Atoi() const;
+   Long64_t     Atoll() const;
+   Double_t     Atof() const;
+   Bool_t       BeginsWith(const char *s,      ECaseCompare cmp = kExact) const;
+   Bool_t       BeginsWith(const TString &pat, ECaseCompare cmp = kExact) const;
+   Ssiz_t       Capacity() const { return (IsLong() ? GetLongCap() : kMinCap) - 1; }
+   Ssiz_t       Capacity(Ssiz_t n);
+   TString     &Chop();
+   void         Clear();
+   int          CompareTo(const char *cs,    ECaseCompare cmp = kExact) const;
+   int          CompareTo(const TString &st, ECaseCompare cmp = kExact) const; */
+   Bool_t       Contains(const char *pat,    ECaseCompare cmp = kExact) const;
+   Bool_t       Contains(const TString &pat, ECaseCompare cmp = kExact) const;
+   //Bool_t       Contains(const TRegexp &pat) const;
+   //Bool_t       Contains(TPRegexp &pat) const;
+   /*Int_t        CountChar(Int_t c) const;
+   TString      Copy() const;
+   const char  *Data() const { return GetPointer(); }
+   Bool_t       EndsWith(const char *pat, ECaseCompare cmp = kExact) const;
+   Bool_t       EqualTo(const char *cs,    ECaseCompare cmp = kExact) const;
+   Bool_t       EqualTo(const TString &st, ECaseCompare cmp = kExact) const;
+   Ssiz_t       First(char c) const;
+   Ssiz_t       First(const char *cs) const;
+   void         Form(const char *fmt, ...) */
+//#if defined(__GNUC__) && !defined(__CINT__)
+   //__attribute__((format(printf, 2, 3)))   /* 1 is the this pointer */
+//#endif
+   //;
+   //UInt_t       Hash(ECaseCompare cmp = kExact) const;
+   Ssiz_t       Index(const char *pat, Ssiz_t i = 0,
+                      ECaseCompare cmp = kExact) const;
+   Ssiz_t       Index(const TString &s, Ssiz_t i = 0,
+                      ECaseCompare cmp = kExact) const;
+   Ssiz_t       Index(const char *pat, Ssiz_t patlen, Ssiz_t i,
+                      ECaseCompare cmp) const;
+   Ssiz_t       Index(const TString &s, Ssiz_t patlen, Ssiz_t i,
+                      ECaseCompare cmp) const;
+   //Ssiz_t       Index(const TRegexp &pat, Ssiz_t i = 0) const;
+   //Ssiz_t       Index(const TRegexp &pat, Ssiz_t *ext, Ssiz_t i = 0) const;
+   //Ssiz_t       Index(TPRegexp &pat, Ssiz_t i = 0) const;
+   //Ssiz_t       Index(TPRegexp &pat, Ssiz_t *ext, Ssiz_t i = 0) const;
+   /*TString     &Insert(Ssiz_t pos, const char *s);
+   TString     &Insert(Ssiz_t pos, const char *s, Ssiz_t extent);
+   TString     &Insert(Ssiz_t pos, const TString &s);
+   TString     &Insert(Ssiz_t pos, const TString &s, Ssiz_t extent);
+   Bool_t       IsAscii() const;
+   Bool_t       IsAlpha() const;
+   Bool_t       IsAlnum() const;
+   Bool_t       IsDigit() const;
+   Bool_t       IsFloat() const;
+   Bool_t       IsHex() const;
+   Bool_t       IsBin() const;
+   Bool_t       IsOct() const;
+   Bool_t       IsDec() const;
+   Bool_t       IsInBaseN(Int_t base) const;
+   Bool_t       IsNull() const         { return Length() == 0; }
+   Bool_t       IsWhitespace() const   { return (Length() == CountChar(' ')); }
+   Ssiz_t       Last(char c) const; */
+   Ssiz_t       Length() const         { return IsLong() ? GetLongSize() : GetShortSize(); }
+   /*Bool_t       MaybeRegexp() const;
+   Bool_t       MaybeWildcard() const;
+   TString      MD5() const;
+   TString     &Prepend(const char *cs);     // Prepend a character string
+   TString     &Prepend(const char *cs, Ssiz_t n);
+   TString     &Prepend(const TString &s);
+   TString     &Prepend(const TString &s, Ssiz_t n);
+   TString     &Prepend(char c, Ssiz_t rep = 1);  // Prepend c rep times
+   std::istream     &ReadFile(std::istream &str);      // Read to EOF or null character
+   std::istream     &ReadLine(std::istream &str,
+                         Bool_t skipWhite = kTRUE);   // Read to EOF or newline
+   std::istream     &ReadString(std::istream &str);             // Read to EOF or null character
+   std::istream     &ReadToDelim(std::istream &str, char delim = '\n'); // Read to EOF or delimitor
+   std::istream     &ReadToken(std::istream &str);                // Read separated by white space
+   TString     &Remove(Ssiz_t pos);                     // Remove pos to end of string
+   TString     &Remove(Ssiz_t pos, Ssiz_t n);           // Remove n chars starting at pos
+   TString     &Remove(EStripType s, char c);           // Like Strip() but changing string directly
+   TString     &Replace(Ssiz_t pos, Ssiz_t n, const char *s);
+   TString     &Replace(Ssiz_t pos, Ssiz_t n, const char *s, Ssiz_t ns);
+   TString     &Replace(Ssiz_t pos, Ssiz_t n, const TString &s);
+   TString     &Replace(Ssiz_t pos, Ssiz_t n1, const TString &s, Ssiz_t n2);
+   TString     &ReplaceAll(const TString &s1, const TString &s2); // Find&Replace all s1 with s2 if any
+   TString     &ReplaceAll(const TString &s1, const char *s2);    // Find&Replace all s1 with s2 if any
+   TString     &ReplaceAll(const    char *s1, const TString &s2); // Find&Replace all s1 with s2 if any
+   TString     &ReplaceAll(const char *s1, const char *s2);       // Find&Replace all s1 with s2 if any
+   TString     &ReplaceAll(const char *s1, Ssiz_t ls1, const char *s2, Ssiz_t ls2);  // Find&Replace all s1 with s2 if any
+   void         Resize(Ssiz_t n);                       // Truncate or add blanks as necessary
+   TSubString   Strip(EStripType s = kTrailing, char c = ' ') const; */
+   //TString     &Swap(TString &other); // Swap the contents of this and other without reallocation
+   void         ToLower();                              // Change self to lower-case
+   void         ToUpper();                              // Change self to upper-case
+   //TObjArray   *Tokenize(const TString &delim) const;
+   //Bool_t       Tokenize(TString &tok, Ssiz_t &from, const char *delim = " ") const;
+   //std::string_view View() const { return std::string_view(GetPointer(),Length()); }
+/*
+   // Static member functions
+   static UInt_t  Hash(const void *txt, Int_t ntxt);    // Calculates hash index from any char string.
+   static Ssiz_t  InitialCapacity(Ssiz_t ic = 15);      // Initial allocation capacity
+   static Ssiz_t  MaxWaste(Ssiz_t mw = 15);             // Max empty space before reclaim
+   static Ssiz_t  ResizeIncrement(Ssiz_t ri = 16);      // Resizing increment
+   static Ssiz_t  GetInitialCapacity();
+   static Ssiz_t  GetResizeIncrement();
+   static Ssiz_t  GetMaxWaste();
+   static TString Itoa   (    Int_t value, Int_t base);  // Converts int to string with respect to the base specified (2-36)
+   static TString UItoa  (   UInt_t value, Int_t base);
+   static TString LLtoa  ( Long64_t value, Int_t base);
+   static TString ULLtoa (ULong64_t value, Int_t base);
+   static TString BaseConvert(const TString& s_in, Int_t base_in, Int_t base_out);  // Converts string from base base_in to base base_out (supported bases 2-36)
+   static TString Format(const char *fmt, ...) */
+//#if defined(__GNUC__) && !defined(__CINT__)
+ //  __attribute__((format(printf, 1, 2)))
+//#endif
+ //  ;
+
+   ClassDef(TString,2) //Basic string class
+};
+/*
+// Related global functions
+std::istream  &operator>>(std::istream &str,       TString &s);
+std::ostream  &operator<<(std::ostream &str, const TString &s);
+#if defined(R__TEMPLATE_OVERLOAD_BUG)
+template <>
+#endif
+TBuffer  &operator>>(TBuffer &buf,       TString *&sp);
+TBuffer  &operator<<(TBuffer &buf, const TString * sp);
+
+// Conversion operator (per se).
+inline std::string& operator+=(std::string &left, const TString &right)
+{
+   return left.append(right.Data());
+}
+*/
+TString ToLower(const TString &s);    // Return lower-case version of argument
+TString ToUpper(const TString &s);    // Return upper-case version of argument
+/*
+inline UInt_t Hash(const TString &s) { return s.Hash(); }
+inline UInt_t Hash(const TString *s) { return s->Hash(); }
+       UInt_t Hash(const char *s);
+
+extern char *Form(const char *fmt, ...)      // format in circular buffer
+#if defined(__GNUC__) && !defined(__CINT__)
+__attribute__((format(printf, 1, 2)))
+#endif
+;
+extern void  Printf(const char *fmt, ...)    // format and print
+#if defined(__GNUC__) && !defined(__CINT__)
+__attribute__((format(printf, 1, 2)))
+#endif
+;
+extern char *Strip(const char *str, char c = ' '); // strip c off str, free with delete []
+extern char *StrDup(const char *str);        // duplicate str, free with delete []
+extern char *Compress(const char *str);      // remove blanks from string, free with delele []
+extern int   EscChar(const char *src, char *dst, int dstlen, char *specchars,
+                     char escchar);          // copy from src to dst escaping specchars by escchar
+extern int   UnEscChar(const char *src, char *dst, int dstlen, char *specchars,
+                       char escchar);        // copy from src to dst removing escchar from specchars
+
+#ifdef NEED_STRCASECMP
+extern int strcasecmp(const char *str1, const char *str2);
+extern int strncasecmp(const char *str1, const char *str2, Ssiz_t n);
+#endif
+*/
+//////////////////////////////////////////////////////////////////////////
+//                                                                      //
+//  Inlines                                                             //
+//                                                                      //
+//////////////////////////////////////////////////////////////////////////
+/*
+template<class T>
+inline typename std::enable_if<ROOT::TypeTraits::IsSignedNumeral<T>::value,TString>::type
+operator+(TString s, T i)
+{ return s += i; }
+
+template<class T>
+inline typename std::enable_if<ROOT::TypeTraits::IsUnsignedNumeral<T>::value,TString>::type
+operator+(TString s, T u)
+{ return s += u; }
+
+template<class T>
+inline typename std::enable_if<ROOT::TypeTraits::IsFloatNumeral<T>::value,TString>::type
+operator+(TString s, T f)
+{ return s += f; }
+
+template<class T>
+inline typename std::enable_if<ROOT::TypeTraits::IsSignedNumeral<T>::value,TString>::type
+operator+(T i, const TString &s)
+{
+    char buffer[32];
+    // coverity[secure_coding] Buffer is large enough (2^64 = 20 digits).
+    snprintf(buffer, sizeof(buffer), "%lld", static_cast<Long64_t>(i));
+    return TString(buffer, strlen(buffer), s.Data(), s.Length());
+}
+
+template<class T>
+inline typename std::enable_if<ROOT::TypeTraits::IsUnsignedNumeral<T>::value,TString>::type
+operator+(T u, const TString &s)
+{
+    char buffer[32];
+    // coverity[secure_coding] Buffer is large enough (2^64 = 20 digits).
+    snprintf(buffer, sizeof(buffer), "%llu", static_cast<ULong64_t>(u));
+    return TString(buffer, strlen(buffer), s.Data(), s.Length());
+}
+
+template<class T>
+inline typename std::enable_if<ROOT::TypeTraits::IsFloatNumeral<T>::value,TString>::type
+operator+(T f, const TString &s)
+{
+    char buffer[32];
+    // coverity[secure_coding] Buffer is large enough: width specified in format
+    snprintf(buffer, sizeof(buffer), "%.17Lg", static_cast<LongDouble_t>(f));
+    return TString(buffer, strlen(buffer), s.Data(), s.Length());
+}
+
+inline TString &TString::Append(const char *cs)
+{ return Replace(Length(), 0, cs, cs ? strlen(cs) : 0); }
+
+inline TString &TString::Append(const char *cs, Ssiz_t n)
+{ return Replace(Length(), 0, cs, n); }
+
+inline TString &TString::Append(const TString &s)
+{ return Replace(Length(), 0, s.Data(), s.Length()); }
+
+inline TString &TString::Append(const TString &s, Ssiz_t n)
+{ return Replace(Length(), 0, s.Data(), TMath::Min(n, s.Length())); }
+
+inline TString &TString::operator+=(const char *cs)
+{ return Append(cs, cs ? strlen(cs) : 0); }
+
+inline TString &TString::operator+=(const TString &s)
+{ return Append(s.Data(), s.Length()); }
+
+inline TString &TString::operator+=(char c)
+{ return Append(c); }
+
+template<class T>
+inline typename std::enable_if<ROOT::TypeTraits::IsSignedNumeral<T>::value,TString>::type
+&TString::operator+=(T i)
+{
+   char buffer[32];
+   // coverity[secure_coding] Buffer is large enough (2^64 = 20 digits).
+   snprintf(buffer, sizeof(buffer), "%lld", static_cast<Long64_t>(i));
+   return operator+=(buffer);
+}
+
+template<class T>
+inline typename std::enable_if<ROOT::TypeTraits::IsUnsignedNumeral<T>::value,TString>::type
+&TString::operator+=(T u)
+{
+   char buffer[32];
+   // coverity[secure_coding] Buffer is large enough (2^64 = 20 digits).
+   snprintf(buffer, sizeof(buffer), "%llu", static_cast<ULong64_t>(u));
+   return operator+=(buffer);
+}
+
+template<class T>
+inline typename std::enable_if<ROOT::TypeTraits::IsFloatNumeral<T>::value,TString>::type
+&TString::operator+=(T f)
+{
+   char buffer[32];
+   // coverity[secure_coding] Buffer is large enough: width specified in format
+   snprintf(buffer, sizeof(buffer), "%.17Lg", static_cast<LongDouble_t>(f));
+   return operator+=(buffer);
+}
+
+inline Bool_t TString::BeginsWith(const char *s, ECaseCompare cmp) const
+{ return Index(s, s ? strlen(s) : (Ssiz_t)0, (Ssiz_t)0, cmp) == 0; }
+
+inline Bool_t TString::BeginsWith(const TString &pat, ECaseCompare cmp) const
+{ return Index(pat.Data(), pat.Length(), (Ssiz_t)0, cmp) == 0; }
+*/
+//inline Bool_t TString::Contains(const TString &pat, ECaseCompare cmp) const
+//{ return Index(pat.Data(), pat.Length(), (Ssiz_t)0, cmp) != kNPOS; }
+
+inline Bool_t TString::Contains(const char *s, ECaseCompare cmp) const
+{ return Index(s, s ? strlen(s) : 0, (Ssiz_t)0, cmp) != kNPOS; }
+/*
+inline Bool_t TString::Contains(const TRegexp &pat) const
+{ return Index(pat, (Ssiz_t)0) != kNPOS; }
+
+inline Bool_t TString::Contains(TPRegexp &pat) const
+{ return Index(pat, (Ssiz_t)0) != kNPOS; }
+
+inline Bool_t TString::EqualTo(const char *cs, ECaseCompare cmp) const
+{ return (CompareTo(cs, cmp) == 0) ? kTRUE : kFALSE; }
+
+inline Bool_t TString::EqualTo(const TString &st, ECaseCompare cmp) const
+{ return (CompareTo(st, cmp) == 0) ? kTRUE : kFALSE; }
+
+inline Ssiz_t TString::Index(const char *s, Ssiz_t i, ECaseCompare cmp) const
+{ return Index(s, s ? strlen(s) : 0, i, cmp); }
+
+inline Ssiz_t TString::Index(const TString &s, Ssiz_t i, ECaseCompare cmp) const
+{ return Index(s.Data(), s.Length(), i, cmp); }
+
+inline Ssiz_t TString::Index(const TString &pat, Ssiz_t patlen, Ssiz_t i,
+                             ECaseCompare cmp) const
+{ return Index(pat.Data(), patlen, i, cmp); }
+
+inline TString &TString::Insert(Ssiz_t pos, const char *cs)
+{ return Replace(pos, 0, cs, cs ? strlen(cs) : 0); }
+
+inline TString &TString::Insert(Ssiz_t pos, const char *cs, Ssiz_t n)
+{ return Replace(pos, 0, cs, n); }
+
+inline TString &TString::Insert(Ssiz_t pos, const TString &s)
+{ return Replace(pos, 0, s.Data(), s.Length()); }
+
+inline TString &TString::Insert(Ssiz_t pos, const TString &s, Ssiz_t n)
+{ return Replace(pos, 0, s.Data(), TMath::Min(n, s.Length())); }
+
+inline TString &TString::Prepend(const char *cs)
+{ return Replace(0, 0, cs, cs ? strlen(cs) : 0); }
+
+inline TString &TString::Prepend(const char *cs, Ssiz_t n)
+{ return Replace(0, 0, cs, n); }
+
+inline TString &TString::Prepend(const TString &s)
+{ return Replace(0, 0, s.Data(), s.Length()); }
+
+inline TString &TString::Prepend(const TString &s, Ssiz_t n)
+{ return Replace(0, 0, s.Data(), TMath::Min(n, s.Length())); }
+
+inline TString &TString::Remove(Ssiz_t pos)
+{ return Replace(pos, TMath::Max(0, Length()-pos), 0, 0); }
+
+inline TString &TString::Remove(Ssiz_t pos, Ssiz_t n)
+{ return Replace(pos, n, 0, 0); }
+
+inline TString &TString::Chop()
+{ return Remove(TMath::Max(0, Length()-1)); }
+
+inline TString &TString::Replace(Ssiz_t pos, Ssiz_t n, const char *cs)
+{ return Replace(pos, n, cs, cs ? strlen(cs) : 0); }
+
+inline TString &TString::Replace(Ssiz_t pos, Ssiz_t n, const TString& s)
+{ return Replace(pos, n, s.Data(), s.Length()); }
+
+inline TString &TString::Replace(Ssiz_t pos, Ssiz_t n1, const TString &s,
+                                 Ssiz_t n2)
+{ return Replace(pos, n1, s.Data(), TMath::Min(s.Length(), n2)); }
+
+inline TString &TString::ReplaceAll(const TString &s1, const TString &s2)
+{ return ReplaceAll(s1.Data(), s1.Length(), s2.Data(), s2.Length()) ; }
+
+inline TString &TString::ReplaceAll(const TString &s1, const char *s2)
+{ return ReplaceAll(s1.Data(), s1.Length(), s2, s2 ? strlen(s2) : 0); }
+
+inline TString &TString::ReplaceAll(const char *s1, const TString &s2)
+{ return ReplaceAll(s1, s1 ? strlen(s1) : 0, s2.Data(), s2.Length()); }
+
+inline TString &TString::ReplaceAll(const char *s1,const char *s2)
+{ return ReplaceAll(s1, s1 ? strlen(s1) : 0, s2, s2 ? strlen(s2) : 0); }
+
+inline TString &TString::Swap(TString &other) {
+   // Swap the contents of other and this without reallocation.
+#ifndef __CINT__
+   Rep_t tmp = other.fRep;
+   other.fRep = fRep;
+   fRep = tmp;
+#endif
+   return *this;
+}
+
+inline char &TString::operator()(Ssiz_t i)
+{ return GetPointer()[i]; }
+
+inline char TString::operator()(Ssiz_t i) const
+{ return GetPointer()[i]; }
+
+inline char &TString::operator[](Ssiz_t i)
+{ AssertElement(i); return GetPointer()[i]; }
+
+inline char TString::operator[](Ssiz_t i) const
+{ AssertElement(i); return GetPointer()[i]; }
+
+inline const char *TSubString::Data() const
+{
+   // Return a pointer to the beginning of the substring. Note that the
+   // terminating null is in the same place as for the original
+   // TString, so this method is not appropriate for converting the
+   // TSubString to a string. To do that, construct a TString from the
+   // TSubString. For example:
+   //
+   //   root [0] TString s("hello world")
+   //   root [1] TSubString sub=s(0, 5)
+   //   root [2] sub.Data()
+   //   (const char* 0x857c8b8)"hello world"
+   //   root [3] TString substr(sub)
+   //   root [4] substr
+   //   (class TString)"hello"
+
+   return fStr.Data() + fBegin;
+}
+
+// Access to elements of sub-string with bounds checking
+inline char TSubString::operator[](Ssiz_t i) const
+{ AssertElement(i); return fStr.GetPointer()[fBegin+i]; }
+
+inline char TSubString::operator()(Ssiz_t i) const
+{ return fStr.GetPointer()[fBegin+i]; }
+
+inline TSubString &TSubString::operator=(const TSubString &s)
+{ fStr = s.fStr; fBegin = s.fBegin; fExtent = s.fExtent; return *this; }
+
+
+// String Logical operators
+inline Bool_t operator==(const TString &s1, const TString &s2)
+{
+   return ((s1.Length() == s2.Length()) &&
+            !memcmp(s1.Data(), s2.Data(), s1.Length()));
+}
+
+inline Bool_t operator!=(const TString &s1, const TString &s2)
+{ return !(s1 == s2); }
+
+inline Bool_t operator<(const TString &s1, const TString &s2)
+{ return s1.CompareTo(s2) < 0; }
+
+inline Bool_t operator>(const TString &s1, const TString &s2)
+{ return s1.CompareTo(s2) > 0; }
+
+inline Bool_t operator<=(const TString &s1, const TString &s2)
+{ return s1.CompareTo(s2) <= 0; }
+
+inline Bool_t operator>=(const TString &s1, const TString &s2)
+{ return s1.CompareTo(s2) >= 0; }
+
+//     Bool_t operator==(const TString &s1, const char *s2);
+inline Bool_t operator!=(const TString &s1, const char *s2)
+{ return !(s1 == s2); }
+
+inline Bool_t operator<(const TString &s1, const char *s2)
+{ return s1.CompareTo(s2) < 0; }
+
+inline Bool_t operator>(const TString &s1, const char *s2)
+{ return s1.CompareTo(s2) > 0; }
+
+inline Bool_t operator<=(const TString &s1, const char *s2)
+{ return s1.CompareTo(s2) <= 0; }
+
+inline Bool_t operator>=(const TString &s1, const char *s2)
+{ return s1.CompareTo(s2) >= 0; }
+
+inline Bool_t operator==(const char *s1, const TString &s2)
+{ return (s2 == s1); }
+
+inline Bool_t operator!=(const char *s1, const TString &s2)
+{ return !(s2 == s1); }
+
+inline Bool_t operator<(const char *s1, const TString &s2)
+{ return s2.CompareTo(s1) > 0; }
+
+inline Bool_t operator>(const char *s1, const TString &s2)
+{ return s2.CompareTo(s1) < 0; }
+
+inline Bool_t operator<=(const char *s1, const TString &s2)
+{ return s2.CompareTo(s1) >= 0; }
+
+inline Bool_t operator>=(const char *s1, const TString &s2)
+{ return s2.CompareTo(s1) <= 0; }
+
+// SubString Logical operators
+//     Bool_t operator==(const TSubString &s1, const TSubString &s2);
+//     Bool_t operator==(const TSubString &s1, const char *s2);
+//     Bool_t operator==(const TSubString &s1, const TString &s2);
+inline Bool_t operator==(const TString &s1, const TSubString &s2)
+{ return (s2 == s1); }
+
+inline Bool_t operator==(const char *s1, const TSubString &s2)
+{ return (s2 == s1); }
+
+inline Bool_t operator!=(const TSubString &s1, const char *s2)
+{ return !(s1 == s2); }
+
+inline Bool_t operator!=(const TSubString &s1, const TString &s2)
+{ return !(s1 == s2); }
+
+inline Bool_t operator!=(const TSubString &s1, const TSubString &s2)
+{ return !(s1 == s2); }
+
+inline Bool_t operator!=(const TString &s1, const TSubString &s2)
+{ return !(s2 == s1); }
+
+inline Bool_t operator!=(const char *s1, const TSubString &s2)
+{ return !(s2 == s1); }
+
+#ifndef WIN32
+// To avoid ambiguities.
+inline Bool_t operator==(const char *s1, const std::string_view &s2)
+{
+  return std::string_view(s1) == s2;
+}
+
+inline Bool_t operator==(const std::string_view &s1, const char *s2)
+{
+  return s1 == std::string_view(s2);
+}
+#endif
+
+namespace llvm {
+   class raw_ostream;
+}
+
+namespace cling {
+  std::string printValue(const TString* val);
+  std::string printValue(const TSubString* val);
+  std::string printValue(const std::string_view* val);
+}
+*/
+#endif
+
+/*************************************************************************
+ * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
+ * All rights reserved.                                                  *
+ *                                                                       *
+ * For the licensing terms see $ROOTSYS/LICENSE.                         *
+ * For the list of contributors see $ROOTSYS/README/CREDITS.             *
+ *************************************************************************/
+
+#ifndef ROOT_TMatrixFfwd
+#define ROOT_TMatrixFfwd
+
+//////////////////////////////////////////////////////////////////////////
+//                                                                      //
+// TMatrixF                                                             //
+//                                                                      //
+//  Forward declaration of TMatrixT<Float_t>                            //
+//                                                                      //
+//////////////////////////////////////////////////////////////////////////
+
+//#include "Rtypes.h"
+
+template<class Element> class TMatrixT;
+typedef TMatrixT<Float_t> TMatrixF;
 
 #endif
 
+/*************************************************************************
+ * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
+ * All rights reserved.                                                  *
+ *                                                                       *
+ * For the licensing terms see $ROOTSYS/LICENSE.                         *
+ * For the list of contributors see $ROOTSYS/README/CREDITS.             *
+ *************************************************************************/
+
+#ifndef ROOT_TMatrixFSparsefwd
+#define ROOT_TMatrixFSparsefwd
+
+//////////////////////////////////////////////////////////////////////////
+//                                                                      //
+// TMatrixFSparse                                                       //
+//                                                                      //
+//  Forward declaration of TMatrixTSparse<Float_t>                      //
+//                                                                      //
+//////////////////////////////////////////////////////////////////////////
+
+//#include "Rtypes.h"
+
+template<class Element> class TMatrixTSparse;
+typedef TMatrixTSparse<Float_t> TMatrixFSparse;
+
+#endif
+
+/*************************************************************************
+ * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
+ * All rights reserved.                                                  *
+ *                                                                       *
+ * For the licensing terms see $ROOTSYS/LICENSE.                         *
+ * For the list of contributors see $ROOTSYS/README/CREDITS.             *
+ *************************************************************************/
+
+#ifndef ROOT_TMatrixFSymfwd
+#define ROOT_TMatrixFSymfwd
+
+//////////////////////////////////////////////////////////////////////////
+//                                                                      //
+// TMatrixFSym                                                          //
+//                                                                      //
+//  Forward declaration of TMatrixTSym<Float_t>                         //
+//                                                                      //
+//////////////////////////////////////////////////////////////////////////
+
+//#include "Rtypes.h"
+
+template<class Element> class TMatrixTSym;
+typedef TMatrixTSym<Float_t> TMatrixFSym;
+
+#endif
+
+/*************************************************************************
+ * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
+ * All rights reserved.                                                  *
+ *                                                                       *
+ * For the licensing terms see $ROOTSYS/LICENSE.                         *
+ * For the list of contributors see $ROOTSYS/README/CREDITS.             *
+ *************************************************************************/
+
+#ifndef ROOT_TMatrixDSparsefwd
+#define ROOT_TMatrixDSparsefwd
+
+//////////////////////////////////////////////////////////////////////////
+//                                                                      //
+// TMatrixDSparse                                                       //
+//                                                                      //
+//  Forward declaration of TMatrixTSparse<Double_t>                     //
+//                                                                      //
+//////////////////////////////////////////////////////////////////////////
+
+//#include "Rtypes.h"
+
+template<class Element> class TMatrixTSparse;
+typedef TMatrixTSparse<Double_t> TMatrixDSparse;
+
+#endif
+
+/*************************************************************************
+ * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
+ * All rights reserved.                                                  *
+ *                                                                       *
+ * For the licensing terms see $ROOTSYS/LICENSE.                         *
+ * For the list of contributors see $ROOTSYS/README/CREDITS.             *
+ *************************************************************************/
+
+#ifndef ROOT_TMatrixDSymfwd
+#define ROOT_TMatrixDSymfwd
+
+//////////////////////////////////////////////////////////////////////////
+//                                                                      //
+// TMatrixDSym                                                          //
+//                                                                      //
+//  Forward declaration of TMatrixTSym<Double_t>                        //
+//                                                                      //
+//////////////////////////////////////////////////////////////////////////
+
+//#include "Rtypes.h"
+
+template<class Element> class TMatrixTSym;
+typedef TMatrixTSym<Double_t> TMatrixDSym;
+
+#endif
+
+// @(#)root/matrix:$Id$
+// Authors: Fons Rademakers, Eddy Offermann   Nov 2003
+
+/*************************************************************************
+ * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
+ * All rights reserved.                                                  *
+ *                                                                       *
+ * For the licensing terms see $ROOTSYS/LICENSE.                         *
+ * For the list of contributors see $ROOTSYS/README/CREDITS.             *
+ *************************************************************************/
+
+#ifndef ROOT_TMatrixDUtilsfwd
+#define ROOT_TMatrixDUtilsfwd
+
+//////////////////////////////////////////////////////////////////////////
+//                                                                      //
+// Matrix utility classes.                                              //
+//                                                                      //
+//  Forward declaration of                                              //
+//   TMatrixTRow_const       <Double_t>  TMatrixTRow       <Double_t>   //
+//   TMatrixTColumn_const    <Double_t>  TMatrixTColumn    <Double_t>   //
+//   TMatrixTDiag_const      <Double_t>  TMatrixTDiag      <Double_t>   //
+//   TMatrixTFlat_const      <Double_t>  TMatrixTFlat      <Double_t>   //
+//   TMatrixTSub_const       <Double_t>  TMatrixTSub       <Double_t>   //
+//   TMatrixTSparseRow_const <Double_t>  TMatrixTSparseRow <Double_t>   //
+//   TMatrixTSparseDiag_const<Double_t>  TMatrixTSparseDiag<Double_t>   //
+//                                                                      //
+//   TElementActionT   <Double_t>                                       //
+//   TElementPosActionT<Double_t>                                       //
+//                                                                      //
+//////////////////////////////////////////////////////////////////////////
+
+//#include "Rtypes.h"
+
+template<class Element> class TMatrixTRow_const;
+template<class Element> class TMatrixTColumn_const;
+template<class Element> class TMatrixTDiag_const;
+template<class Element> class TMatrixTFlat_const;
+template<class Element> class TMatrixTSub_const;
+template<class Element> class TMatrixTSparseRow_const;
+template<class Element> class TMatrixTSparseDiag_const;
+
+template<class Element> class TMatrixTRow;
+template<class Element> class TMatrixTColumn;
+template<class Element> class TMatrixTDiag;
+template<class Element> class TMatrixTFlat;
+template<class Element> class TMatrixTSub;
+template<class Element> class TMatrixTSparseRow;
+template<class Element> class TMatrixTSparseDiag;
+
+template<class Element> class TElementActionT;
+template<class Element> class TElementPosActionT;
+
+typedef TMatrixTRow_const       <Double_t> TMatrixDRow_const;
+typedef TMatrixTColumn_const    <Double_t> TMatrixDColumn_const;
+typedef TMatrixTDiag_const      <Double_t> TMatrixDDiag_const;
+typedef TMatrixTFlat_const      <Double_t> TMatrixDFlat_const;
+typedef TMatrixTSub_const       <Double_t> TMatrixDSub_const;
+typedef TMatrixTSparseRow_const <Double_t> TMatrixDSparseRow_const;
+typedef TMatrixTSparseDiag_const<Double_t> TMatrixDSparseDiag_const;
+
+typedef TMatrixTRow             <Double_t> TMatrixDRow;
+typedef TMatrixTColumn          <Double_t> TMatrixDColumn;
+typedef TMatrixTDiag            <Double_t> TMatrixDDiag;
+typedef TMatrixTFlat            <Double_t> TMatrixDFlat;
+typedef TMatrixTSub             <Double_t> TMatrixDSub;
+typedef TMatrixTSparseRow       <Double_t> TMatrixDSparseRow;
+typedef TMatrixTSparseDiag      <Double_t> TMatrixDSparseDiag;
+
+typedef TElementActionT         <Double_t> TElementActionD;
+typedef TElementPosActionT      <Double_t> TElementPosActionD;
+
+#endif
+
+/*************************************************************************
+ * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
+ * All rights reserved.                                                  *
+ *                                                                       *
+ * For the licensing terms see $ROOTSYS/LICENSE.                         *
+ * For the list of contributors see $ROOTSYS/README/CREDITS.             *
+ *************************************************************************/
+
+#ifndef ROOT_TVectorDfwd
+#define ROOT_TVectorDfwd
+
+//////////////////////////////////////////////////////////////////////////
+//                                                                      //
+// TVectorD                                                             //
+//                                                                      //
+//  Forward declaration of TVectorT<Double_t>                           //
+//                                                                      //
+//////////////////////////////////////////////////////////////////////////
+
+//#include "Rtypes.h"
+
+template<class Element> class TVectorT;
+typedef TVectorT<Double_t> TVectorD;
+
+#endif
+
+/*************************************************************************
+ * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
+ * All rights reserved.                                                  *
+ *                                                                       *
+ * For the licensing terms see $ROOTSYS/LICENSE.                         *
+ * For the list of contributors see $ROOTSYS/README/CREDITS.             *
+ *************************************************************************/
+
+#ifndef ROOT_TVectorFfwd
+#define ROOT_TVectorFfwd
+
+//////////////////////////////////////////////////////////////////////////
+//                                                                      //
+// TVectorF                                                             //
+//                                                                      //
+//  Forward declaration of TVectorT<Float_t>                            //
+//                                                                      //
+//////////////////////////////////////////////////////////////////////////
+
+//#include "Rtypes.h"
+
+template<class Element> class TVectorT;
+typedef TVectorT<Float_t> TVectorF;
+
+#endif
+
+// @(#)root/matrix:$Id$
+// Authors: Fons Rademakers, Eddy Offermann   Nov 2003
+
+/*************************************************************************
+ * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
+ * All rights reserved.                                                  *
+ *                                                                       *
+ * For the licensing terms see $ROOTSYS/LICENSE.                         *
+ * For the list of contributors see $ROOTSYS/README/CREDITS.             *
+ *************************************************************************/
+
+#ifndef ROOT_TMatrixDBasefwd
+#define ROOT_TMatrixDBasefwd
+
+//////////////////////////////////////////////////////////////////////////
+//                                                                      //
+// TMatrixDBase                                                         //
+//                                                                      //
+//  Forward declaration of TMatrixTBase<Double_t>                       //
+//                                                                      //
+//////////////////////////////////////////////////////////////////////////
+
+//#include "Rtypes.h"
+
+template<class Element> class TMatrixTBase;
+typedef TMatrixTBase<Double_t> TMatrixDBase;
+
+#endif
+
+// @(#)root/matrix:$Id$
+// Authors: Fons Rademakers, Eddy Offermann   Nov 2003
+
+/*************************************************************************
+ * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
+ * All rights reserved.                                                  *
+ *                                                                       *
+ * For the licensing terms see $ROOTSYS/LICENSE.                         *
+ * For the list of contributors see $ROOTSYS/README/CREDITS.             *
+ *************************************************************************/
+
+#ifndef ROOT_TMatrixFBasefwd
+#define ROOT_TMatrixFBasefwd
+
+//////////////////////////////////////////////////////////////////////////
+//                                                                      //
+// TMatrixFBase                                                         //
+//                                                                      //
+//  Forward declaration of TMatrixTBase<Float_t>                        //
+//                                                                      //
+//////////////////////////////////////////////////////////////////////////
+
+//#include "Rtypes.h"
+
+template<class Element> class TMatrixTBase;
+typedef TMatrixTBase<Float_t> TMatrixFBase;
+
+#endif
+
+// @(#)root/base:
+// Authors: Rene Brun, Fons Rademakers   29/07/95
+
+/*************************************************************************
+ * Copyright (C) 1995-2004, Rene Brun and Fons Rademakers.               *
+ * All rights reserved.                                                  *
+ *                                                                       *
+ * For the licensing terms see $ROOTSYS/LICENSE.                         *
+ * For the list of contributors see $ROOTSYS/README/CREDITS.             *
+ *************************************************************************/
+
+#ifndef ROOT_TMathBase
+#define ROOT_TMathBase
+
+
+//////////////////////////////////////////////////////////////////////////
+//                                                                      //
+// TMath Base functions                                                 //
+//                                                                      //
+// Define the functions Min, Max, Abs, Sign, Range for all types.       //
+// NB: These functions are unfortunately not available in a portable    //
+// way in std::.                                                        //
+//                                                                      //
+// More functions are defined in TMath.h. TMathBase.h is designed to be //
+// a stable file and used in place of TMath.h in the ROOT miniCore.     //
+//                                                                      //
+//////////////////////////////////////////////////////////////////////////
+
+//#include "Rtypes.h"
+
+#include <cstdlib>
+#include <cmath>
+#include <algorithm>
+
+namespace TMath {
+
+   // Abs
+   inline Short_t  Abs(Short_t d);
+   inline Int_t    Abs(Int_t d);
+   inline Long_t   Abs(Long_t d);
+   inline Long64_t Abs(Long64_t d);
+   inline Float_t  Abs(Float_t d);
+   inline Double_t Abs(Double_t d);
+   inline LongDouble_t Abs(LongDouble_t d);
+
+   // Even/Odd
+   inline Bool_t   Even(Long_t a);
+   inline Bool_t   Odd(Long_t a);
+
+   // SignBit
+   template<typename Integer>
+   inline Bool_t SignBit(Integer a);
+   inline Bool_t SignBit(Float_t a);
+   inline Bool_t SignBit(Double_t a);
+   inline Bool_t SignBit(LongDouble_t a);
+
+   // Sign
+   template<typename T1, typename T2>
+   inline T1 Sign( T1 a, T2 b);
+   inline Float_t  Sign(Float_t a, Float_t b);
+   inline Double_t Sign(Double_t a, Double_t b);
+   inline LongDouble_t Sign(LongDouble_t a, LongDouble_t b);
+
+   // Min, Max of two scalars
+   inline Short_t   Min(Short_t a, Short_t b);
+   inline UShort_t  Min(UShort_t a, UShort_t b);
+   inline Int_t     Min(Int_t a, Int_t b);
+   inline UInt_t    Min(UInt_t a, UInt_t b);
+   inline Long_t    Min(Long_t a, Long_t b);
+   inline ULong_t   Min(ULong_t a, ULong_t b);
+   inline Long64_t  Min(Long64_t a, Long64_t b);
+   inline ULong64_t Min(ULong64_t a, ULong64_t b);
+   inline Float_t   Min(Float_t a, Float_t b);
+   inline Double_t  Min(Double_t a, Double_t b);
+
+   inline Short_t   Max(Short_t a, Short_t b);
+   inline UShort_t  Max(UShort_t a, UShort_t b);
+   inline Int_t     Max(Int_t a, Int_t b);
+   inline UInt_t    Max(UInt_t a, UInt_t b);
+   inline Long_t    Max(Long_t a, Long_t b);
+   inline ULong_t   Max(ULong_t a, ULong_t b);
+   inline Long64_t  Max(Long64_t a, Long64_t b);
+   inline ULong64_t Max(ULong64_t a, ULong64_t b);
+   inline Float_t   Max(Float_t a, Float_t b);
+   inline Double_t  Max(Double_t a, Double_t b);
+
+   // Range
+   inline Short_t   Range(Short_t lb, Short_t ub, Short_t x);
+   inline Int_t     Range(Int_t lb, Int_t ub, Int_t x);
+   inline Long_t    Range(Long_t lb, Long_t ub, Long_t x);
+   inline ULong_t   Range(ULong_t lb, ULong_t ub, ULong_t x);
+   inline Double_t  Range(Double_t lb, Double_t ub, Double_t x);
+
+   //NextPrime is used by the Core classes.
+   Long_t   NextPrime(Long_t x);   // Least prime number greater than x
+
+   // Binary search
+   template <typename T> Long64_t BinarySearch(Long64_t n, const T  *array, T value);
+   template <typename T> Long64_t BinarySearch(Long64_t n, const T **array, T value);
+   template <typename Iterator, typename Element> Iterator BinarySearch(Iterator first, Iterator last, Element value);
+
+   // Sorting
+   template <typename Element, typename Index>
+   void Sort(Index n, const Element* a, Index* index, Bool_t down=kTRUE);
+   template <typename Iterator, typename IndexIterator>
+   void SortItr(Iterator first, Iterator last, IndexIterator index, Bool_t down=kTRUE);
+}
+
+
+//---- Even/odd ----------------------------------------------------------------
+
+inline Bool_t TMath::Even(Long_t a)
+   { return ! (a & 1); }
+
+inline Bool_t TMath::Odd(Long_t a)
+   { return (a & 1); }
+
+//---- Abs ---------------------------------------------------------------------
+
+inline Short_t TMath::Abs(Short_t d)
+{ return (d >= 0) ? d : Short_t(-d);  }
+
+inline Int_t TMath::Abs(Int_t d)
+{ return std::abs(d); }
+
+inline Long_t TMath::Abs(Long_t d)
+{ return std::labs(d); }
+
+inline Long64_t TMath::Abs(Long64_t d)
+#if __cplusplus >= 201103
+{ return std::llabs(d); }
+#else
+{ return (d >= 0) ? d : -d;  }
+#endif
+
+inline Float_t TMath::Abs(Float_t d)
+{ return std::abs(d); }
+
+inline Double_t TMath::Abs(Double_t d)
+{ return std::abs(d); }
+
+inline LongDouble_t TMath::Abs(LongDouble_t d)
+{ return std::abs(d); }
+
+
+//---- Sign Bit--------------------------------------------------------------------
+
+template<typename Integer>
+inline Bool_t TMath::SignBit( Integer a)
+   { return (a < 0); }
+
+inline Bool_t TMath::SignBit(Float_t a)
+   { return std::signbit(a);  }
+
+inline Bool_t TMath::SignBit(Double_t a)
+   { return std::signbit(a);  }
+
+inline Bool_t TMath::SignBit(LongDouble_t a)
+   { return std::signbit(a);  }
+
+
+//---- Sign --------------------------------------------------------------------
+
+template<typename T1, typename T2>
+inline T1 TMath::Sign( T1 a, T2 b)
+   { return (SignBit(b)) ? - Abs(a) : Abs(a); }
+
+inline Float_t TMath::Sign(Float_t a, Float_t b)
+   { return std::copysign(a,b);  }
+
+inline Double_t TMath::Sign(Double_t a, Double_t b)
+   { return std::copysign(a,b);  }
+
+inline LongDouble_t TMath::Sign(LongDouble_t a, LongDouble_t b)
+   { return std::copysign(a,b);  }
+
+
+//---- Min ---------------------------------------------------------------------
+
+inline Short_t TMath::Min(Short_t a, Short_t b)
+   { return a <= b ? a : b; }
+
+inline UShort_t TMath::Min(UShort_t a, UShort_t b)
+   { return a <= b ? a : b; }
+
+inline Int_t TMath::Min(Int_t a, Int_t b)
+   { return a <= b ? a : b; }
+
+inline UInt_t TMath::Min(UInt_t a, UInt_t b)
+   { return a <= b ? a : b; }
+
+inline Long_t TMath::Min(Long_t a, Long_t b)
+   { return a <= b ? a : b; }
+
+inline ULong_t TMath::Min(ULong_t a, ULong_t b)
+   { return a <= b ? a : b; }
+
+inline Long64_t TMath::Min(Long64_t a, Long64_t b)
+   { return a <= b ? a : b; }
+
+inline ULong64_t TMath::Min(ULong64_t a, ULong64_t b)
+   { return a <= b ? a : b; }
+
+inline Float_t TMath::Min(Float_t a, Float_t b)
+   { return a <= b ? a : b; }
+
+inline Double_t TMath::Min(Double_t a, Double_t b)
+   { return a <= b ? a : b; }
+
+//---- Max ---------------------------------------------------------------------
+
+inline Short_t TMath::Max(Short_t a, Short_t b)
+   { return a >= b ? a : b; }
+
+inline UShort_t TMath::Max(UShort_t a, UShort_t b)
+   { return a >= b ? a : b; }
+
+inline Int_t TMath::Max(Int_t a, Int_t b)
+   { return a >= b ? a : b; }
+
+inline UInt_t TMath::Max(UInt_t a, UInt_t b)
+   { return a >= b ? a : b; }
+
+inline Long_t TMath::Max(Long_t a, Long_t b)
+   { return a >= b ? a : b; }
+
+inline ULong_t TMath::Max(ULong_t a, ULong_t b)
+   { return a >= b ? a : b; }
+
+inline Long64_t TMath::Max(Long64_t a, Long64_t b)
+   { return a >= b ? a : b; }
+
+inline ULong64_t TMath::Max(ULong64_t a, ULong64_t b)
+   { return a >= b ? a : b; }
+
+inline Float_t TMath::Max(Float_t a, Float_t b)
+   { return a >= b ? a : b; }
+
+inline Double_t TMath::Max(Double_t a, Double_t b)
+   { return a >= b ? a : b; }
+
+//---- Range -------------------------------------------------------------------
+
+inline Short_t TMath::Range(Short_t lb, Short_t ub, Short_t x)
+   { return x < lb ? lb : (x > ub ? ub : x); }
+
+inline Int_t TMath::Range(Int_t lb, Int_t ub, Int_t x)
+   { return x < lb ? lb : (x > ub ? ub : x); }
+
+inline Long_t TMath::Range(Long_t lb, Long_t ub, Long_t x)
+   { return x < lb ? lb : (x > ub ? ub : x); }
+
+inline ULong_t TMath::Range(ULong_t lb, ULong_t ub, ULong_t x)
+   { return x < lb ? lb : (x > ub ? ub : x); }
+
+inline Double_t TMath::Range(Double_t lb, Double_t ub, Double_t x)
+   { return x < lb ? lb : (x > ub ? ub : x); }
+
+template <typename Iterator, typename Element>
+Iterator TMath::BinarySearch(Iterator first, Iterator last, Element value)
+{
+   // Binary search in an array defined by its iterators.
+   //
+   // The values in the iterators range are supposed to be sorted
+   // prior to this call.  If match is found, function returns
+   // position of element.  If no match found, function gives nearest
+   // element smaller than value.
+
+   Iterator pind;
+   pind = std::lower_bound(first, last, value);
+   if ( (pind != last) && (*pind == value) )
+      return pind;
+   else
+      return ( pind - 1);
+}
+
+
+template <typename T> Long64_t TMath::BinarySearch(Long64_t n, const T  *array, T value)
+{
+   // Binary search in an array of n values to locate value.
+   //
+   // Array is supposed  to be sorted prior to this call.
+   // If match is found, function returns position of element.
+   // If no match found, function gives nearest element smaller than value.
+
+   const T* pind;
+   pind = std::lower_bound(array, array + n, value);
+   if ( (pind != array + n) && (*pind == value) )
+      return (pind - array);
+   else
+      return ( pind - array - 1);
+}
+
+template <typename T> Long64_t TMath::BinarySearch(Long64_t n, const T **array, T value)
+{
+   // Binary search in an array of n values to locate value.
+   //
+   // Array is supposed  to be sorted prior to this call.
+   // If match is found, function returns position of element.
+   // If no match found, function gives nearest element smaller than value.
+
+   const T* pind;
+   pind = std::lower_bound(*array, *array + n, value);
+   if ( (pind != *array + n) && (*pind == value) )
+      return (pind - *array);
+   else
+      return ( pind - *array - 1);
+}
+
+template<typename T>
+struct CompareDesc {
+
+   CompareDesc(T d) : fData(d) {}
+
+   template<typename Index>
+   bool operator()(Index i1, Index i2) {
+      return *(fData + i1) > *(fData + i2);
+   }
+
+   T fData;
+};
+
+template<typename T>
+struct CompareAsc {
+
+   CompareAsc(T d) : fData(d) {}
+
+   template<typename Index>
+   bool operator()(Index i1, Index i2) {
+      return *(fData + i1) < *(fData + i2);
+   }
+
+   T fData;
+};
+
+template <typename Iterator, typename IndexIterator>
+void TMath::SortItr(Iterator first, Iterator last, IndexIterator index, Bool_t down)
+{
+   // Sort the n1 elements of the Short_t array defined by its
+   // iterators.  In output the array index contains the indices of
+   // the sorted array.  If down is false sort in increasing order
+   // (default is decreasing order).
+
+   // NOTE that the array index must be created with a length bigger
+   // or equal than the main array before calling this function.
+
+   int i = 0;
+
+   IndexIterator cindex = index;
+   for ( Iterator cfirst = first; cfirst != last; ++cfirst )
+   {
+      *cindex = i++;
+      ++cindex;
+   }
+
+   if ( down )
+      std::sort(index, cindex, CompareDesc<Iterator>(first) );
+   else
+      std::sort(index, cindex, CompareAsc<Iterator>(first) );
+}
+
+template <typename Element, typename Index> void TMath::Sort(Index n, const Element* a, Index* index, Bool_t down)
+{
+   // Sort the n elements of the  array a of generic templated type Element.
+   // In output the array index of type Index contains the indices of the sorted array.
+   // If down is false sort in increasing order (default is decreasing order).
+
+   // NOTE that the array index must be created with a length >= n
+   // before calling this function.
+   // NOTE also that the size type for n must be the same type used for the index array
+   // (templated type Index)
+
+   for(Index i = 0; i < n; i++) { index[i] = i; }
+   if ( down )
+      std::sort(index, index + n, CompareDesc<const Element*>(a) );
+   else
+      std::sort(index, index + n, CompareAsc<const Element*>(a) );
+}
+
+#endif
+
+//#include "TMath.h"
 // @(#)root/mathcore:$Id$
 // Authors: Rene Brun, Anna Kreshuk, Eddy Offermann, Fons Rademakers   29/07/95
 
@@ -1066,8 +2805,8 @@ struct Limits {
    template <typename Iterator> Iterator LocMax(Iterator first, Iterator last);
 
    // Hashing
-   //ULong_t Hash(const void *txt, Int_t ntxt);
-   //ULong_t Hash(const char *str);
+   ULong_t Hash(const void *txt, Int_t ntxt);
+   ULong_t Hash(const char *str);
 
    void BubbleHigh(Int_t Narr, Double_t *arr1, Int_t *arr2);
    void BubbleLow (Int_t Narr, Double_t *arr1, Int_t *arr2);
@@ -1105,29 +2844,29 @@ struct Limits {
    // Statistic Functions
 
    Double_t Binomial(Int_t n,Int_t k);  // Calculate the binomial coefficient n over k
-   //Double_t BinomialI(Double_t p, Int_t n, Int_t k);
+   Double_t BinomialI(Double_t p, Int_t n, Int_t k);
    Double_t BreitWigner(Double_t x, Double_t mean=0, Double_t gamma=1);
    Double_t CauchyDist(Double_t x, Double_t t=0, Double_t s=1);
-   //Double_t ChisquareQuantile(Double_t p, Double_t ndf);
-   //Double_t FDist(Double_t F, Double_t N, Double_t M);
-   //Double_t FDistI(Double_t F, Double_t N, Double_t M);
+   Double_t ChisquareQuantile(Double_t p, Double_t ndf);
+   Double_t FDist(Double_t F, Double_t N, Double_t M);
+   Double_t FDistI(Double_t F, Double_t N, Double_t M);
    Double_t Gaus(Double_t x, Double_t mean=0, Double_t sigma=1, Bool_t norm=kFALSE);
    Double_t KolmogorovProb(Double_t z);
    Double_t KolmogorovTest(Int_t na, const Double_t *a, Int_t nb, const Double_t *b, Option_t *option);
-   //Double_t Landau(Double_t x, Double_t mpv=0, Double_t sigma=1, Bool_t norm=kFALSE);
-   //Double_t LandauI(Double_t x);
+   Double_t Landau(Double_t x, Double_t mpv=0, Double_t sigma=1, Bool_t norm=kFALSE);
+   Double_t LandauI(Double_t x);
    Double_t LaplaceDist(Double_t x, Double_t alpha=0, Double_t beta=1);
    Double_t LaplaceDistI(Double_t x, Double_t alpha=0, Double_t beta=1);
-   //Double_t LogNormal(Double_t x, Double_t sigma, Double_t theta=0, Double_t m=1);
+   Double_t LogNormal(Double_t x, Double_t sigma, Double_t theta=0, Double_t m=1);
    Double_t NormQuantile(Double_t p);
-   //Double_t Poisson(Double_t x, Double_t par);
-   //Double_t PoissonI(Double_t x, Double_t par);
-   //Double_t Prob(Double_t chi2,Int_t ndf);
-   //Double_t Student(Double_t T, Double_t ndf);
-   //Double_t StudentI(Double_t T, Double_t ndf);
+   Double_t Poisson(Double_t x, Double_t par);
+   Double_t PoissonI(Double_t x, Double_t par);
+   Double_t Prob(Double_t chi2,Int_t ndf);
+   Double_t Student(Double_t T, Double_t ndf);
+   Double_t StudentI(Double_t T, Double_t ndf);
    Double_t StudentQuantile(Double_t p, Double_t ndf, Bool_t lower_tail=kTRUE);
-   //Double_t Vavilov(Double_t x, Double_t kappa, Double_t beta2);
-   //Double_t VavilovI(Double_t x, Double_t kappa, Double_t beta2);
+   Double_t Vavilov(Double_t x, Double_t kappa, Double_t beta2);
+   Double_t VavilovI(Double_t x, Double_t kappa, Double_t beta2);
    Double_t Voigt(Double_t x, Double_t sigma, Double_t lg, Int_t r = 4);
 
    /////////////////////////////////////////////////////////////////////////////
@@ -1158,11 +2897,11 @@ struct Limits {
    /////////////////////////////////////////////////////////////////////////////
    // Special Functions
 
-   //Double_t Beta(Double_t p, Double_t q);
+   Double_t Beta(Double_t p, Double_t q);
    Double_t BetaCf(Double_t x, Double_t a, Double_t b);
-   //Double_t BetaDist(Double_t x, Double_t p, Double_t q);
-   //Double_t BetaDistI(Double_t x, Double_t p, Double_t q);
-   //Double_t BetaIncomplete(Double_t x, Double_t a, Double_t b);
+   Double_t BetaDist(Double_t x, Double_t p, Double_t q);
+   Double_t BetaDistI(Double_t x, Double_t p, Double_t q);
+   Double_t BetaIncomplete(Double_t x, Double_t a, Double_t b);
 
    // Bessel functions
    Double_t BesselI(Int_t n,Double_t x);  /// integer order modified Bessel function I_n(x)
@@ -1181,15 +2920,15 @@ struct Limits {
    Double_t StruveL1(Double_t x);         /// Modified Struve functions of order 1
 
    Double_t DiLog(Double_t x);
-   //Double_t Erf(Double_t x);
-   //Double_t ErfInverse(Double_t x);
-   //Double_t Erfc(Double_t x);
-   //Double_t ErfcInverse(Double_t x);
+   Double_t Erf(Double_t x);
+   Double_t ErfInverse(Double_t x);
+   Double_t Erfc(Double_t x);
+   Double_t ErfcInverse(Double_t x);
    Double_t Freq(Double_t x);
-   //Double_t Gamma(Double_t z);
-   //Double_t Gamma(Double_t a,Double_t x);
-   //Double_t GammaDist(Double_t x, Double_t gamma, Double_t mu=0, Double_t beta=1);
-   //Double_t LnGamma(Double_t z);
+   Double_t Gamma(Double_t z);
+   Double_t Gamma(Double_t a,Double_t x);
+   Double_t GammaDist(Double_t x, Double_t gamma, Double_t mu=0, Double_t beta=1);
+   Double_t LnGamma(Double_t z);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -2020,981 +3759,6 @@ Element TMath::KOrdStat(Size n, const Element *a, Size k, Size *work)
 
 #endif
 
-// @(#)root/base:
-// Authors: Rene Brun, Fons Rademakers   29/07/95
-
-/*************************************************************************
- * Copyright (C) 1995-2004, Rene Brun and Fons Rademakers.               *
- * All rights reserved.                                                  *
- *                                                                       *
- * For the licensing terms see $ROOTSYS/LICENSE.                         *
- * For the list of contributors see $ROOTSYS/README/CREDITS.             *
- *************************************************************************/
-
-#ifndef ROOT_TMathBase
-#define ROOT_TMathBase
-
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// TMath Base functions                                                 //
-//                                                                      //
-// Define the functions Min, Max, Abs, Sign, Range for all types.       //
-// NB: These functions are unfortunately not available in a portable    //
-// way in std::.                                                        //
-//                                                                      //
-// More functions are defined in TMath.h. TMathBase.h is designed to be //
-// a stable file and used in place of TMath.h in the ROOT miniCore.     //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
-
-//#include "Rtypes.h"
-
-#include <cstdlib>
-#include <cmath>
-#include <algorithm>
-
-namespace TMath {
-
-   // Abs
-   inline Short_t  Abs(Short_t d);
-   inline Int_t    Abs(Int_t d);
-   inline Long_t   Abs(Long_t d);
-   inline Long64_t Abs(Long64_t d);
-   inline Float_t  Abs(Float_t d);
-   inline Double_t Abs(Double_t d);
-   inline LongDouble_t Abs(LongDouble_t d);
-
-   // Even/Odd
-   inline Bool_t   Even(Long_t a);
-   inline Bool_t   Odd(Long_t a);
-
-   // SignBit
-   template<typename Integer>
-   inline Bool_t SignBit(Integer a);
-   inline Bool_t SignBit(Float_t a);
-   inline Bool_t SignBit(Double_t a);
-   inline Bool_t SignBit(LongDouble_t a);
-
-   // Sign
-   template<typename T1, typename T2>
-   inline T1 Sign( T1 a, T2 b);
-   inline Float_t  Sign(Float_t a, Float_t b);
-   inline Double_t Sign(Double_t a, Double_t b);
-   inline LongDouble_t Sign(LongDouble_t a, LongDouble_t b);
-
-   // Min, Max of two scalars
-   inline Short_t   Min(Short_t a, Short_t b);
-   inline UShort_t  Min(UShort_t a, UShort_t b);
-   inline Int_t     Min(Int_t a, Int_t b);
-   inline UInt_t    Min(UInt_t a, UInt_t b);
-   inline Long_t    Min(Long_t a, Long_t b);
-   inline ULong_t   Min(ULong_t a, ULong_t b);
-   inline Long64_t  Min(Long64_t a, Long64_t b);
-   inline ULong64_t Min(ULong64_t a, ULong64_t b);
-   inline Float_t   Min(Float_t a, Float_t b);
-   inline Double_t  Min(Double_t a, Double_t b);
-
-   inline Short_t   Max(Short_t a, Short_t b);
-   inline UShort_t  Max(UShort_t a, UShort_t b);
-   inline Int_t     Max(Int_t a, Int_t b);
-   inline UInt_t    Max(UInt_t a, UInt_t b);
-   inline Long_t    Max(Long_t a, Long_t b);
-   inline ULong_t   Max(ULong_t a, ULong_t b);
-   inline Long64_t  Max(Long64_t a, Long64_t b);
-   inline ULong64_t Max(ULong64_t a, ULong64_t b);
-   inline Float_t   Max(Float_t a, Float_t b);
-   inline Double_t  Max(Double_t a, Double_t b);
-
-   // Range
-   inline Short_t   Range(Short_t lb, Short_t ub, Short_t x);
-   inline Int_t     Range(Int_t lb, Int_t ub, Int_t x);
-   inline Long_t    Range(Long_t lb, Long_t ub, Long_t x);
-   inline ULong_t   Range(ULong_t lb, ULong_t ub, ULong_t x);
-   inline Double_t  Range(Double_t lb, Double_t ub, Double_t x);
-
-   //NextPrime is used by the Core classes.
-   Long_t   NextPrime(Long_t x);   // Least prime number greater than x
-
-   // Binary search
-   template <typename T> Long64_t BinarySearch(Long64_t n, const T  *array, T value);
-   template <typename T> Long64_t BinarySearch(Long64_t n, const T **array, T value);
-   template <typename Iterator, typename Element> Iterator BinarySearch(Iterator first, Iterator last, Element value);
-
-   // Sorting
-   template <typename Element, typename Index>
-   void Sort(Index n, const Element* a, Index* index, Bool_t down=kTRUE);
-   template <typename Iterator, typename IndexIterator>
-   void SortItr(Iterator first, Iterator last, IndexIterator index, Bool_t down=kTRUE);
-}
-
-
-//---- Even/odd ----------------------------------------------------------------
-
-inline Bool_t TMath::Even(Long_t a)
-   { return ! (a & 1); }
-
-inline Bool_t TMath::Odd(Long_t a)
-   { return (a & 1); }
-
-//---- Abs ---------------------------------------------------------------------
-
-inline Short_t TMath::Abs(Short_t d)
-{ return (d >= 0) ? d : Short_t(-d);  }
-
-inline Int_t TMath::Abs(Int_t d)
-{ return std::abs(d); }
-
-inline Long_t TMath::Abs(Long_t d)
-{ return std::labs(d); }
-
-inline Long64_t TMath::Abs(Long64_t d)
-#if __cplusplus >= 201103
-{ return std::llabs(d); }
-#else
-{ return (d >= 0) ? d : -d;  }
-#endif
-
-inline Float_t TMath::Abs(Float_t d)
-{ return std::abs(d); }
-
-inline Double_t TMath::Abs(Double_t d)
-{ return std::abs(d); }
-
-inline LongDouble_t TMath::Abs(LongDouble_t d)
-{ return std::abs(d); }
-
-
-//---- Sign Bit--------------------------------------------------------------------
-
-template<typename Integer>
-inline Bool_t TMath::SignBit( Integer a)
-   { return (a < 0); }
-
-inline Bool_t TMath::SignBit(Float_t a)
-   { return std::signbit(a);  }
-
-inline Bool_t TMath::SignBit(Double_t a)
-   { return std::signbit(a);  }
-
-inline Bool_t TMath::SignBit(LongDouble_t a)
-   { return std::signbit(a);  }
-
-
-//---- Sign --------------------------------------------------------------------
-
-template<typename T1, typename T2>
-inline T1 TMath::Sign( T1 a, T2 b)
-   { return (SignBit(b)) ? - Abs(a) : Abs(a); }
-
-inline Float_t TMath::Sign(Float_t a, Float_t b)
-   { return std::copysign(a,b);  }
-
-inline Double_t TMath::Sign(Double_t a, Double_t b)
-   { return std::copysign(a,b);  }
-
-inline LongDouble_t TMath::Sign(LongDouble_t a, LongDouble_t b)
-   { return std::copysign(a,b);  }
-
-
-//---- Min ---------------------------------------------------------------------
-
-inline Short_t TMath::Min(Short_t a, Short_t b)
-   { return a <= b ? a : b; }
-
-inline UShort_t TMath::Min(UShort_t a, UShort_t b)
-   { return a <= b ? a : b; }
-
-inline Int_t TMath::Min(Int_t a, Int_t b)
-   { return a <= b ? a : b; }
-
-inline UInt_t TMath::Min(UInt_t a, UInt_t b)
-   { return a <= b ? a : b; }
-
-inline Long_t TMath::Min(Long_t a, Long_t b)
-   { return a <= b ? a : b; }
-
-inline ULong_t TMath::Min(ULong_t a, ULong_t b)
-   { return a <= b ? a : b; }
-
-inline Long64_t TMath::Min(Long64_t a, Long64_t b)
-   { return a <= b ? a : b; }
-
-inline ULong64_t TMath::Min(ULong64_t a, ULong64_t b)
-   { return a <= b ? a : b; }
-
-inline Float_t TMath::Min(Float_t a, Float_t b)
-   { return a <= b ? a : b; }
-
-inline Double_t TMath::Min(Double_t a, Double_t b)
-   { return a <= b ? a : b; }
-
-//---- Max ---------------------------------------------------------------------
-
-inline Short_t TMath::Max(Short_t a, Short_t b)
-   { return a >= b ? a : b; }
-
-inline UShort_t TMath::Max(UShort_t a, UShort_t b)
-   { return a >= b ? a : b; }
-
-inline Int_t TMath::Max(Int_t a, Int_t b)
-   { return a >= b ? a : b; }
-
-inline UInt_t TMath::Max(UInt_t a, UInt_t b)
-   { return a >= b ? a : b; }
-
-inline Long_t TMath::Max(Long_t a, Long_t b)
-   { return a >= b ? a : b; }
-
-inline ULong_t TMath::Max(ULong_t a, ULong_t b)
-   { return a >= b ? a : b; }
-
-inline Long64_t TMath::Max(Long64_t a, Long64_t b)
-   { return a >= b ? a : b; }
-
-inline ULong64_t TMath::Max(ULong64_t a, ULong64_t b)
-   { return a >= b ? a : b; }
-
-inline Float_t TMath::Max(Float_t a, Float_t b)
-   { return a >= b ? a : b; }
-
-inline Double_t TMath::Max(Double_t a, Double_t b)
-   { return a >= b ? a : b; }
-
-//---- Range -------------------------------------------------------------------
-
-inline Short_t TMath::Range(Short_t lb, Short_t ub, Short_t x)
-   { return x < lb ? lb : (x > ub ? ub : x); }
-
-inline Int_t TMath::Range(Int_t lb, Int_t ub, Int_t x)
-   { return x < lb ? lb : (x > ub ? ub : x); }
-
-inline Long_t TMath::Range(Long_t lb, Long_t ub, Long_t x)
-   { return x < lb ? lb : (x > ub ? ub : x); }
-
-inline ULong_t TMath::Range(ULong_t lb, ULong_t ub, ULong_t x)
-   { return x < lb ? lb : (x > ub ? ub : x); }
-
-inline Double_t TMath::Range(Double_t lb, Double_t ub, Double_t x)
-   { return x < lb ? lb : (x > ub ? ub : x); }
-
-template <typename Iterator, typename Element>
-Iterator TMath::BinarySearch(Iterator first, Iterator last, Element value)
-{
-   // Binary search in an array defined by its iterators.
-   //
-   // The values in the iterators range are supposed to be sorted
-   // prior to this call.  If match is found, function returns
-   // position of element.  If no match found, function gives nearest
-   // element smaller than value.
-
-   Iterator pind;
-   pind = std::lower_bound(first, last, value);
-   if ( (pind != last) && (*pind == value) )
-      return pind;
-   else
-      return ( pind - 1);
-}
-
-
-template <typename T> Long64_t TMath::BinarySearch(Long64_t n, const T  *array, T value)
-{
-   // Binary search in an array of n values to locate value.
-   //
-   // Array is supposed  to be sorted prior to this call.
-   // If match is found, function returns position of element.
-   // If no match found, function gives nearest element smaller than value.
-
-   const T* pind;
-   pind = std::lower_bound(array, array + n, value);
-   if ( (pind != array + n) && (*pind == value) )
-      return (pind - array);
-   else
-      return ( pind - array - 1);
-}
-
-template <typename T> Long64_t TMath::BinarySearch(Long64_t n, const T **array, T value)
-{
-   // Binary search in an array of n values to locate value.
-   //
-   // Array is supposed  to be sorted prior to this call.
-   // If match is found, function returns position of element.
-   // If no match found, function gives nearest element smaller than value.
-
-   const T* pind;
-   pind = std::lower_bound(*array, *array + n, value);
-   if ( (pind != *array + n) && (*pind == value) )
-      return (pind - *array);
-   else
-      return ( pind - *array - 1);
-}
-
-template<typename T>
-struct CompareDesc {
-
-   CompareDesc(T d) : fData(d) {}
-
-   template<typename Index>
-   bool operator()(Index i1, Index i2) {
-      return *(fData + i1) > *(fData + i2);
-   }
-
-   T fData;
-};
-
-template<typename T>
-struct CompareAsc {
-
-   CompareAsc(T d) : fData(d) {}
-
-   template<typename Index>
-   bool operator()(Index i1, Index i2) {
-      return *(fData + i1) < *(fData + i2);
-   }
-
-   T fData;
-};
-
-template <typename Iterator, typename IndexIterator>
-void TMath::SortItr(Iterator first, Iterator last, IndexIterator index, Bool_t down)
-{
-   // Sort the n1 elements of the Short_t array defined by its
-   // iterators.  In output the array index contains the indices of
-   // the sorted array.  If down is false sort in increasing order
-   // (default is decreasing order).
-
-   // NOTE that the array index must be created with a length bigger
-   // or equal than the main array before calling this function.
-
-   int i = 0;
-
-   IndexIterator cindex = index;
-   for ( Iterator cfirst = first; cfirst != last; ++cfirst )
-   {
-      *cindex = i++;
-      ++cindex;
-   }
-
-   if ( down )
-      std::sort(index, cindex, CompareDesc<Iterator>(first) );
-   else
-      std::sort(index, cindex, CompareAsc<Iterator>(first) );
-}
-
-template <typename Element, typename Index> void TMath::Sort(Index n, const Element* a, Index* index, Bool_t down)
-{
-   // Sort the n elements of the  array a of generic templated type Element.
-   // In output the array index of type Index contains the indices of the sorted array.
-   // If down is false sort in increasing order (default is decreasing order).
-
-   // NOTE that the array index must be created with a length >= n
-   // before calling this function.
-   // NOTE also that the size type for n must be the same type used for the index array
-   // (templated type Index)
-
-   for(Index i = 0; i < n; i++) { index[i] = i; }
-   if ( down )
-      std::sort(index, index + n, CompareDesc<const Element*>(a) );
-   else
-      std::sort(index, index + n, CompareAsc<const Element*>(a) );
-}
-
-#endif
-
-/// \file ROOT/RSpan.h
-/// \ingroup Base StdExt
-/// \author Axel Naumann <axel@cern.ch>
-/// \date 2015-09-06
-
-/*************************************************************************
- * Copyright (C) 1995-2015, Rene Brun and Fons Rademakers.               *
- * All rights reserved.                                                  *
- *                                                                       *
- * For the licensing terms see $ROOTSYS/LICENSE.                         *
- * For the list of contributors see $ROOTSYS/README/CREDITS.             *
- *************************************************************************/
-
-#ifndef ROOT_RSpan
-#define ROOT_RSpan
-
-//#include "RConfigure.h"
-
-#ifdef R__HAS_STD_SPAN
-
-#include <span>
-
-#elif defined(R__HAS_STD_EXPERIMENTAL_SPAN)
-
-#include <experimental/span>
-namespace std {
-  using template<class T> span = experimental::span<T>;
-
-  // TODO: using make_view() overloads
-}
-
-#else
-//# include "ROOT/span.hxx"
-#endif
-
-#endif
-
-// @(#)root/foundation:
-// Author: Axel Naumann, Enrico Guiraud, June 2017
-
-/*************************************************************************
- * Copyright (C) 1995-2017, Rene Brun and Fons Rademakers.               *
- * All rights reserved.                                                  *
- *                                                                       *
- * For the licensing terms see $ROOTSYS/LICENSE.                         *
- * For the list of contributors see $ROOTSYS/README/CREDITS.             *
- *************************************************************************/
-
-#ifndef ROOT_TypeTraits
-#define ROOT_TypeTraits
-
-#include <memory> // shared_ptr, unique_ptr for IsSmartOrDumbPtr
-#include <type_traits>
-#include <vector> // for IsContainer
-//#include "ROOT/RSpan.hxx" // for IsContainer
-
-namespace ROOT {
-
-/// ROOT type_traits extensions
-namespace TypeTraits {
-/// Lightweight storage for a collection of types.
-/// Differently from std::tuple, no instantiation of objects of stored types is performed
-template <typename... Types>
-struct TypeList {
-   static constexpr std::size_t list_size = sizeof...(Types);
-};
-} // end ns TypeTraits
-
-namespace Detail {
-template <typename T> constexpr auto HasCallOp(int /*goodOverload*/) -> decltype(&T::operator(), true) { return true; }
-template <typename T> constexpr bool HasCallOp(char /*badOverload*/) { return false; }
-
-/// Extract types from the signature of a callable object. See CallableTraits.
-template <typename T, bool HasCallOp = ROOT::Detail::HasCallOp<T>(0)>
-struct CallableTraitsImpl {};
-
-// Extract signature of operator() and delegate to the appropriate CallableTraitsImpl overloads
-template <typename T>
-struct CallableTraitsImpl<T, true> {
-   using arg_types = typename CallableTraitsImpl<decltype(&T::operator())>::arg_types;
-   using arg_types_nodecay = typename CallableTraitsImpl<decltype(&T::operator())>::arg_types_nodecay;
-   using ret_type = typename CallableTraitsImpl<decltype(&T::operator())>::ret_type;
-};
-
-// lambdas, std::function, const member functions
-template <typename R, typename T, typename... Args>
-struct CallableTraitsImpl<R (T::*)(Args...) const, false> {
-   using arg_types = ROOT::TypeTraits::TypeList<typename std::decay<Args>::type...>;
-   using arg_types_nodecay = ROOT::TypeTraits::TypeList<Args...>;
-   using ret_type = R;
-};
-
-// mutable lambdas and functor classes, non-const member functions
-template <typename R, typename T, typename... Args>
-struct CallableTraitsImpl<R (T::*)(Args...), false> {
-   using arg_types = ROOT::TypeTraits::TypeList<typename std::decay<Args>::type...>;
-   using arg_types_nodecay = ROOT::TypeTraits::TypeList<Args...>;
-   using ret_type = R;
-};
-
-// function pointers
-template <typename R, typename... Args>
-struct CallableTraitsImpl<R (*)(Args...), false> {
-   using arg_types = ROOT::TypeTraits::TypeList<typename std::decay<Args>::type...>;
-   using arg_types_nodecay = ROOT::TypeTraits::TypeList<Args...>;
-   using ret_type = R;
-};
-
-// free functions
-template <typename R, typename... Args>
-struct CallableTraitsImpl<R(Args...), false> {
-   using arg_types = ROOT::TypeTraits::TypeList<typename std::decay<Args>::type...>;
-   using arg_types_nodecay = ROOT::TypeTraits::TypeList<Args...>;
-   using ret_type = R;
-};
-} // end ns Detail
-
-namespace TypeTraits {
-
-///\class ROOT::TypeTraits::
-template <class T>
-class IsSmartOrDumbPtr : public std::integral_constant<bool, std::is_pointer<T>::value> {
-};
-
-template <class P>
-class IsSmartOrDumbPtr<std::shared_ptr<P>> : public std::true_type {
-};
-
-template <class P>
-class IsSmartOrDumbPtr<std::unique_ptr<P>> : public std::true_type {
-};
-
-/// Check for container traits.
-template <typename T>
-struct IsContainer {
-   using Test_t = typename std::decay<T>::type;
-
-   template <typename A>
-   static constexpr bool Test(A *pt, A const *cpt = nullptr, decltype(pt->begin()) * = nullptr,
-                              decltype(pt->end()) * = nullptr, decltype(cpt->begin()) * = nullptr,
-                              decltype(cpt->end()) * = nullptr, typename A::iterator *pi = nullptr,
-                              typename A::const_iterator *pci = nullptr)
-   {
-      using It_t = typename A::iterator;
-      using CIt_t = typename A::const_iterator;
-      using V_t = typename A::value_type;
-      return std::is_same<Test_t, std::vector<bool>>::value ||
-             (std::is_same<decltype(pt->begin()), It_t>::value && std::is_same<decltype(pt->end()), It_t>::value &&
-              std::is_same<decltype(cpt->begin()), CIt_t>::value && std::is_same<decltype(cpt->end()), CIt_t>::value &&
-              std::is_same<decltype(**pi), V_t &>::value && std::is_same<decltype(**pci), V_t const &>::value);
-   }
-
-   template <typename A>
-   static constexpr bool Test(...)
-   {
-      return false;
-   }
-
-   static constexpr bool value = Test<Test_t>(nullptr);
-};
-
-template<typename T>
-struct IsContainer<std::span<T>> {
-   static constexpr bool value = true;
-};
-
-/// Checks for signed integers types that are not characters
-template<class T>
-struct IsSignedNumeral : std::integral_constant<bool,
-   std::is_integral<T>::value &&
-   std::is_signed<T>::value &&
-   !std::is_same<T, char>::value
-> {};
-
-/// Checks for unsigned integer types that are not characters
-template<class T>
-struct IsUnsignedNumeral : std::integral_constant<bool,
-   std::is_integral<T>::value &&
-   !std::is_signed<T>::value &&
-   !std::is_same<T, char>::value
-> {};
-
-/// Checks for floating point types (that are not characters)
-template<class T>
-using IsFloatNumeral = std::is_floating_point<T>;
-
-/// Extract types from the signature of a callable object.
-/// The `CallableTraits` struct contains three type aliases:
-///   - arg_types: a `TypeList` of all types in the signature, decayed through std::decay
-///   - arg_types_nodecay: a `TypeList` of all types in the signature, including cv-qualifiers
-template<typename F>
-using CallableTraits = ROOT::Detail::CallableTraitsImpl<F>;
-
-// Return first of a variadic list of types.
-template <typename T, typename... Rest>
-struct TakeFirstType {
-   using type = T;
-};
-
-template <typename... Types>
-using TakeFirstType_t = typename TakeFirstType<Types...>::type;
-
-// Remove first type from a variadic list of types, return a TypeList containing the rest.
-// e.g. RemoveFirst_t<A,B,C> is TypeList<B,C>
-template <typename T, typename... Rest>
-struct RemoveFirst {
-   using type = TypeList<Rest...>;
-};
-
-template <typename... Args>
-using RemoveFirst_t = typename RemoveFirst<Args...>::type;
-
-/// Return first of possibly many template parameters.
-/// For non-template types, the result is void
-/// e.g. TakeFirstParameter<U<A,B>> is A
-///      TakeFirstParameter<T> is void
-template <typename T>
-struct TakeFirstParameter {
-   using type = void;
-};
-
-template <template <typename...> class Template, typename T, typename... Rest>
-struct TakeFirstParameter<Template<T, Rest...>> {
-   using type = T;
-};
-
-template <typename T>
-using TakeFirstParameter_t = typename TakeFirstParameter<T>::type;
-
-/// Remove first of possibly many template parameters.
-/// e.g. RemoveFirstParameter_t<U<A,B>> is U<B>
-template <typename>
-struct RemoveFirstParameter {
-};
-
-template <typename T, template <typename...> class U, typename... Rest>
-struct RemoveFirstParameter<U<T, Rest...>> {
-   using type = U<Rest...>;
-};
-
-template <typename T>
-using RemoveFirstParameter_t = typename RemoveFirstParameter<T>::type;
-
-template <typename T>
-struct HasBeginAndEnd {
-
-   template <typename V>
-   using Begin_t = typename V::const_iterator (V::*)() const;
-
-   template <typename V>
-   using End_t = typename V::const_iterator (V::*)() const;
-
-   template <typename V>
-   static constexpr auto Check(int)
-      -> decltype(static_cast<Begin_t<V>>(&V::begin), static_cast<End_t<V>>(&V::end), true)
-   {
-      return true;
-   }
-
-   template <typename V>
-   static constexpr bool Check(...)
-   {
-      return false;
-   }
-
-   static constexpr bool const value = Check<T>(0);
-};
-
-} // ns TypeTraits
-} // ns ROOT
-#endif // ROOT_TTypeTraits
-
-#ifndef ROOT_RConfigure
-#define ROOT_RConfigure
-
-/* Configurations file for linuxx8664gcc */
-#ifdef R__HAVE_CONFIG
-#define ROOTPREFIX    "$(ROOTSYS)"
-#define ROOTBINDIR    "$(ROOTSYS)/bin"
-#define ROOTLIBDIR    "$(ROOTSYS)/lib"
-#define ROOTINCDIR    "$(ROOTSYS)/include"
-#define ROOTETCDIR    "$(ROOTSYS)/etc"
-#define ROOTDATADIR   "$(ROOTSYS)/."
-#define ROOTDOCDIR    "$(ROOTSYS)/."
-#define ROOTMACRODIR  "$(ROOTSYS)/macros"
-#define ROOTTUTDIR    "$(ROOTSYS)/tutorials"
-#define ROOTSRCDIR    "$(ROOTSYS)/src"
-#define ROOTICONPATH  "$(ROOTSYS)/icons"
-#define TTFFONTDIR    "$(ROOTSYS)/fonts"
-#endif
-
-#define EXTRAICONPATH ""
-
-#define R__HAS_SETRESUID   /**/
-#undef R__HAS_MATHMORE   /**/
-#define R__HAS_PTHREAD    /**/
-#define R__HAS_XFT    /**/
-#undef R__HAS_COCOA    /**/
-#undef R__HAS_VC    /**/
-#define R__HAS_VDT    /**/
-#undef R__HAS_VECCORE    /**/
-#undef R__USE_CXXMODULES   /**/
-#undef R__USE_LIBCXX    /**/
-#undef R__HAS_STD_STRING_VIEW   /**/
-#undef R__HAS_STD_EXPERIMENTAL_STRING_VIEW   /**/
-#undef R__HAS_STOD_STRING_VIEW /**/
-#undef R__HAS_STD_APPLY /**/
-#undef R__HAS_STD_INVOKE /**/
-#undef R__HAS_STD_INDEX_SEQUENCE /**/
-#define R__HAS_ATTRIBUTE_ALWAYS_INLINE /**/
-#define R__HAS_ATTRIBUTE_NOINLINE /**/
-#undef R__EXTERN_LLVMDIR /**/
-#define R__USE_IMT   /**/
-#undef R__COMPLETE_MEM_TERMINATION /**/
-#undef R__HAS_CEFWEB  /**/
-#undef R__HAS_QT5WEB  /**/
-#undef R__HAS_DAVIX  /**/
-
-#if defined(R__HAS_VECCORE) && defined(R__HAS_VC)
-#ifndef VECCORE_ENABLE_VC
-#define VECCORE_ENABLE_VC
-#endif
-#endif
-
-#undef R__HAS_DEFAULT_LZ4  /**/
-#define R__HAS_DEFAULT_ZLIB  /**/
-#undef R__HAS_DEFAULT_LZMA  /**/
-#undef R__HAS_CLOUDFLARE_ZLIB /**/
-
-#undef R__HAS_TMVACPU /**/
-#undef R__HAS_TMVAGPU /**/
-
-
-#endif
-
-// -*- C++ -*-
-// Author: Philippe Canal, March 2015
-
-/*************************************************************************
- * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
- * All rights reserved.                                                  *
- *                                                                       *
- * For the licensing terms see $ROOTSYS/LICENSE.                         *
- * For the list of contributors see $ROOTSYS/README/CREDITS.             *
- *************************************************************************/
-
-#ifndef RStringView_H
-#define RStringView_H
-
-//#include "RConfigure.h"
-
-#ifdef R__HAS_STD_STRING_VIEW
-
-#include <string_view>
-
-#else
-
-# if defined(R__HAS_STD_EXPERIMENTAL_STRING_VIEW)
-#  include <experimental/string_view>
-# else
-#  //include "RWrap_libcpp_string_view.h"
-# endif
-
-namespace std {
-
-   template<class _CharT, class _Traits = std::char_traits<_CharT> >
-   using basic_string_view = ::std::experimental::basic_string_view<_CharT,_Traits>;
-
-   // basic_string_view typedef names
-   typedef basic_string_view<char> string_view;
-   typedef basic_string_view<char16_t> u16string_view;
-   typedef basic_string_view<char32_t> u32string_view;
-   typedef basic_string_view<wchar_t> wstring_view;
-
-//   template<class _CharT, class _Traits = std::char_traits<_CharT> >
-//   basic_string_view<_CharT,_Traits>
-//   &operator=(basic_string_view<_CharT,_Traits> &lhs, const TString &rsh) {
-//      *lhs = basic_string_view<_CharT,_Traits>(rsh);
-//      return *lhs;
-//   }
-
-#ifndef R__HAS_STOD_STRING_VIEW
-   inline double stod(std::string_view str, size_t *pos)
-   {
-      return std::stod(std::string(str.data(), str.size()),pos);
-   }
-#endif
-
-}
-
-#endif // ifdef else R__HAS_STD_STRING_VIEW
-
-namespace ROOT {
-namespace Internal {
-    class TStringView {
-       const char *fData{nullptr};
-       size_t      fLength{0};
-
-    public:
-       explicit TStringView(const char *cstr, size_t len) : fData(cstr), fLength(len) {}
-
-       operator std::string_view() const { return std::string_view(fData,fLength); }
-    };
-} // namespace Internal
-} // namespace ROOT
-#endif // RStringView_H
-
-// @(#)root/base:$Id$
-// Author: Fons Rademakers   04/08/95
-
-/*************************************************************************
- * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
- * All rights reserved.                                                  *
- *                                                                       *
- * For the licensing terms see $ROOTSYS/LICENSE.                         *
- * For the list of contributors see $ROOTSYS/README/CREDITS.             *
- *************************************************************************/
-
-#ifndef ROOT_TString
-#define ROOT_TString
-
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// TString                                                              //
-//                                                                      //
-// Basic string class.                                                  //
-//                                                                      //
-// Cannot be stored in a TCollection... use TObjString instead.         //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
-
-//#include "TMathBase.h"
-
-//#include "ROOT/RStringView.hxx"
-//#include "ROOT/TypeTraits.hxx"
-
-#include <iosfwd>
-#include <stdarg.h>
-#include <stdio.h>
-#include <string>
-
-
-class TString;
-class TSubString;
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-//  TSubString                                                          //
-//                                                                      //
-//  The TSubString class allows selected elements to be addressed.      //
-//  There are no public constructors.                                   //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
-class TSubString {
-
-friend class TString;
-
-private:
-   TString      &fStr;           // Referenced string
-   Ssiz_t        fBegin;         // Index of starting character
-   Ssiz_t        fExtent;        // Length of TSubString
-
-   // NB: the only constructor is private
-   TSubString(const TString &s, Ssiz_t start, Ssiz_t len);
-
-public:
-   TSubString(const TSubString &s)
-     : fStr(s.fStr), fBegin(s.fBegin), fExtent(s.fExtent) { }
-
-   void          ToLower();              // Convert self to lower-case
-   void          ToUpper();              // Convert self to upper-case
-};
-
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-//  TString                                                             //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
-class TString {
-
-friend class TSubString;
-
-private:
-
-   TString();                           // Null string
-   explicit TString(Ssiz_t ic);         // Suggested capacity
-   TString(const TString &s);           // Copy constructor
-   TString(TString &&s) noexcept;       // Move constructor
-   TString(const char *s);              // Copy to embedded null
-   TString(const char *s, Ssiz_t n);    // Copy past any embedded nulls
-   TString(const std::string &s);
-   TString(char c);
-   TString(char c, Ssiz_t s);
-   TString(const std::string_view &sub);
-   TString(const TSubString &sub);
-
-   virtual ~TString();
-
-   // Assignment
-   TString    &operator=(char s);                // Replace string
-   TString    &operator=(const char *s);
-   TString    &operator=(const TString &s);
-
-   Bool_t       Contains(const char *pat,    ECaseCompare cmp = kExact) const;
-   Bool_t       Contains(const TString &pat, ECaseCompare cmp = kExact) const;
-   Bool_t       Contains(const TRegexp &pat) const;
-   Bool_t       Contains(TPRegexp &pat) const;
-
-   void         ToLower();                              // Change self to lower-case
-   void         ToUpper();                              // Change self to upper-case
-
-TString ToLower(const TString &s);    // Return lower-case version of argument
-TString ToUpper(const TString &s);    // Return upper-case version of argument
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-//  Inlines                                                             //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
-
-inline Bool_t TString::Contains(const TString &pat, ECaseCompare cmp) const
-{ return Index(pat.Data(), pat.Length(), (Ssiz_t)0, cmp) != kNPOS; }
-
-inline Bool_t TString::Contains(const char *s, ECaseCompare cmp) const
-{ return Index(s, s ? strlen(s) : 0, (Ssiz_t)0, cmp) != kNPOS; }
-
-inline Bool_t TString::Contains(const TRegexp &pat) const
-{ return Index(pat, (Ssiz_t)0) != kNPOS; }
-
-inline Bool_t TString::Contains(TPRegexp &pat) const
-{ return Index(pat, (Ssiz_t)0) != kNPOS; }
-
-
-#endif
-
-// @(#)root/matrix:$Id$
-// Authors: Fons Rademakers, Eddy Offermann   Nov 2003
-
-/*************************************************************************
- * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
- * All rights reserved.                                                  *
- *                                                                       *
- * For the licensing terms see $ROOTSYS/LICENSE.                         *
- * For the list of contributors see $ROOTSYS/README/CREDITS.             *
- *************************************************************************/
-
-#ifndef ROOT_TMatrixDBasefwd
-#define ROOT_TMatrixDBasefwd
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// TMatrixDBase                                                         //
-//                                                                      //
-//  Forward declaration of TMatrixTBase<Double_t>                       //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
-
-//#include "Rtypes.h"
-
-template<class Element> class TMatrixTBase;
-typedef TMatrixTBase<Double_t> TMatrixDBase;
-
-#endif
-
-// @(#)root/matrix:$Id$
-// Authors: Fons Rademakers, Eddy Offermann   Nov 2003
-
-/*************************************************************************
- * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
- * All rights reserved.                                                  *
- *                                                                       *
- * For the licensing terms see $ROOTSYS/LICENSE.                         *
- * For the list of contributors see $ROOTSYS/README/CREDITS.             *
- *************************************************************************/
-
-#ifndef ROOT_TMatrixFBasefwd
-#define ROOT_TMatrixFBasefwd
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// TMatrixFBase                                                         //
-//                                                                      //
-//  Forward declaration of TMatrixTBase<Float_t>                        //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
-
-//#include "Rtypes.h"
-
-template<class Element> class TMatrixTBase;
-typedef TMatrixTBase<Float_t> TMatrixFBase;
-
-#endif
 
 // @(#)root/matrix:$Id$
 // Authors: Fons Rademakers, Eddy Offermann   Nov 2003
@@ -3081,6 +3845,7 @@ template<class Element> class TElementPosActionT;
 R__EXTERN Int_t gMatrixCheck;
 
 template<class Element> class TMatrixTBase : public TObject {
+//template<class Element> class TMatrixTBase  {
 
 private:
    Element *GetElements();  // This function is now obsolete (and is not implemented) you should use TMatrix::GetMatrixArray().
@@ -3140,8 +3905,8 @@ public:
 
    virtual void   Clear      (Option_t *option="") = 0;
 
-   inline  void   Invalidate ()       { SetBit(kStatus); }
-   inline  void   MakeValid  ()       { ResetBit(kStatus); }
+   //inline  void   Invalidate ()       { SetBit(kStatus); }
+   //inline  void   MakeValid  ()       { ResetBit(kStatus); }
    inline  Bool_t IsValid    () const { return !TestBit(kStatus); }
    inline  Bool_t IsOwner    () const { return fIsOwner; }
    virtual Bool_t IsSymmetric() const;
@@ -3158,8 +3923,8 @@ public:
    virtual TMatrixTBase<Element> &ResizeTo       (Int_t nrows,Int_t ncols,Int_t nr_nonzeros=-1) = 0;
    virtual TMatrixTBase<Element> &ResizeTo       (Int_t row_lwb,Int_t row_upb,Int_t col_lwb,Int_t col_upb,Int_t nr_nonzeros=-1) = 0;
 
-   virtual Double_t Determinant() const                          { AbstractMethod("Determinant()"); return 0.; }
-   virtual void     Determinant(Double_t &d1,Double_t &d2) const { AbstractMethod("Determinant()"); d1 = 0.; d2 = 0.; }
+   virtual Double_t Determinant() const                          { /*AbstractMethod("Determinant()");*/ return 0.; }
+   virtual void     Determinant(Double_t &d1,Double_t &d2) const { /*AbstractMethod("Determinant()");*/ d1 = 0.; d2 = 0.; }
 
    virtual TMatrixTBase<Element> &Zero       ();
    virtual TMatrixTBase<Element> &Abs        ();
@@ -3179,7 +3944,7 @@ public:
    virtual Element Min        () const;
    virtual Element Max        () const;
 
-   //void Draw (Option_t *option="");       // *MENU*
+   void Draw (Option_t *option="");       // *MENU*
    void Print(Option_t *name  ="") const; // *MENU*
 
    virtual Element   operator()(Int_t rown,Int_t coln) const = 0;
@@ -3211,7 +3976,8 @@ public:
 //
 // In case we are building with -fmodules, we need to forward declare the
 // specialization in order to compile the dictionary G__Matrix.cxx.
-template <> TClass *TMatrixTBase<double>::Class();
+
+//template <> TClass *TMatrixTBase<double>::Class();
 #endif // __CLING__
 
 
@@ -3384,13 +4150,13 @@ public:
    inline const Element               *GetPtr     () const { return fPtr; }
    inline const Element               &operator   ()(Int_t i) const {
       if (!fMatrix) return TMatrixTBase<Element>::NaNValue();
-      R__ASSERT(fMatrix->IsValid());
+      //R__ASSERT(fMatrix->IsValid());
       const Int_t acoln = i-fMatrix->GetColLwb();
       if (acoln < fMatrix->GetNcols() && acoln >= 0)
          return fPtr[acoln];
       else {
          //Error("operator()","Request col(%d) outside matrix range of %d - %d",
-          //                  i,fMatrix->GetColLwb(),fMatrix->GetColLwb()+fMatrix->GetNcols());
+                            //i,fMatrix->GetColLwb(),fMatrix->GetColLwb()+fMatrix->GetNcols());
          return TMatrixTBase<Element>::NaNValue();
       }
    }
@@ -3411,25 +4177,25 @@ public:
 
    inline const Element &operator()(Int_t i) const {
       if (!this->fMatrix) return TMatrixTBase<Element>::NaNValue();
-      R__ASSERT(this->fMatrix->IsValid());
+      //R__ASSERT(this->fMatrix->IsValid());
       const Int_t acoln = i-this->fMatrix->GetColLwb();
       if (acoln < this->fMatrix->GetNcols() || acoln >= 0)
          return (this->fPtr)[acoln];
       else {
          //Error("operator()","Request col(%d) outside matrix range of %d - %d",
-            //                i,this->fMatrix->GetColLwb(),this->fMatrix->GetColLwb()+this->fMatrix->GetNcols());
+                            //i,this->fMatrix->GetColLwb(),this->fMatrix->GetColLwb()+this->fMatrix->GetNcols());
          return TMatrixTBase<Element>::NaNValue();
      }
    }
    inline       Element &operator()(Int_t i) {
       if (!this->fMatrix) return TMatrixTBase<Element>::NaNValue();
-      R__ASSERT(this->fMatrix->IsValid());
+      //R__ASSERT(this->fMatrix->IsValid());
       const Int_t acoln = i-this->fMatrix->GetColLwb();
       if (acoln < this->fMatrix->GetNcols() && acoln >= 0)
          return (const_cast<Element *>(this->fPtr))[acoln];
       else {
          //Error("operator()","Request col(%d) outside matrix range of %d - %d",
-          //                  i,this->fMatrix->GetColLwb(),this->fMatrix->GetColLwb()+this->fMatrix->GetNcols());
+                            //i,this->fMatrix->GetColLwb(),this->fMatrix->GetColLwb()+this->fMatrix->GetNcols());
          //return (const_cast<Element *>(this->fPtr))[0];
          return TMatrixTBase<Element>::NaNValue();
       }
@@ -3484,13 +4250,13 @@ public:
    inline const Element                *GetPtr     () const { return fPtr; }
    inline const Element                &operator   ()(Int_t i) const {
       if (!this->fMatrix) return TMatrixTBase<Element>::NaNValue();
-      R__ASSERT(fMatrix->IsValid());
+      //R__ASSERT(fMatrix->IsValid());
       const Int_t arown = i-fMatrix->GetRowLwb();
       if (arown < fMatrix->GetNrows() && arown >= 0)
          return fPtr[arown*fInc];
       else {
          //Error("operator()","Request row(%d) outside matrix range of %d - %d",
-             //               i,fMatrix->GetRowLwb(),fMatrix->GetRowLwb()+fMatrix->GetNrows());
+                            //i,fMatrix->GetRowLwb(),fMatrix->GetRowLwb()+fMatrix->GetNrows());
          return TMatrixTBase<Element>::NaNValue();
       }
    }
@@ -3511,26 +4277,26 @@ public:
 
    inline const Element &operator()(Int_t i) const {
       if (!this->fMatrix) return TMatrixTBase<Element>::NaNValue();
-      R__ASSERT(this->fMatrix->IsValid());
+      //R__ASSERT(this->fMatrix->IsValid());
       const Int_t arown = i-this->fMatrix->GetRowLwb();
       if (arown < this->fMatrix->GetNrows() && arown >= 0)
          return (this->fPtr)[arown*this->fInc];
       else {
          //Error("operator()","Request row(%d) outside matrix range of %d - %d",
-             //               i,this->fMatrix->GetRowLwb(),this->fMatrix->GetRowLwb()+this->fMatrix->GetNrows());
+                            //i,this->fMatrix->GetRowLwb(),this->fMatrix->GetRowLwb()+this->fMatrix->GetNrows());
          return TMatrixTBase<Element>::NaNValue();
       }
    }
    inline       Element &operator()(Int_t i) {
       if (!this->fMatrix) return TMatrixTBase<Element>::NaNValue();
-      R__ASSERT(this->fMatrix->IsValid());
+      //R__ASSERT(this->fMatrix->IsValid());
       const Int_t arown = i-this->fMatrix->GetRowLwb();
 
       if (arown < this->fMatrix->GetNrows() && arown >= 0)
          return (const_cast<Element *>(this->fPtr))[arown*this->fInc];
       else {
          //Error("operator()","Request row(%d) outside matrix range of %d - %d",
-             //               i,this->fMatrix->GetRowLwb(),this->fMatrix->GetRowLwb()+this->fMatrix->GetNrows());
+                            //i,this->fMatrix->GetRowLwb(),this->fMatrix->GetRowLwb()+this->fMatrix->GetNrows());
          return TMatrixTBase<Element>::NaNValue();
       }
    }
@@ -3584,7 +4350,7 @@ public:
    inline const Element               *GetPtr   () const { return fPtr; }
    inline       Int_t                  GetInc   () const { return fInc; }
    inline const Element               &operator ()(Int_t i) const {
-      R__ASSERT(fMatrix->IsValid());
+      //R__ASSERT(fMatrix->IsValid());
       if (i < fNdiag && i >= 0)
          return fPtr[i*fInc];
       else {
@@ -3610,7 +4376,7 @@ public:
    inline Element *GetPtr() const { return const_cast<Element *>(this->fPtr); }
 
    inline const Element &operator()(Int_t i) const {
-      R__ASSERT(this->fMatrix->IsValid());
+      //R__ASSERT(this->fMatrix->IsValid());
       if (i < this->fNdiag && i >= 0)
          return (this->fPtr)[i*this->fInc];
       else {
@@ -3619,7 +4385,7 @@ public:
       }
    }
    inline       Element &operator()(Int_t i) {
-      R__ASSERT(this->fMatrix->IsValid());
+      //R__ASSERT(this->fMatrix->IsValid());
       if (i < this->fNdiag && i >= 0)
          return (const_cast<Element *>(this->fPtr))[i*this->fInc];
       else {
@@ -3672,7 +4438,7 @@ public:
    inline const TMatrixTBase<Element> *GetMatrix() const { return fMatrix; }
    inline const Element               *GetPtr   () const { return fPtr; }
    inline const Element               &operator ()(Int_t i) const {
-      R__ASSERT(fMatrix->IsValid());
+      //R__ASSERT(fMatrix->IsValid());
       if (i < fNelems && i >= 0)
          return fPtr[i];
       else {
@@ -3696,7 +4462,7 @@ public:
    inline Element *GetPtr() const { return const_cast<Element *>(this->fPtr); }
 
    inline const Element &operator()(Int_t i) const {
-      R__ASSERT(this->fMatrix->IsValid());
+      //R__ASSERT(this->fMatrix->IsValid());
       if (i < this->fNelems && i >= 0)
          return (this->fPtr)[i];
       else {
@@ -3705,7 +4471,7 @@ public:
       }
    }
    inline       Element &operator()(Int_t i) {
-      R__ASSERT(this->fMatrix->IsValid());
+      //R__ASSERT(this->fMatrix->IsValid());
       if (i < this->fNelems && i >= 0)
          return (const_cast<Element *>(this->fPtr))[i];
       else {
@@ -3759,7 +4525,7 @@ public:
    inline       Int_t                  GetNrows () const { return fNrowsSub; }
    inline       Int_t                  GetNcols () const { return fNcolsSub; }
    inline const Element               &operator ()(Int_t rown,Int_t coln) const {
-      R__ASSERT(fMatrix->IsValid());
+      //R__ASSERT(fMatrix->IsValid());
 
       const Element *ptr = fMatrix->GetMatrixArray();
       if (rown >= fNrowsSub || rown < 0) {
@@ -3789,7 +4555,7 @@ public:
    TMatrixTSub(const TMatrixTSub<Element> &ms);
 
    inline Element &operator()(Int_t rown,Int_t coln) {
-      R__ASSERT(this->fMatrix->IsValid());
+      //R__ASSERT(this->fMatrix->IsValid());
 
       const Element *ptr = this->fMatrix->GetMatrixArray();
       if (rown >= this->fNrowsSub || rown < 0) {
@@ -3954,615 +4720,6 @@ public:
 Double_t Drand(Double_t &ix);
 #endif
 
-
-// @(#)root/matrix:$Id$
-// Authors: Fons Rademakers, Eddy Offermann   Nov 2003
-
-/*************************************************************************
- * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
- * All rights reserved.                                                  *
- *                                                                       *
- * For the licensing terms see $ROOTSYS/LICENSE.                         *
- * For the list of contributors see $ROOTSYS/README/CREDITS.             *
- *************************************************************************/
-
-#ifndef ROOT_TMatrixT
-#define ROOT_TMatrixT
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// TMatrixT                                                             //
-//                                                                      //
-// Template class of a general matrix in the linear algebra package     //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
-
-//#include "TMatrixTBase.h"
-//#include "TMatrixTUtils.h"
-
-#ifdef CBLAS
-#include <vecLib/vBLAS.h>
-//#include <cblas.h>
-#endif
-
-//#include "Rtypes.h"
-//#include "TError.h"
-
-
-template<class Element> class TMatrixTSym;
-template<class Element> class TMatrixTSparse;
-template<class Element> class TMatrixTLazy;
-
-template<class Element> class TMatrixT : public TMatrixTBase<Element> {
-
-protected:
-
-   Element  fDataStack[TMatrixTBase<Element>::kSizeMax]; //! data container
-   Element *fElements;                                   //[fNelems] elements themselves
-
-   Element *New_m   (Int_t size);
-   void     Delete_m(Int_t size,Element*&);
-   Int_t    Memcpy_m(Element *newp,const Element *oldp,Int_t copySize,
-                      Int_t newSize,Int_t oldSize);
-   void     Allocate(Int_t nrows,Int_t ncols,Int_t row_lwb = 0,Int_t col_lwb = 0,Int_t init = 0,
-                     Int_t /*nr_nonzeros*/ = -1);
-
-
-public:
-
-
-   enum {kWorkMax = 100};
-   enum EMatrixCreatorsOp1 { kZero,kUnit,kTransposed,kInverted,kAtA };
-   enum EMatrixCreatorsOp2 { kMult,kTransposeMult,kInvMult,kMultTranspose,kPlus,kMinus };
-
-   TMatrixT(): fDataStack(), fElements(0) { }
-   TMatrixT(Int_t nrows,Int_t ncols);
-   TMatrixT(Int_t row_lwb,Int_t row_upb,Int_t col_lwb,Int_t col_upb);
-   TMatrixT(Int_t nrows,Int_t ncols,const Element *data,Option_t *option="");
-   TMatrixT(Int_t row_lwb,Int_t row_upb,Int_t col_lwb,Int_t col_upb,const Element *data,Option_t *option="");
-   TMatrixT(const TMatrixT      <Element> &another);
-   TMatrixT(const TMatrixTSym   <Element> &another);
-   TMatrixT(const TMatrixTSparse<Element> &another);
-   template <class Element2> TMatrixT(const TMatrixT<Element2> &another): fElements(0)
-   {
-      R__ASSERT(another.IsValid());
-      Allocate(another.GetNrows(),another.GetNcols(),another.GetRowLwb(),another.GetColLwb());
-      *this = another;
-   }
-
-   TMatrixT(EMatrixCreatorsOp1 op,const TMatrixT<Element> &prototype);
-   TMatrixT(const TMatrixT    <Element> &a,EMatrixCreatorsOp2 op,const TMatrixT   <Element> &b);
-   TMatrixT(const TMatrixT    <Element> &a,EMatrixCreatorsOp2 op,const TMatrixTSym<Element> &b);
-   TMatrixT(const TMatrixTSym <Element> &a,EMatrixCreatorsOp2 op,const TMatrixT   <Element> &b);
-   TMatrixT(const TMatrixTSym <Element> &a,EMatrixCreatorsOp2 op,const TMatrixTSym<Element> &b);
-   TMatrixT(const TMatrixTLazy<Element> &lazy_constructor);
-
-   virtual ~TMatrixT() { Clear(); }
-
-   // Elementary constructors
-
-   void Plus (const TMatrixT   <Element> &a,const TMatrixT   <Element> &b);
-   void Plus (const TMatrixT   <Element> &a,const TMatrixTSym<Element> &b);
-   void Plus (const TMatrixTSym<Element> &a,const TMatrixT   <Element> &b) { Plus(b,a); }
-
-   void Minus(const TMatrixT   <Element> &a,const TMatrixT   <Element> &b);
-   void Minus(const TMatrixT   <Element> &a,const TMatrixTSym<Element> &b);
-   void Minus(const TMatrixTSym<Element> &a,const TMatrixT   <Element> &b) { Minus(b,a); }
-
-   void Mult (const TMatrixT   <Element> &a,const TMatrixT   <Element> &b);
-   void Mult (const TMatrixT   <Element> &a,const TMatrixTSym<Element> &b);
-   void Mult (const TMatrixTSym<Element> &a,const TMatrixT   <Element> &b);
-   void Mult (const TMatrixTSym<Element> &a,const TMatrixTSym<Element> &b);
-
-   void TMult(const TMatrixT   <Element> &a,const TMatrixT   <Element> &b);
-   void TMult(const TMatrixT   <Element> &a,const TMatrixTSym<Element> &b);
-   void TMult(const TMatrixTSym<Element> &a,const TMatrixT   <Element> &b) { Mult(a,b); }
-   void TMult(const TMatrixTSym<Element> &a,const TMatrixTSym<Element> &b) { Mult(a,b); }
-
-   void MultT(const TMatrixT   <Element> &a,const TMatrixT   <Element> &b);
-   void MultT(const TMatrixT   <Element> &a,const TMatrixTSym<Element> &b) { Mult(a,b); }
-   void MultT(const TMatrixTSym<Element> &a,const TMatrixT   <Element> &b);
-   void MultT(const TMatrixTSym<Element> &a,const TMatrixTSym<Element> &b) { Mult(a,b); }
-
-   virtual const Element *GetMatrixArray  () const;
-   virtual       Element *GetMatrixArray  ();
-   virtual const Int_t   *GetRowIndexArray() const { return 0; }
-   virtual       Int_t   *GetRowIndexArray()       { return 0; }
-   virtual const Int_t   *GetColIndexArray() const { return 0; }
-   virtual       Int_t   *GetColIndexArray()       { return 0; }
-
-   virtual       TMatrixTBase<Element> &SetRowIndexArray(Int_t * /*data*/) { /*MayNotUse("SetRowIndexArray(Int_t *)");*/ return *this; }
-   virtual       TMatrixTBase<Element> &SetColIndexArray(Int_t * /*data*/) { /*MayNotUse("SetColIndexArray(Int_t *)");*/ return *this; }
-
-   virtual void Clear(Option_t * /*option*/ ="") { if (this->fIsOwner) Delete_m(this->fNelems,fElements);
-                                                   else fElements = 0;
-                                                   this->fNelems = 0; }
-
-           TMatrixT    <Element> &Use     (Int_t row_lwb,Int_t row_upb,Int_t col_lwb,Int_t col_upb,Element *data);
-   const   TMatrixT    <Element> &Use     (Int_t row_lwb,Int_t row_upb,Int_t col_lwb,Int_t col_upb,const Element *data) const
-                                            { return (const TMatrixT<Element>&)
-                                                     ((const_cast<TMatrixT<Element> *>(this))->Use(row_lwb,row_upb,col_lwb,col_upb, const_cast<Element *>(data))); }
-           TMatrixT    <Element> &Use     (Int_t nrows,Int_t ncols,Element *data);
-   const   TMatrixT    <Element> &Use     (Int_t nrows,Int_t ncols,const Element *data) const;
-           TMatrixT    <Element> &Use     (TMatrixT<Element> &a);
-   const   TMatrixT    <Element> &Use     (const TMatrixT<Element> &a) const;
-
-   virtual TMatrixTBase<Element> &GetSub  (Int_t row_lwb,Int_t row_upb,Int_t col_lwb,Int_t col_upb,
-                                           TMatrixTBase<Element> &target,Option_t *option="S") const;
-           TMatrixT    <Element>  GetSub  (Int_t row_lwb,Int_t row_upb,Int_t col_lwb,Int_t col_upb,Option_t *option="S") const;
-   virtual TMatrixTBase<Element> &SetSub  (Int_t row_lwb,Int_t col_lwb,const TMatrixTBase<Element> &source);
-
-   virtual TMatrixTBase<Element> &ResizeTo(Int_t nrows,Int_t ncols,Int_t /*nr_nonzeros*/ =-1);
-   virtual TMatrixTBase<Element> &ResizeTo(Int_t row_lwb,Int_t row_upb,Int_t col_lwb,Int_t col_upb,Int_t /*nr_nonzeros*/ =-1);
-   inline  TMatrixTBase<Element> &ResizeTo(const TMatrixT<Element> &m) {
-                                            return ResizeTo(m.GetRowLwb(),m.GetRowUpb(),m.GetColLwb(),m.GetColUpb());
-                                 }
-
-   virtual Double_t Determinant  () const;
-   virtual void     Determinant  (Double_t &d1,Double_t &d2) const;
-
-           TMatrixT<Element> &Invert      (Double_t *det=0);
-           TMatrixT<Element> &InvertFast  (Double_t *det=0);
-           TMatrixT<Element> &Transpose   (const TMatrixT<Element> &source);
-   inline  TMatrixT<Element> &T           () { return this->Transpose(*this); }
-           TMatrixT<Element> &Rank1Update (const TVectorT<Element> &v,Element alpha=1.0);
-           TMatrixT<Element> &Rank1Update (const TVectorT<Element> &v1,const TVectorT<Element> &v2,Element alpha=1.0);
-           Element            Similarity  (const TVectorT<Element> &v) const;
-
-   TMatrixT<Element> &NormByColumn(const TVectorT<Element> &v,Option_t *option="D");
-   TMatrixT<Element> &NormByRow   (const TVectorT<Element> &v,Option_t *option="D");
-
-   // Either access a_ij as a(i,j)
-   inline       Element                     operator()(Int_t rown,Int_t coln) const;
-   inline       Element                    &operator()(Int_t rown,Int_t coln);
-
-   // or as a[i][j]
-   inline const TMatrixTRow_const<Element>  operator[](Int_t rown) const { return TMatrixTRow_const<Element>(*this,rown); }
-   inline       TMatrixTRow      <Element>  operator[](Int_t rown)       { return TMatrixTRow      <Element>(*this,rown); }
-
-   TMatrixT<Element> &operator= (const TMatrixT      <Element> &source);
-   TMatrixT<Element> &operator= (const TMatrixTSym   <Element> &source);
-   TMatrixT<Element> &operator= (const TMatrixTSparse<Element> &source);
-   TMatrixT<Element> &operator= (const TMatrixTLazy  <Element> &source);
-   template <class Element2> TMatrixT<Element> &operator= (const TMatrixT<Element2> &source)
-   {
-      if (!AreCompatible(*this,source)) {
-         //Error("operator=(const TMatrixT2 &)","matrices not compatible");
-         return *this;
-      }
-
-     TObject::operator=(source);
-     const Element2 * const ps = source.GetMatrixArray();
-           Element  * const pt = this->GetMatrixArray();
-     for (Int_t i = 0; i < this->fNelems; i++)
-        pt[i] = ps[i];
-     this->fTol = source.GetTol();
-     return *this;
-   }
-
-   TMatrixT<Element> &operator= (Element val);
-   TMatrixT<Element> &operator-=(Element val);
-   TMatrixT<Element> &operator+=(Element val);
-   TMatrixT<Element> &operator*=(Element val);
-
-   TMatrixT<Element> &operator+=(const TMatrixT   <Element> &source);
-   TMatrixT<Element> &operator+=(const TMatrixTSym<Element> &source);
-   TMatrixT<Element> &operator-=(const TMatrixT   <Element> &source);
-   TMatrixT<Element> &operator-=(const TMatrixTSym<Element> &source);
-
-   TMatrixT<Element> &operator*=(const TMatrixT            <Element> &source);
-   TMatrixT<Element> &operator*=(const TMatrixTSym         <Element> &source);
-   TMatrixT<Element> &operator*=(const TMatrixTDiag_const  <Element> &diag);
-   TMatrixT<Element> &operator/=(const TMatrixTDiag_const  <Element> &diag);
-   TMatrixT<Element> &operator*=(const TMatrixTRow_const   <Element> &row);
-   TMatrixT<Element> &operator/=(const TMatrixTRow_const   <Element> &row);
-   TMatrixT<Element> &operator*=(const TMatrixTColumn_const<Element> &col);
-   TMatrixT<Element> &operator/=(const TMatrixTColumn_const<Element> &col);
-
-   const TMatrixT<Element> EigenVectors(TVectorT<Element> &eigenValues) const;
-
-   ClassDef(TMatrixT,4) // Template of General Matrix class
-};
-
-#ifndef __CINT__
-// When building with -fmodules, it instantiates all pending instantiations,
-// instead of delaying them until the end of the translation unit.
-// We 'got away with' probably because the use and the definition of the
-// explicit specialization do not occur in the same TU.
-//
-// In case we are building with -fmodules, we need to forward declare the
-// specialization in order to compile the dictionary G__Matrix.cxx.
-template <> TClass *TMatrixT<double>::Class();
-#endif // __CINT__
-
-
-template <class Element> inline const Element           *TMatrixT<Element>::GetMatrixArray() const { return fElements; }
-template <class Element> inline       Element           *TMatrixT<Element>::GetMatrixArray()       { return fElements; }
-
-template <class Element> inline       TMatrixT<Element> &TMatrixT<Element>::Use           (Int_t nrows,Int_t ncols,Element *data)
-                                                                                          { return Use(0,nrows-1,0,ncols-1,data); }
-template <class Element> inline const TMatrixT<Element> &TMatrixT<Element>::Use           (Int_t nrows,Int_t ncols,const Element *data) const
-                                                                                          { return Use(0,nrows-1,0,ncols-1,data); }
-template <class Element> inline       TMatrixT<Element> &TMatrixT<Element>::Use           (TMatrixT &a)
-                                                                                          {
-                                                                                            R__ASSERT(a.IsValid());
-                                                                                            return Use(a.GetRowLwb(),a.GetRowUpb(),
-                                                                                                       a.GetColLwb(),a.GetColUpb(),a.GetMatrixArray());
-                                                                                          }
-template <class Element> inline const TMatrixT<Element> &TMatrixT<Element>::Use           (const TMatrixT &a) const
-                                                                                          {
-                                                                                            R__ASSERT(a.IsValid());
-                                                                                            return Use(a.GetRowLwb(),a.GetRowUpb(),
-                                                                                                       a.GetColLwb(),a.GetColUpb(),a.GetMatrixArray());
-                                                                                          }
-
-template <class Element> inline       TMatrixT<Element>  TMatrixT<Element>::GetSub        (Int_t row_lwb,Int_t row_upb,Int_t col_lwb,Int_t col_upb,
-                                                                                           Option_t *option) const
-                                                                                          {
-                                                                                            TMatrixT tmp;
-                                                                                            this->GetSub(row_lwb,row_upb,col_lwb,col_upb,tmp,option);
-                                                                                            return tmp;
-                                                                                          }
-
-template <class Element> inline Element TMatrixT<Element>::operator()(Int_t rown,Int_t coln) const
-{
-   //R__ASSERT(this->IsValid());
-   const Int_t arown = rown-this->fRowLwb;
-   const Int_t acoln = coln-this->fColLwb;
-   if (arown >= this->fNrows || arown < 0) {
-      //Error("operator()","Request row(%d) outside matrix range of %d - %d",rown,this->fRowLwb,this->fRowLwb+this->fNrows);
-      return TMatrixTBase<Element>::NaNValue();
-   }
-   if (acoln >= this->fNcols || acoln < 0) {
-      //Error("operator()","Request column(%d) outside matrix range of %d - %d",coln,this->fColLwb,this->fColLwb+this->fNcols);
-      return TMatrixTBase<Element>::NaNValue();
-
-   }
-   return (fElements[arown*this->fNcols+acoln]);
-}
-
-template <class Element> inline Element &TMatrixT<Element>::operator()(Int_t rown,Int_t coln)
-{
-   //R__ASSERT(this->IsValid());
-   const Int_t arown = rown-this->fRowLwb;
-   const Int_t acoln = coln-this->fColLwb;
-   if (arown >= this->fNrows || arown < 0) {
-      //Error("operator()","Request row(%d) outside matrix range of %d - %d",rown,this->fRowLwb,this->fRowLwb+this->fNrows);
-      return TMatrixTBase<Element>::NaNValue();
-   }
-   if (acoln >= this->fNcols || acoln < 0) {
-      //Error("operator()","Request column(%d) outside matrix range of %d - %d",coln,this->fColLwb,this->fColLwb+this->fNcols);
-      return TMatrixTBase<Element>::NaNValue();
-   }
-   return (fElements[arown*this->fNcols+acoln]);
-}
-
-template <class Element> TMatrixT<Element>  operator+  (const TMatrixT   <Element> &source1,const TMatrixT   <Element> &source2);
-template <class Element> TMatrixT<Element>  operator+  (const TMatrixT   <Element> &source1,const TMatrixTSym<Element> &source2);
-template <class Element> TMatrixT<Element>  operator+  (const TMatrixTSym<Element> &source1,const TMatrixT   <Element> &source2);
-template <class Element> TMatrixT<Element>  operator+  (const TMatrixT   <Element> &source ,      Element               val    );
-template <class Element> TMatrixT<Element>  operator+  (      Element               val    ,const TMatrixT   <Element> &source );
-template <class Element> TMatrixT<Element>  operator-  (const TMatrixT   <Element> &source1,const TMatrixT   <Element> &source2);
-template <class Element> TMatrixT<Element>  operator-  (const TMatrixT   <Element> &source1,const TMatrixTSym<Element> &source2);
-template <class Element> TMatrixT<Element>  operator-  (const TMatrixTSym<Element> &source1,const TMatrixT   <Element> &source2);
-template <class Element> TMatrixT<Element>  operator-  (const TMatrixT   <Element> &source ,      Element               val    );
-template <class Element> TMatrixT<Element>  operator-  (      Element               val    ,const TMatrixT   <Element> &source );
-template <class Element> TMatrixT<Element>  operator*  (      Element               val    ,const TMatrixT   <Element> &source );
-template <class Element> TMatrixT<Element>  operator*  (const TMatrixT   <Element> &source ,      Element               val    );
-template <class Element> TMatrixT<Element>  operator*  (const TMatrixT   <Element> &source1,const TMatrixT   <Element> &source2);
-template <class Element> TMatrixT<Element>  operator*  (const TMatrixT   <Element> &source1,const TMatrixTSym<Element> &source2);
-template <class Element> TMatrixT<Element>  operator*  (const TMatrixTSym<Element> &source1,const TMatrixT   <Element> &source2);
-template <class Element> TMatrixT<Element>  operator*  (const TMatrixTSym<Element> &source1,const TMatrixTSym<Element> &source2);
-// Preventing warnings with -Weffc++ in GCC since overloading the || and && operators was a design choice.
-#if (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__) >= 40600
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#endif
-template <class Element> TMatrixT<Element>  operator&& (const TMatrixT   <Element> &source1,const TMatrixT   <Element> &source2);
-template <class Element> TMatrixT<Element>  operator&& (const TMatrixT   <Element> &source1,const TMatrixTSym<Element> &source2);
-template <class Element> TMatrixT<Element>  operator&& (const TMatrixTSym<Element> &source1,const TMatrixT   <Element> &source2);
-template <class Element> TMatrixT<Element>  operator|| (const TMatrixT   <Element> &source1,const TMatrixT   <Element> &source2);
-template <class Element> TMatrixT<Element>  operator|| (const TMatrixT   <Element> &source1,const TMatrixTSym<Element> &source2);
-template <class Element> TMatrixT<Element>  operator|| (const TMatrixTSym<Element> &source1,const TMatrixT   <Element> &source2);
-#if (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__) >= 40600
-#pragma GCC diagnostic pop
-#endif
-template <class Element> TMatrixT<Element>  operator>  (const TMatrixT   <Element> &source1,const TMatrixT   <Element> &source2);
-template <class Element> TMatrixT<Element>  operator>  (const TMatrixT   <Element> &source1,const TMatrixTSym<Element> &source2);
-template <class Element> TMatrixT<Element>  operator>  (const TMatrixTSym<Element> &source1,const TMatrixT   <Element> &source2);
-template <class Element> TMatrixT<Element>  operator>= (const TMatrixT   <Element> &source1,const TMatrixT   <Element> &source2);
-template <class Element> TMatrixT<Element>  operator>= (const TMatrixT   <Element> &source1,const TMatrixTSym<Element> &source2);
-template <class Element> TMatrixT<Element>  operator>= (const TMatrixTSym<Element> &source1,const TMatrixT   <Element> &source2);
-template <class Element> TMatrixT<Element>  operator<= (const TMatrixT   <Element> &source1,const TMatrixT   <Element> &source2);
-template <class Element> TMatrixT<Element>  operator<= (const TMatrixT   <Element> &source1,const TMatrixTSym<Element> &source2);
-template <class Element> TMatrixT<Element>  operator<= (const TMatrixTSym<Element> &source1,const TMatrixT   <Element> &source2);
-template <class Element> TMatrixT<Element>  operator<  (const TMatrixT   <Element> &source1,const TMatrixT   <Element> &source2);
-template <class Element> TMatrixT<Element>  operator<  (const TMatrixT   <Element> &source1,const TMatrixTSym<Element> &source2);
-template <class Element> TMatrixT<Element>  operator<  (const TMatrixTSym<Element> &source1,const TMatrixT   <Element> &source2);
-template <class Element> TMatrixT<Element>  operator!= (const TMatrixT   <Element> &source1,const TMatrixT   <Element> &source2);
-template <class Element> TMatrixT<Element>  operator!= (const TMatrixT   <Element> &source1,const TMatrixTSym<Element> &source2);
-template <class Element> TMatrixT<Element>  operator!= (const TMatrixTSym<Element> &source1,const TMatrixT   <Element> &source2);
-
-template <class Element> TMatrixT<Element> &Add        (TMatrixT<Element> &target,      Element               scalar,const TMatrixT   <Element> &source);
-template <class Element> TMatrixT<Element> &Add        (TMatrixT<Element> &target,      Element               scalar,const TMatrixTSym<Element> &source);
-template <class Element> TMatrixT<Element> &ElementMult(TMatrixT<Element> &target,const TMatrixT   <Element> &source);
-template <class Element> TMatrixT<Element> &ElementMult(TMatrixT<Element> &target,const TMatrixTSym<Element> &source);
-template <class Element> TMatrixT<Element> &ElementDiv (TMatrixT<Element> &target,const TMatrixT   <Element> &source);
-template <class Element> TMatrixT<Element> &ElementDiv (TMatrixT<Element> &target,const TMatrixTSym<Element> &source);
-
-template <class Element> void AMultB (const Element * const ap,Int_t na,Int_t ncolsa,
-                                      const Element * const bp,Int_t nb,Int_t ncolsb,Element *cp);
-template <class Element> void AtMultB(const Element * const ap,Int_t ncolsa,
-                                      const Element * const bp,Int_t nb,Int_t ncolsb,Element *cp);
-template <class Element> void AMultBt(const Element * const ap,Int_t na,Int_t ncolsa,
-                                      const Element * const bp,Int_t nb,Int_t ncolsb,Element *cp);
-
-#endif
-
-// @(#)root/base:$Id$
-// Authors: Fons Rademakers, Eddy Offermann  Jan 2004
-
-/*************************************************************************
- * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
- * All rights reserved.                                                  *
- *                                                                       *
- * For the licensing terms see $ROOTSYS/LICENSE.                         *
- * For the list of contributors see $ROOTSYS/README/CREDITS.             *
- *************************************************************************/
-
-#ifndef ROOT_TMatrixTCramerInv
-#define ROOT_TMatrixTCramerInv
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// TMatrixTCramerInv                                                    //
-//                                                                      //
-// Encapsulate templates of Cramer Inversion routines.                  //
-//                                                                      //
-// The 4x4, 5x5 and 6x6 are adapted from routines written by            //
-// Mark Fischler and Steven Haywood as part of the CLHEP package        //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
-
-//#include "Rtypes.h"
-
-//#include "TMatrixT.h"
-
-namespace TMatrixTCramerInv {
-
-   template<class Element> Bool_t Inv2x2(TMatrixT<Element> &m,Double_t *determ);
-   template<class Element> Bool_t Inv3x3(TMatrixT<Element> &m,Double_t *determ);
-   template<class Element> Bool_t Inv4x4(TMatrixT<Element> &m,Double_t *determ);
-   template<class Element> Bool_t Inv5x5(TMatrixT<Element> &m,Double_t *determ);
-   template<class Element> Bool_t Inv6x6(TMatrixT<Element> &m,Double_t *determ);
-
-}
-
-#endif
-
-
-
-
-
-
-
-// @(#)root/base:$Id$
-// Authors: Fons Rademakers, Eddy Offermann  Oct 2004
-
-/*************************************************************************
- * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
- * All rights reserved.                                                  *
- *                                                                       *
- * For the licensing terms see $ROOTSYS/LICENSE.                         *
- * For the list of contributors see $ROOTSYS/README/CREDITS.             *
- *************************************************************************/
-
-#ifndef ROOT_TMatrixTSymCramerInv
-#define ROOT_TMatrixTSymCramerInv
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// TMatrixTSymCramerInv                                                 //
-//                                                                      //
-// Encapsulate templates of Cramer Inversion routines.                  //
-//                                                                      //
-// The 4x4, 5x5 and 6x6 are adapted from routines written by            //
-// Mark Fischler and Steven Haywood as part of the CLHEP package        //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
-
-//#include "Rtypes.h"
-
-//#include "TMatrixTSym.h"
-
-namespace TMatrixTSymCramerInv {
-
-   template<class Element> Bool_t Inv2x2(TMatrixTSym<Element> &m,Double_t *determ);
-   template<class Element> Bool_t Inv3x3(TMatrixTSym<Element> &m,Double_t *determ);
-   template<class Element> Bool_t Inv4x4(TMatrixTSym<Element> &m,Double_t *determ);
-   template<class Element> Bool_t Inv5x5(TMatrixTSym<Element> &m,Double_t *determ);
-   template<class Element> Bool_t Inv6x6(TMatrixTSym<Element> &m,Double_t *determ);
-
-}
-
-#endif
-
-// @(#)root/matrix:$Id$
-// Authors: Fons Rademakers, Eddy Offermann   Nov 2003
-
-/*************************************************************************
- * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
- * All rights reserved.                                                  *
- *                                                                       *
- * For the licensing terms see $ROOTSYS/LICENSE.                         *
- * For the list of contributors see $ROOTSYS/README/CREDITS.             *
- *************************************************************************/
-
-#ifndef ROOT_TMatrixTLazy
-#define ROOT_TMatrixTLazy
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// Templates of Lazy Matrix classes.                                    //
-//                                                                      //
-//   TMatrixTLazy                                                       //
-//   TMatrixTSymLazy                                                    //
-//   THaarMatrixT                                                       //
-//   THilbertMatrixT                                                    //
-//   THilbertMatrixTSym                                                 //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
-
-//#include "TMatrixTBase.h"
-
-template<class Element> class TVectorT;
-template<class Element> class TMatrixTBase;
-template<class Element> class TMatrixT;
-template<class Element> class TMatrixTSym;
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// TMatrixTLazy                                                         //
-//                                                                      //
-// Class used to make a lazy copy of a matrix, i.e. only copy matrix    //
-// when really needed (when accessed).                                  //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
-
-template<class Element> class TMatrixTLazy : public TObject {
-
-friend class TMatrixTBase<Element>;
-friend class TMatrixT    <Element>;
-friend class TVectorT    <Element>;
-
-protected:
-   Int_t fRowUpb;
-   Int_t fRowLwb;
-   Int_t fColUpb;
-   Int_t fColLwb;
-
-   TMatrixTLazy(const TMatrixTLazy<Element> &) : TObject(), fRowUpb(0),fRowLwb(0),fColUpb(0),fColLwb(0) { }
-   void operator=(const TMatrixTLazy<Element> &) { }
-
-private:
-   virtual void FillIn(TMatrixT<Element> &m) const = 0;
-
-public:
-   TMatrixTLazy() { fRowUpb = fRowLwb = fColUpb = fColLwb = 0; }
-   TMatrixTLazy(Int_t nrows, Int_t ncols)
-       : fRowUpb(nrows-1),fRowLwb(0),fColUpb(ncols-1),fColLwb(0) { }
-   TMatrixTLazy(Int_t row_lwb,Int_t row_upb,Int_t col_lwb,Int_t col_upb)
-       : fRowUpb(row_upb),fRowLwb(row_lwb),fColUpb(col_upb),fColLwb(col_lwb) { }
-   virtual ~TMatrixTLazy() {}
-
-   inline Int_t GetRowLwb() const { return fRowLwb; }
-   inline Int_t GetRowUpb() const { return fRowUpb; }
-   inline Int_t GetColLwb() const { return fColLwb; }
-   inline Int_t GetColUpb() const { return fColUpb; }
-
-   ClassDef(TMatrixTLazy,3)  // Template of Lazy Matrix class
-};
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// TMatrixTSymLazy                                                      //
-//                                                                      //
-// Class used to make a lazy copy of a matrix, i.e. only copy matrix    //
-// when really needed (when accessed).                                  //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
-
-template<class Element> class TMatrixTSymLazy : public TObject {
-
-friend class TMatrixTBase<Element>;
-friend class TMatrixTSym <Element>;
-friend class TVectorT    <Element>;
-
-protected:
-   Int_t fRowUpb;
-   Int_t fRowLwb;
-
-   TMatrixTSymLazy(const TMatrixTSymLazy<Element> &) : TObject(), fRowUpb(0),fRowLwb(0)  { }
-   void operator=(const TMatrixTSymLazy<Element> &) { }
-
-private:
-   virtual void FillIn(TMatrixTSym<Element> &m) const = 0;
-
-public:
-   TMatrixTSymLazy() { fRowUpb = fRowLwb = 0; }
-   TMatrixTSymLazy(Int_t nrows)
-       : fRowUpb(nrows-1),fRowLwb(0) { }
-   TMatrixTSymLazy(Int_t row_lwb,Int_t row_upb)
-       : fRowUpb(row_upb),fRowLwb(row_lwb) { }
-   virtual ~TMatrixTSymLazy() {}
-
-   inline Int_t GetRowLwb() const { return fRowLwb; }
-   inline Int_t GetRowUpb() const { return fRowUpb; }
-
-   ClassDef(TMatrixTSymLazy,2)  // Template of Lazy Symmeytric class
-};
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// THaarMatrixT                                                         //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
-
-template<class Element> class THaarMatrixT: public TMatrixTLazy<Element> {
-
-private:
-   void FillIn(TMatrixT<Element> &m) const;
-
-public:
-   THaarMatrixT() {}
-   THaarMatrixT(Int_t n,Int_t no_cols = 0);
-   virtual ~THaarMatrixT() {}
-
-   ClassDef(THaarMatrixT,2)  // Template of Haar Matrix class
-};
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// THilbertMatrixT                                                      //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
-
-template<class Element> class THilbertMatrixT : public TMatrixTLazy<Element> {
-
-private:
-   void FillIn(TMatrixT<Element> &m) const;
-
-public:
-   THilbertMatrixT() {}
-   THilbertMatrixT(Int_t no_rows,Int_t no_cols);
-   THilbertMatrixT(Int_t row_lwb,Int_t row_upb,Int_t col_lwb,Int_t col_upb);
-   virtual ~THilbertMatrixT() {}
-
-   ClassDef(THilbertMatrixT,2)  // Template of Hilbert Matrix class
-};
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// THilbertMatrixTSym                                                   //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
-
-template<class Element> class THilbertMatrixTSym : public TMatrixTSymLazy<Element> {
-
-private:
-   void FillIn(TMatrixTSym<Element> &m) const;
-
-public:
-   THilbertMatrixTSym() {}
-   THilbertMatrixTSym(Int_t no_rows);
-   THilbertMatrixTSym(Int_t row_lwb,Int_t row_upb);
-   virtual ~THilbertMatrixTSym() {}
-
-   ClassDef(THilbertMatrixTSym,2)  // Template of Symmetric Hilbert Matrix class
-};
-
-#endif
-
 // @(#)root/matrix:$Id$
 // Authors: Fons Rademakers, Eddy Offermann   Nov 2003
 
@@ -4624,7 +4781,7 @@ public:
    TMatrixTSym(const TMatrixTSym<Element> &another);
    template <class Element2> TMatrixTSym(const TMatrixTSym<Element2> &another)
    {
-      R__ASSERT(another.IsValid());
+      //R__ASSERT(another.IsValid());
       Allocate(another.GetNrows(),another.GetNcols(),another.GetRowLwb(),another.GetColLwb());
       *this = another;
    }
@@ -4713,7 +4870,7 @@ public:
          return *this;
       }
 
-      TObject::operator=(source);
+      //TObject::operator=(source);
       const Element2 * const ps = source.GetMatrixArray();
             Element  * const pt = this->GetMatrixArray();
       for (Int_t i = 0; i < this->fNelems; i++)
@@ -4748,7 +4905,8 @@ public:
 //
 // In case we are building with -fmodules, we need to forward declare the
 // specialization in order to compile the dictionary G__Matrix.cxx.
-template <> TClass *TMatrixTSym<double>::Class();
+
+//template <> TClass *TMatrixTSym<double>::Class();
 #endif // __CINT__
 
 template <class Element> inline const Element               *TMatrixTSym<Element>::GetMatrixArray() const { return fElements; }
@@ -4772,7 +4930,7 @@ template <class Element> inline       TMatrixTSym<Element>   TMatrixTSym<Element
 
 template <class Element> inline Element TMatrixTSym<Element>::operator()(Int_t rown,Int_t coln) const
 {
-   R__ASSERT(this->IsValid());
+   //R__ASSERT(this->IsValid());
    const Int_t arown = rown-this->fRowLwb;
    const Int_t acoln = coln-this->fColLwb;
    if (arown >= this->fNrows || arown < 0) {
@@ -4788,7 +4946,7 @@ template <class Element> inline Element TMatrixTSym<Element>::operator()(Int_t r
 
 template <class Element> inline Element &TMatrixTSym<Element>::operator()(Int_t rown,Int_t coln)
 {
-   R__ASSERT(this->IsValid());
+   //R__ASSERT(this->IsValid());
    const Int_t arown = rown-this->fRowLwb;
    const Int_t acoln = coln-this->fColLwb;
    if (arown >= this->fNrows || arown < 0) {
@@ -5043,7 +5201,8 @@ public:
 //
 // In case we are building with -fmodules, we need to forward declare the
 // specialization in order to compile the dictionary G__Matrix.cxx.
-template <> TClass *TMatrixTSparse<double>::Class();
+
+//template <> TClass *TMatrixTSparse<double>::Class();
 #endif // __CINT__
 
 template <class Element> inline const Element *TMatrixTSparse<Element>::GetMatrixArray  () const { return fElements; }
@@ -5063,13 +5222,13 @@ inline const TMatrixTSparse<Element> &TMatrixTSparse<Element>::Use   (Int_t nrow
                                                                         { return Use(0,nrows-1,0,ncols-1,nr_nonzeros,pRowIndex,pColIndex,pData); }
 template <class Element>
 inline       TMatrixTSparse<Element> &TMatrixTSparse<Element>::Use   (TMatrixTSparse<Element> &a)
-                                                                        { R__ASSERT(a.IsValid());
+                                                                        { //R__ASSERT(a.IsValid());
                                                                            return Use(a.GetRowLwb(),a.GetRowUpb(),a.GetColLwb(),a.GetColUpb(),
                                                                                       a.GetNoElements(),a.GetRowIndexArray(),
                                                                                       a.GetColIndexArray(),a.GetMatrixArray()); }
 template <class Element>
 inline const TMatrixTSparse<Element> &TMatrixTSparse<Element>::Use   (const TMatrixTSparse<Element> &a) const
-                                                                        { R__ASSERT(a.IsValid());
+                                                                        { //R__ASSERT(a.IsValid());
                                                                            return Use(a.GetRowLwb(),a.GetRowUpb(),a.GetColLwb(),a.GetColUpb(),
                                                                                       a.GetNoElements(),a.GetRowIndexArray(),
                                                                                       a.GetColIndexArray(),a.GetMatrixArray()); }
@@ -5116,195 +5275,6 @@ template <class Element> Bool_t AreCompatible(const TMatrixTSparse<Element> &m1,
  * For the list of contributors see $ROOTSYS/README/CREDITS.             *
  *************************************************************************/
 
-#ifndef ROOT_TVectorDfwd
-#define ROOT_TVectorDfwd
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// TVectorD                                                             //
-//                                                                      //
-//  Forward declaration of TVectorT<Double_t>                           //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
-
-//#include "Rtypes.h"
-
-template<class Element> class TVectorT;
-typedef TVectorT<Double_t> TVectorD;
-
-#endif
-
-// @(#)root/matrix:$Id$
-// Authors: Fons Rademakers, Eddy Offermann   Nov 2003
-
-/*************************************************************************
- * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
- * All rights reserved.                                                  *
- *                                                                       *
- * For the licensing terms see $ROOTSYS/LICENSE.                         *
- * For the list of contributors see $ROOTSYS/README/CREDITS.             *
- *************************************************************************/
-
-#ifndef ROOT_TMatrixDUtilsfwd
-#define ROOT_TMatrixDUtilsfwd
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// Matrix utility classes.                                              //
-//                                                                      //
-//  Forward declaration of                                              //
-//   TMatrixTRow_const       <Double_t>  TMatrixTRow       <Double_t>   //
-//   TMatrixTColumn_const    <Double_t>  TMatrixTColumn    <Double_t>   //
-//   TMatrixTDiag_const      <Double_t>  TMatrixTDiag      <Double_t>   //
-//   TMatrixTFlat_const      <Double_t>  TMatrixTFlat      <Double_t>   //
-//   TMatrixTSub_const       <Double_t>  TMatrixTSub       <Double_t>   //
-//   TMatrixTSparseRow_const <Double_t>  TMatrixTSparseRow <Double_t>   //
-//   TMatrixTSparseDiag_const<Double_t>  TMatrixTSparseDiag<Double_t>   //
-//                                                                      //
-//   TElementActionT   <Double_t>                                       //
-//   TElementPosActionT<Double_t>                                       //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
-
-//#include "Rtypes.h"
-
-template<class Element> class TMatrixTRow_const;
-template<class Element> class TMatrixTColumn_const;
-template<class Element> class TMatrixTDiag_const;
-template<class Element> class TMatrixTFlat_const;
-template<class Element> class TMatrixTSub_const;
-template<class Element> class TMatrixTSparseRow_const;
-template<class Element> class TMatrixTSparseDiag_const;
-
-template<class Element> class TMatrixTRow;
-template<class Element> class TMatrixTColumn;
-template<class Element> class TMatrixTDiag;
-template<class Element> class TMatrixTFlat;
-template<class Element> class TMatrixTSub;
-template<class Element> class TMatrixTSparseRow;
-template<class Element> class TMatrixTSparseDiag;
-
-template<class Element> class TElementActionT;
-template<class Element> class TElementPosActionT;
-
-typedef TMatrixTRow_const       <Double_t> TMatrixDRow_const;
-typedef TMatrixTColumn_const    <Double_t> TMatrixDColumn_const;
-typedef TMatrixTDiag_const      <Double_t> TMatrixDDiag_const;
-typedef TMatrixTFlat_const      <Double_t> TMatrixDFlat_const;
-typedef TMatrixTSub_const       <Double_t> TMatrixDSub_const;
-typedef TMatrixTSparseRow_const <Double_t> TMatrixDSparseRow_const;
-typedef TMatrixTSparseDiag_const<Double_t> TMatrixDSparseDiag_const;
-
-typedef TMatrixTRow             <Double_t> TMatrixDRow;
-typedef TMatrixTColumn          <Double_t> TMatrixDColumn;
-typedef TMatrixTDiag            <Double_t> TMatrixDDiag;
-typedef TMatrixTFlat            <Double_t> TMatrixDFlat;
-typedef TMatrixTSub             <Double_t> TMatrixDSub;
-typedef TMatrixTSparseRow       <Double_t> TMatrixDSparseRow;
-typedef TMatrixTSparseDiag      <Double_t> TMatrixDSparseDiag;
-
-typedef TElementActionT         <Double_t> TElementActionD;
-typedef TElementPosActionT      <Double_t> TElementPosActionD;
-
-#endif
-
-// @(#)root/matrix:$Id$
-// Authors: Fons Rademakers, Eddy Offermann   Nov 2003
-
-/*************************************************************************
- * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
- * All rights reserved.                                                  *
- *                                                                       *
- * For the licensing terms see $ROOTSYS/LICENSE.                         *
- * For the list of contributors see $ROOTSYS/README/CREDITS.             *
- *************************************************************************/
-
-#ifndef ROOT_TMatrixDUtils
-#define ROOT_TMatrixDUtils
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// Matrix utility classes.                                              //
-//                                                                      //
-//  Instantation of                                                     //
-//   TMatrixTRow_const       <Double_t>  TMatrixTRow       <Double_t>   //
-//   TMatrixTColumn_const    <Double_t>  TMatrixTColumn    <Double_t>   //
-//   TMatrixTDiag_const      <Double_t>  TMatrixTDiag      <Double_t>   //
-//   TMatrixTFlat_const      <Double_t>  TMatrixTFlat      <Double_t>   //
-//   TMatrixTSub_const       <Double_t>  TMatrixTSub       <Double_t>   //
-//   TMatrixTSparseRow_const <Double_t>  TMatrixTSparseRow <Double_t>   //
-//   TMatrixTSparseDiag_const<Double_t>  TMatrixTSparseDiag<Double_t>   //
-//                                                                      //
-//   TElementActionT   <Double_t>                                       //
-//   TElementPosActionT<Double_t>                                       //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
-
-//#include "TMatrixTUtils.h"
-//#include "TMatrixDUtilsfwd.h"
-
-#endif
-
-/*************************************************************************
- * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
- * All rights reserved.                                                  *
- *                                                                       *
- * For the licensing terms see $ROOTSYS/LICENSE.                         *
- * For the list of contributors see $ROOTSYS/README/CREDITS.             *
- *************************************************************************/
-
-#ifndef ROOT_TMatrixDSparsefwd
-#define ROOT_TMatrixDSparsefwd
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// TMatrixDSparse                                                       //
-//                                                                      //
-//  Forward declaration of TMatrixTSparse<Double_t>                     //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
-
-//#include "Rtypes.h"
-
-template<class Element> class TMatrixTSparse;
-typedef TMatrixTSparse<Double_t> TMatrixDSparse;
-
-#endif
-
-/*************************************************************************
- * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
- * All rights reserved.                                                  *
- *                                                                       *
- * For the licensing terms see $ROOTSYS/LICENSE.                         *
- * For the list of contributors see $ROOTSYS/README/CREDITS.             *
- *************************************************************************/
-
-#ifndef ROOT_TMatrixDSymfwd
-#define ROOT_TMatrixDSymfwd
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// TMatrixDSym                                                          //
-//                                                                      //
-//  Forward declaration of TMatrixTSym<Double_t>                        //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
-
-//#include "Rtypes.h"
-
-template<class Element> class TMatrixTSym;
-typedef TMatrixTSym<Double_t> TMatrixDSym;
-
-#endif
-
-/*************************************************************************
- * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
- * All rights reserved.                                                  *
- *                                                                       *
- * For the licensing terms see $ROOTSYS/LICENSE.                         *
- * For the list of contributors see $ROOTSYS/README/CREDITS.             *
- *************************************************************************/
-
 #ifndef ROOT_TMatrixDfwd
 #define ROOT_TMatrixDfwd
 
@@ -5316,116 +5286,10 @@ typedef TMatrixTSym<Double_t> TMatrixDSym;
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-//#include "Rtypes.h"
+#include "Rtypes.h"
 
 template<class Element> class TMatrixT;
 typedef TMatrixT<Double_t> TMatrixD;
-
-#endif
-
-/*************************************************************************
- * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
- * All rights reserved.                                                  *
- *                                                                       *
- * For the licensing terms see $ROOTSYS/LICENSE.                         *
- * For the list of contributors see $ROOTSYS/README/CREDITS.             *
- *************************************************************************/
-
-#ifndef ROOT_TMatrixFSparsefwd
-#define ROOT_TMatrixFSparsefwd
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// TMatrixFSparse                                                       //
-//                                                                      //
-//  Forward declaration of TMatrixTSparse<Float_t>                      //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
-
-//#include "Rtypes.h"
-
-template<class Element> class TMatrixTSparse;
-typedef TMatrixTSparse<Float_t> TMatrixFSparse;
-
-#endif
-
-/*************************************************************************
- * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
- * All rights reserved.                                                  *
- *                                                                       *
- * For the licensing terms see $ROOTSYS/LICENSE.                         *
- * For the list of contributors see $ROOTSYS/README/CREDITS.             *
- *************************************************************************/
-
-#ifndef ROOT_TMatrixFSymfwd
-#define ROOT_TMatrixFSymfwd
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// TMatrixFSym                                                          //
-//                                                                      //
-//  Forward declaration of TMatrixTSym<Float_t>                         //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
-
-//#include "Rtypes.h"
-
-template<class Element> class TMatrixTSym;
-typedef TMatrixTSym<Float_t> TMatrixFSym;
-
-#endif
-
-/*************************************************************************
- * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
- * All rights reserved.                                                  *
- *                                                                       *
- * For the licensing terms see $ROOTSYS/LICENSE.                         *
- * For the list of contributors see $ROOTSYS/README/CREDITS.             *
- *************************************************************************/
-
-#ifndef ROOT_TMatrixFfwd
-#define ROOT_TMatrixFfwd
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// TMatrixF                                                             //
-//                                                                      //
-//  Forward declaration of TMatrixT<Float_t>                            //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
-
-//#include "Rtypes.h"
-
-template<class Element> class TMatrixT;
-typedef TMatrixT<Float_t> TMatrixF;
-
-#endif
-
-// @(#)root/matrix:$Id$
-// Authors: Fons Rademakers, Eddy Offermann   Feb 2004
-
-/*************************************************************************
- * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
- * All rights reserved.                                                  *
- *                                                                       *
- * For the licensing terms see $ROOTSYS/LICENSE.                         *
- * For the list of contributors see $ROOTSYS/README/CREDITS.             *
- *************************************************************************/
-
-#ifndef ROOT_TMatrixDSparse
-#define ROOT_TMatrixDSparse
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// TMatrixDSparse                                                       //
-//                                                                      //
-//  Instantation of TMatrixTSparse<Double_t>                            //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
-
-//#include "TMatrixTSparse.h"
-//#include "TMatrixDSparsefwd.h"
-//#include "TMatrixDUtils.h"
 
 #endif
 
@@ -5440,47 +5304,349 @@ typedef TMatrixT<Float_t> TMatrixF;
  * For the list of contributors see $ROOTSYS/README/CREDITS.             *
  *************************************************************************/
 
-#ifndef ROOT_TMatrixDSym
-#define ROOT_TMatrixDSym
+#ifndef ROOT_TMatrixT
+#define ROOT_TMatrixT
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
-// TMatrixDSym                                                          //
+// TMatrixT                                                             //
 //                                                                      //
-//  Instantation of TMatrixTSym<Double_t>                               //
+// Template class of a general matrix in the linear algebra package     //
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-//#include "TMatrixTSym.h"
-//#include "TMatrixDSymfwd.h"
-//#include "TMatrixDUtils.h"
+//#include "TMatrixTBase.h"
+//#include "TMatrixTUtils.h"
+
+#ifdef CBLAS
+#include <vecLib/vBLAS.h>
+//#include <cblas.h>
+#endif
+
+//#include "Rtypes.h"
+//#include "TError.h"
+
+
+template<class Element> class TMatrixTSym;
+template<class Element> class TMatrixTSparse;
+template<class Element> class TMatrixTLazy;
+
+template<class Element> class TMatrixT : public TMatrixTBase<Element> {
+
+protected:
+
+   Element  fDataStack[TMatrixTBase<Element>::kSizeMax]; //! data container
+   Element *fElements;                                   //[fNelems] elements themselves
+
+   Element *New_m   (Int_t size);
+   void     Delete_m(Int_t size,Element*&);
+   Int_t    Memcpy_m(Element *newp,const Element *oldp,Int_t copySize,
+                      Int_t newSize,Int_t oldSize);
+   void     Allocate(Int_t nrows,Int_t ncols,Int_t row_lwb = 0,Int_t col_lwb = 0,Int_t init = 0,
+                     Int_t /*nr_nonzeros*/ = -1);
+
+
+public:
+
+
+   enum {kWorkMax = 100};
+   enum EMatrixCreatorsOp1 { kZero,kUnit,kTransposed,kInverted,kAtA };
+   enum EMatrixCreatorsOp2 { kMult,kTransposeMult,kInvMult,kMultTranspose,kPlus,kMinus };
+
+   TMatrixT(): fDataStack(), fElements(0) { }
+   TMatrixT(Int_t nrows,Int_t ncols);
+   TMatrixT(Int_t row_lwb,Int_t row_upb,Int_t col_lwb,Int_t col_upb);
+   TMatrixT(Int_t nrows,Int_t ncols,const Element *data,Option_t *option="");
+   TMatrixT(Int_t row_lwb,Int_t row_upb,Int_t col_lwb,Int_t col_upb,const Element *data,Option_t *option="");
+   TMatrixT(const TMatrixT      <Element> &another);
+   TMatrixT(const TMatrixTSym   <Element> &another);
+   TMatrixT(const TMatrixTSparse<Element> &another);
+   template <class Element2> TMatrixT(const TMatrixT<Element2> &another): fElements(0)
+   {
+      //R__ASSERT(another.IsValid());
+      Allocate(another.GetNrows(),another.GetNcols(),another.GetRowLwb(),another.GetColLwb());
+      *this = another;
+   }
+
+   TMatrixT(EMatrixCreatorsOp1 op,const TMatrixT<Element> &prototype);
+   TMatrixT(const TMatrixT    <Element> &a,EMatrixCreatorsOp2 op,const TMatrixT   <Element> &b);
+   TMatrixT(const TMatrixT    <Element> &a,EMatrixCreatorsOp2 op,const TMatrixTSym<Element> &b);
+   TMatrixT(const TMatrixTSym <Element> &a,EMatrixCreatorsOp2 op,const TMatrixT   <Element> &b);
+   TMatrixT(const TMatrixTSym <Element> &a,EMatrixCreatorsOp2 op,const TMatrixTSym<Element> &b);
+   TMatrixT(const TMatrixTLazy<Element> &lazy_constructor);
+
+   virtual ~TMatrixT() { Clear(); }
+
+   // Elementary constructors
+
+   void Plus (const TMatrixT   <Element> &a,const TMatrixT   <Element> &b);
+   void Plus (const TMatrixT   <Element> &a,const TMatrixTSym<Element> &b);
+   void Plus (const TMatrixTSym<Element> &a,const TMatrixT   <Element> &b) { Plus(b,a); }
+
+   void Minus(const TMatrixT   <Element> &a,const TMatrixT   <Element> &b);
+   void Minus(const TMatrixT   <Element> &a,const TMatrixTSym<Element> &b);
+   void Minus(const TMatrixTSym<Element> &a,const TMatrixT   <Element> &b) { Minus(b,a); }
+
+   void Mult (const TMatrixT   <Element> &a,const TMatrixT   <Element> &b);
+   void Mult (const TMatrixT   <Element> &a,const TMatrixTSym<Element> &b);
+   void Mult (const TMatrixTSym<Element> &a,const TMatrixT   <Element> &b);
+   void Mult (const TMatrixTSym<Element> &a,const TMatrixTSym<Element> &b);
+
+   void TMult(const TMatrixT   <Element> &a,const TMatrixT   <Element> &b);
+   void TMult(const TMatrixT   <Element> &a,const TMatrixTSym<Element> &b);
+   void TMult(const TMatrixTSym<Element> &a,const TMatrixT   <Element> &b) { Mult(a,b); }
+   void TMult(const TMatrixTSym<Element> &a,const TMatrixTSym<Element> &b) { Mult(a,b); }
+
+   void MultT(const TMatrixT   <Element> &a,const TMatrixT   <Element> &b);
+   void MultT(const TMatrixT   <Element> &a,const TMatrixTSym<Element> &b) { Mult(a,b); }
+   void MultT(const TMatrixTSym<Element> &a,const TMatrixT   <Element> &b);
+   void MultT(const TMatrixTSym<Element> &a,const TMatrixTSym<Element> &b) { Mult(a,b); }
+
+   virtual const Element *GetMatrixArray  () const;
+   virtual       Element *GetMatrixArray  ();
+   virtual const Int_t   *GetRowIndexArray() const { return 0; }
+   virtual       Int_t   *GetRowIndexArray()       { return 0; }
+   virtual const Int_t   *GetColIndexArray() const { return 0; }
+   virtual       Int_t   *GetColIndexArray()       { return 0; }
+
+   virtual       TMatrixTBase<Element> &SetRowIndexArray(Int_t * /*data*/) { /*MayNotUse("SetRowIndexArray(Int_t *)");*/ return *this; }
+   virtual       TMatrixTBase<Element> &SetColIndexArray(Int_t * /*data*/) { /*MayNotUse("SetColIndexArray(Int_t *)");*/ return *this; }
+
+   virtual void Clear(Option_t * /*option*/ ="") { if (this->fIsOwner) Delete_m(this->fNelems,fElements);
+                                                   else fElements = 0;
+                                                   this->fNelems = 0; }
+
+           TMatrixT    <Element> &Use     (Int_t row_lwb,Int_t row_upb,Int_t col_lwb,Int_t col_upb,Element *data);
+   const   TMatrixT    <Element> &Use     (Int_t row_lwb,Int_t row_upb,Int_t col_lwb,Int_t col_upb,const Element *data) const
+                                            { return (const TMatrixT<Element>&)
+                                                     ((const_cast<TMatrixT<Element> *>(this))->Use(row_lwb,row_upb,col_lwb,col_upb, const_cast<Element *>(data))); }
+           TMatrixT    <Element> &Use     (Int_t nrows,Int_t ncols,Element *data);
+   const   TMatrixT    <Element> &Use     (Int_t nrows,Int_t ncols,const Element *data) const;
+           TMatrixT    <Element> &Use     (TMatrixT<Element> &a);
+   const   TMatrixT    <Element> &Use     (const TMatrixT<Element> &a) const;
+
+   virtual TMatrixTBase<Element> &GetSub  (Int_t row_lwb,Int_t row_upb,Int_t col_lwb,Int_t col_upb,
+                                           TMatrixTBase<Element> &target,Option_t *option="S") const;
+           TMatrixT    <Element>  GetSub  (Int_t row_lwb,Int_t row_upb,Int_t col_lwb,Int_t col_upb,Option_t *option="S") const;
+   virtual TMatrixTBase<Element> &SetSub  (Int_t row_lwb,Int_t col_lwb,const TMatrixTBase<Element> &source);
+
+   virtual TMatrixTBase<Element> &ResizeTo(Int_t nrows,Int_t ncols,Int_t /*nr_nonzeros*/ =-1);
+   virtual TMatrixTBase<Element> &ResizeTo(Int_t row_lwb,Int_t row_upb,Int_t col_lwb,Int_t col_upb,Int_t /*nr_nonzeros*/ =-1);
+   inline  TMatrixTBase<Element> &ResizeTo(const TMatrixT<Element> &m) {
+                                            return ResizeTo(m.GetRowLwb(),m.GetRowUpb(),m.GetColLwb(),m.GetColUpb());
+                                 }
+
+   virtual Double_t Determinant  () const;
+   virtual void     Determinant  (Double_t &d1,Double_t &d2) const;
+
+           TMatrixT<Element> &Invert      (Double_t *det=0);
+           TMatrixT<Element> &InvertFast  (Double_t *det=0);
+           TMatrixT<Element> &Transpose   (const TMatrixT<Element> &source);
+   inline  TMatrixT<Element> &T           () { return this->Transpose(*this); }
+           TMatrixT<Element> &Rank1Update (const TVectorT<Element> &v,Element alpha=1.0);
+           TMatrixT<Element> &Rank1Update (const TVectorT<Element> &v1,const TVectorT<Element> &v2,Element alpha=1.0);
+           Element            Similarity  (const TVectorT<Element> &v) const;
+
+   TMatrixT<Element> &NormByColumn(const TVectorT<Element> &v,Option_t *option="D");
+   TMatrixT<Element> &NormByRow   (const TVectorT<Element> &v,Option_t *option="D");
+
+   // Either access a_ij as a(i,j)
+   inline       Element                     operator()(Int_t rown,Int_t coln) const;
+   inline       Element                    &operator()(Int_t rown,Int_t coln);
+
+   // or as a[i][j]
+   inline const TMatrixTRow_const<Element>  operator[](Int_t rown) const { return TMatrixTRow_const<Element>(*this,rown); }
+   inline       TMatrixTRow      <Element>  operator[](Int_t rown)       { return TMatrixTRow      <Element>(*this,rown); }
+
+   TMatrixT<Element> &operator= (const TMatrixT      <Element> &source);
+   TMatrixT<Element> &operator= (const TMatrixTSym   <Element> &source);
+   TMatrixT<Element> &operator= (const TMatrixTSparse<Element> &source);
+   TMatrixT<Element> &operator= (const TMatrixTLazy  <Element> &source);
+   template <class Element2> TMatrixT<Element> &operator= (const TMatrixT<Element2> &source)
+   {
+      if (!AreCompatible(*this,source)) {
+         //Error("operator=(const TMatrixT2 &)","matrices not compatible");
+         return *this;
+      }
+
+     //TObject::operator=(source);
+     const Element2 * const ps = source.GetMatrixArray();
+           Element  * const pt = this->GetMatrixArray();
+     for (Int_t i = 0; i < this->fNelems; i++)
+        pt[i] = ps[i];
+     this->fTol = source.GetTol();
+     return *this;
+   }
+
+   TMatrixT<Element> &operator= (Element val);
+   TMatrixT<Element> &operator-=(Element val);
+   TMatrixT<Element> &operator+=(Element val);
+   TMatrixT<Element> &operator*=(Element val);
+
+   TMatrixT<Element> &operator+=(const TMatrixT   <Element> &source);
+   TMatrixT<Element> &operator+=(const TMatrixTSym<Element> &source);
+   TMatrixT<Element> &operator-=(const TMatrixT   <Element> &source);
+   TMatrixT<Element> &operator-=(const TMatrixTSym<Element> &source);
+
+   TMatrixT<Element> &operator*=(const TMatrixT            <Element> &source);
+   TMatrixT<Element> &operator*=(const TMatrixTSym         <Element> &source);
+   TMatrixT<Element> &operator*=(const TMatrixTDiag_const  <Element> &diag);
+   TMatrixT<Element> &operator/=(const TMatrixTDiag_const  <Element> &diag);
+   TMatrixT<Element> &operator*=(const TMatrixTRow_const   <Element> &row);
+   TMatrixT<Element> &operator/=(const TMatrixTRow_const   <Element> &row);
+   TMatrixT<Element> &operator*=(const TMatrixTColumn_const<Element> &col);
+   TMatrixT<Element> &operator/=(const TMatrixTColumn_const<Element> &col);
+
+   const TMatrixT<Element> EigenVectors(TVectorT<Element> &eigenValues) const;
+
+   ClassDef(TMatrixT,4) // Template of General Matrix class
+};
+
+#ifndef __CINT__
+// When building with -fmodules, it instantiates all pending instantiations,
+// instead of delaying them until the end of the translation unit.
+// We 'got away with' probably because the use and the definition of the
+// explicit specialization do not occur in the same TU.
+//
+// In case we are building with -fmodules, we need to forward declare the
+// specialization in order to compile the dictionary G__Matrix.cxx.
+
+//template <> TClass *TMatrixT<double>::Class();
+#endif // __CINT__
+
+
+template <class Element> inline const Element           *TMatrixT<Element>::GetMatrixArray() const { return fElements; }
+template <class Element> inline       Element           *TMatrixT<Element>::GetMatrixArray()       { return fElements; }
+
+template <class Element> inline       TMatrixT<Element> &TMatrixT<Element>::Use           (Int_t nrows,Int_t ncols,Element *data)
+                                                                                          { return Use(0,nrows-1,0,ncols-1,data); }
+template <class Element> inline const TMatrixT<Element> &TMatrixT<Element>::Use           (Int_t nrows,Int_t ncols,const Element *data) const
+                                                                                          { return Use(0,nrows-1,0,ncols-1,data); }
+template <class Element> inline       TMatrixT<Element> &TMatrixT<Element>::Use           (TMatrixT &a)
+                                                                                          {
+                                                                                            //R__ASSERT(a.IsValid());
+                                                                                            return Use(a.GetRowLwb(),a.GetRowUpb(),
+                                                                                                       a.GetColLwb(),a.GetColUpb(),a.GetMatrixArray());
+                                                                                          }
+template <class Element> inline const TMatrixT<Element> &TMatrixT<Element>::Use           (const TMatrixT &a) const
+                                                                                          {
+                                                                                            //R__ASSERT(a.IsValid());
+                                                                                            return Use(a.GetRowLwb(),a.GetRowUpb(),
+                                                                                                       a.GetColLwb(),a.GetColUpb(),a.GetMatrixArray());
+                                                                                          }
+
+template <class Element> inline       TMatrixT<Element>  TMatrixT<Element>::GetSub        (Int_t row_lwb,Int_t row_upb,Int_t col_lwb,Int_t col_upb,
+                                                                                           Option_t *option) const
+                                                                                          {
+                                                                                            TMatrixT tmp;
+                                                                                            this->GetSub(row_lwb,row_upb,col_lwb,col_upb,tmp,option);
+                                                                                            return tmp;
+                                                                                          }
+
+template <class Element> inline Element TMatrixT<Element>::operator()(Int_t rown,Int_t coln) const
+{
+   //R__ASSERT(this->IsValid());
+   const Int_t arown = rown-this->fRowLwb;
+   const Int_t acoln = coln-this->fColLwb;
+   if (arown >= this->fNrows || arown < 0) {
+      //Error("operator()","Request row(%d) outside matrix range of %d - %d",rown,this->fRowLwb,this->fRowLwb+this->fNrows);
+      return TMatrixTBase<Element>::NaNValue();
+   }
+   if (acoln >= this->fNcols || acoln < 0) {
+      //Error("operator()","Request column(%d) outside matrix range of %d - %d",coln,this->fColLwb,this->fColLwb+this->fNcols);
+      return TMatrixTBase<Element>::NaNValue();
+
+   }
+   return (fElements[arown*this->fNcols+acoln]);
+}
+
+template <class Element> inline Element &TMatrixT<Element>::operator()(Int_t rown,Int_t coln)
+{
+   //R__ASSERT(this->IsValid());
+   const Int_t arown = rown-this->fRowLwb;
+   const Int_t acoln = coln-this->fColLwb;
+   if (arown >= this->fNrows || arown < 0) {
+      //Error("operator()","Request row(%d) outside matrix range of %d - %d",rown,this->fRowLwb,this->fRowLwb+this->fNrows);
+      return TMatrixTBase<Element>::NaNValue();
+   }
+   if (acoln >= this->fNcols || acoln < 0) {
+      //Error("operator()","Request column(%d) outside matrix range of %d - %d",coln,this->fColLwb,this->fColLwb+this->fNcols);
+      return TMatrixTBase<Element>::NaNValue();
+   }
+   return (fElements[arown*this->fNcols+acoln]);
+}
+
+template <class Element> TMatrixT<Element>  operator+  (const TMatrixT   <Element> &source1,const TMatrixT   <Element> &source2);
+template <class Element> TMatrixT<Element>  operator+  (const TMatrixT   <Element> &source1,const TMatrixTSym<Element> &source2);
+template <class Element> TMatrixT<Element>  operator+  (const TMatrixTSym<Element> &source1,const TMatrixT   <Element> &source2);
+template <class Element> TMatrixT<Element>  operator+  (const TMatrixT   <Element> &source ,      Element               val    );
+template <class Element> TMatrixT<Element>  operator+  (      Element               val    ,const TMatrixT   <Element> &source );
+template <class Element> TMatrixT<Element>  operator-  (const TMatrixT   <Element> &source1,const TMatrixT   <Element> &source2);
+template <class Element> TMatrixT<Element>  operator-  (const TMatrixT   <Element> &source1,const TMatrixTSym<Element> &source2);
+template <class Element> TMatrixT<Element>  operator-  (const TMatrixTSym<Element> &source1,const TMatrixT   <Element> &source2);
+template <class Element> TMatrixT<Element>  operator-  (const TMatrixT   <Element> &source ,      Element               val    );
+template <class Element> TMatrixT<Element>  operator-  (      Element               val    ,const TMatrixT   <Element> &source );
+template <class Element> TMatrixT<Element>  operator*  (      Element               val    ,const TMatrixT   <Element> &source );
+template <class Element> TMatrixT<Element>  operator*  (const TMatrixT   <Element> &source ,      Element               val    );
+template <class Element> TMatrixT<Element>  operator*  (const TMatrixT   <Element> &source1,const TMatrixT   <Element> &source2);
+template <class Element> TMatrixT<Element>  operator*  (const TMatrixT   <Element> &source1,const TMatrixTSym<Element> &source2);
+template <class Element> TMatrixT<Element>  operator*  (const TMatrixTSym<Element> &source1,const TMatrixT   <Element> &source2);
+template <class Element> TMatrixT<Element>  operator*  (const TMatrixTSym<Element> &source1,const TMatrixTSym<Element> &source2);
+// Preventing warnings with -Weffc++ in GCC since overloading the || and && operators was a design choice.
+#if (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__) >= 40600
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
+#endif
+template <class Element> TMatrixT<Element>  operator&& (const TMatrixT   <Element> &source1,const TMatrixT   <Element> &source2);
+template <class Element> TMatrixT<Element>  operator&& (const TMatrixT   <Element> &source1,const TMatrixTSym<Element> &source2);
+template <class Element> TMatrixT<Element>  operator&& (const TMatrixTSym<Element> &source1,const TMatrixT   <Element> &source2);
+template <class Element> TMatrixT<Element>  operator|| (const TMatrixT   <Element> &source1,const TMatrixT   <Element> &source2);
+template <class Element> TMatrixT<Element>  operator|| (const TMatrixT   <Element> &source1,const TMatrixTSym<Element> &source2);
+template <class Element> TMatrixT<Element>  operator|| (const TMatrixTSym<Element> &source1,const TMatrixT   <Element> &source2);
+#if (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__) >= 40600
+#pragma GCC diagnostic pop
+#endif
+template <class Element> TMatrixT<Element>  operator>  (const TMatrixT   <Element> &source1,const TMatrixT   <Element> &source2);
+template <class Element> TMatrixT<Element>  operator>  (const TMatrixT   <Element> &source1,const TMatrixTSym<Element> &source2);
+template <class Element> TMatrixT<Element>  operator>  (const TMatrixTSym<Element> &source1,const TMatrixT   <Element> &source2);
+template <class Element> TMatrixT<Element>  operator>= (const TMatrixT   <Element> &source1,const TMatrixT   <Element> &source2);
+template <class Element> TMatrixT<Element>  operator>= (const TMatrixT   <Element> &source1,const TMatrixTSym<Element> &source2);
+template <class Element> TMatrixT<Element>  operator>= (const TMatrixTSym<Element> &source1,const TMatrixT   <Element> &source2);
+template <class Element> TMatrixT<Element>  operator<= (const TMatrixT   <Element> &source1,const TMatrixT   <Element> &source2);
+template <class Element> TMatrixT<Element>  operator<= (const TMatrixT   <Element> &source1,const TMatrixTSym<Element> &source2);
+template <class Element> TMatrixT<Element>  operator<= (const TMatrixTSym<Element> &source1,const TMatrixT   <Element> &source2);
+template <class Element> TMatrixT<Element>  operator<  (const TMatrixT   <Element> &source1,const TMatrixT   <Element> &source2);
+template <class Element> TMatrixT<Element>  operator<  (const TMatrixT   <Element> &source1,const TMatrixTSym<Element> &source2);
+template <class Element> TMatrixT<Element>  operator<  (const TMatrixTSym<Element> &source1,const TMatrixT   <Element> &source2);
+template <class Element> TMatrixT<Element>  operator!= (const TMatrixT   <Element> &source1,const TMatrixT   <Element> &source2);
+template <class Element> TMatrixT<Element>  operator!= (const TMatrixT   <Element> &source1,const TMatrixTSym<Element> &source2);
+template <class Element> TMatrixT<Element>  operator!= (const TMatrixTSym<Element> &source1,const TMatrixT   <Element> &source2);
+
+template <class Element> TMatrixT<Element> &Add        (TMatrixT<Element> &target,      Element               scalar,const TMatrixT   <Element> &source);
+template <class Element> TMatrixT<Element> &Add        (TMatrixT<Element> &target,      Element               scalar,const TMatrixTSym<Element> &source);
+template <class Element> TMatrixT<Element> &ElementMult(TMatrixT<Element> &target,const TMatrixT   <Element> &source);
+template <class Element> TMatrixT<Element> &ElementMult(TMatrixT<Element> &target,const TMatrixTSym<Element> &source);
+template <class Element> TMatrixT<Element> &ElementDiv (TMatrixT<Element> &target,const TMatrixT   <Element> &source);
+template <class Element> TMatrixT<Element> &ElementDiv (TMatrixT<Element> &target,const TMatrixTSym<Element> &source);
+
+template <class Element> void AMultB (const Element * const ap,Int_t na,Int_t ncolsa,
+                                      const Element * const bp,Int_t nb,Int_t ncolsb,Element *cp);
+template <class Element> void AtMultB(const Element * const ap,Int_t ncolsa,
+                                      const Element * const bp,Int_t nb,Int_t ncolsb,Element *cp);
+template <class Element> void AMultBt(const Element * const ap,Int_t na,Int_t ncolsa,
+                                      const Element * const bp,Int_t nb,Int_t ncolsb,Element *cp);
 
 #endif
 
-/*************************************************************************
- * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
- * All rights reserved.                                                  *
- *                                                                       *
- * For the licensing terms see $ROOTSYS/LICENSE.                         *
- * For the list of contributors see $ROOTSYS/README/CREDITS.             *
- *************************************************************************/
-
-#ifndef ROOT_TMatrixD
-#define ROOT_TMatrixD
-
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
-// TMatrixD                                                             //
+// TVectorD                                                             //
 //                                                                      //
-//  Instantation of TMatrixT<Double_t>                                  //
+//  Instantation of TVectorT<Double_t>                                  //
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-//#include "TMatrixT.h"
-//#include "TMatrixDfwd.h"
-//#include "TMatrixDUtils.h"
-
-#endif
+//#include "TVectorT.h"
 
 // @(#)root/matrix:$Id$
 // Authors: Fons Rademakers, Eddy Offermann   Nov 2003
@@ -5509,6 +5675,7 @@ typedef TMatrixT<Float_t> TMatrixF;
 //#include "TMatrixTSparse.h"
 
 template<class Element> class TVectorT : public TObject {
+//template<class Element> class TVectorT {
 
 protected:
    Int_t    fNrows{0};                // number of rows
@@ -5545,7 +5712,7 @@ public:
    TVectorT(const TMatrixTDiag_const  <Element> &md);
    template <class Element2> TVectorT(const TVectorT<Element2> &another)
    {
-      R__ASSERT(another.IsValid());
+      //R__ASSERT(another.IsValid());
       Allocate(another.GetUpb()-another.GetLwb()+1,another.GetLwb());
       *this = another;
    }
@@ -5562,11 +5729,11 @@ public:
    inline          Element  *GetMatrixArray  ()       { return fElements; }
    inline const    Element  *GetMatrixArray  () const { return fElements; }
 
-   inline void     Invalidate ()       { SetBit(kStatus); }
-   inline void     MakeValid  ()       { ResetBit(kStatus); }
+   //inline void     Invalidate ()       { SetBit(kStatus); }
+   //inline void     MakeValid  ()       { ResetBit(kStatus); }
    inline Bool_t   IsValid    () const { return !TestBit(kStatus); }
    inline Bool_t   IsOwner    () const { return fIsOwner; }
-   inline void     SetElements(const Element *elements) { R__ASSERT(IsValid());
+   inline void     SetElements(const Element *elements) { //R__ASSERT(IsValid());
                                                           memcpy(fElements,elements,fNrows*sizeof(Element)); }
    inline TVectorT<Element> &Shift     (Int_t row_shift)            { fRowLwb += row_shift; return *this; }
           TVectorT<Element> &ResizeTo  (Int_t lwb,Int_t upb);
@@ -5618,7 +5785,7 @@ public:
          return *this;
       }
 
-     TObject::operator=(source);
+     //TObject::operator=(source);
      const Element2 * const ps = source.GetMatrixArray();
            Element  * const pt = GetMatrixArray();
      for (Int_t i = 0; i < this->fNrows; i++)
@@ -5658,7 +5825,7 @@ public:
    void Clear(Option_t * /*option*/ ="") { if (fIsOwner) Delete_m(fNrows,fElements);
                                            else fElements = 0;
                                            fNrows = 0; }
-   void Draw (Option_t *option=""); // *MENU*
+   //void Draw (Option_t *option=""); // *MENU*
    void Print(Option_t *option="") const;  // *MENU*
 
    ClassDef(TVectorT,4)  // Template of Vector class
@@ -5672,19 +5839,20 @@ public:
 //
 // In case we are building with -fmodules, we need to forward declare the
 // specialization in order to compile the dictionary G__Matrix.cxx.
-template <> TClass *TVectorT<double>::Class();
+
+//template <> TClass *TVectorT<double>::Class();
 #endif // __CINT__
 
 template<class Element> inline       TVectorT<Element> &TVectorT<Element>::Use     (Int_t n,Element *data) { return Use(0,n-1,data); }
 template<class Element> inline const TVectorT<Element> &TVectorT<Element>::Use     (Int_t n,const Element *data) const { return Use(0,n-1,data); }
 template<class Element> inline       TVectorT<Element> &TVectorT<Element>::Use     (TVectorT &v)
                                                                                    {
-                                                                                     R__ASSERT(v.IsValid());
+                                                                                     //R__ASSERT(v.IsValid());
                                                                                      return Use(v.GetLwb(),v.GetUpb(),v.GetMatrixArray());
                                                                                    }
 template<class Element> inline const TVectorT<Element> &TVectorT<Element>::Use     (const TVectorT &v) const
                                                                                    {
-                                                                                     R__ASSERT(v.IsValid());
+                                                                                     //R__ASSERT(v.IsValid());
                                                                                      return Use(v.GetLwb(),v.GetUpb(),v.GetMatrixArray());
                                                                                    }
 template<class Element> inline       TVectorT<Element>  TVectorT<Element>::GetSub  (Int_t row_lwb,Int_t row_upb,Option_t *option) const
@@ -5698,7 +5866,7 @@ template<class Element> inline const Element &TVectorT<Element>::operator()(Int_
 {
    // Access a vector element.
 
-   R__ASSERT(IsValid());
+   //R__ASSERT(IsValid());
    const Int_t aind = ind-fRowLwb;
    if (aind >= fNrows || aind < 0) {
       //Error("operator()","Request index(%d) outside vector range of %d - %d",ind,fRowLwb,fRowLwb+fNrows);
@@ -5711,7 +5879,7 @@ template<class Element> inline Element &TVectorT<Element>::operator()(Int_t ind)
 {
    // Access a vector element.
 
-   R__ASSERT(IsValid());
+   //R__ASSERT(IsValid());
    const Int_t aind = ind-fRowLwb;
    if (aind >= fNrows || aind < 0) {
       //Error("operator()","Request index(%d) outside vector range of %d - %d",ind,fRowLwb,fRowLwb+fNrows);
@@ -5781,7 +5949,7 @@ template<class Element> Bool_t VerifyVectorIdentity (const TVectorT <Element>  &
 #endif
 
 // @(#)root/matrix:$Id$
-// Authors: Fons Rademakers, Eddy Offermann   Dec 2003
+// Authors: Fons Rademakers, Eddy Offermann   Nov 2003
 
 /*************************************************************************
  * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
@@ -5791,61 +5959,295 @@ template<class Element> Bool_t VerifyVectorIdentity (const TVectorT <Element>  &
  * For the list of contributors see $ROOTSYS/README/CREDITS.             *
  *************************************************************************/
 
-#ifndef ROOT_TMatrixDEigen
-#define ROOT_TMatrixDEigen
+#ifndef ROOT_TMatrixDUtils
+#define ROOT_TMatrixDUtils
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
-// TMatrixDEigen                                                        //
+// Matrix utility classes.                                              //
 //                                                                      //
-// Eigenvalues and eigenvectors of a real matrix.                       //
+//  Instantation of                                                     //
+//   TMatrixTRow_const       <Double_t>  TMatrixTRow       <Double_t>   //
+//   TMatrixTColumn_const    <Double_t>  TMatrixTColumn    <Double_t>   //
+//   TMatrixTDiag_const      <Double_t>  TMatrixTDiag      <Double_t>   //
+//   TMatrixTFlat_const      <Double_t>  TMatrixTFlat      <Double_t>   //
+//   TMatrixTSub_const       <Double_t>  TMatrixTSub       <Double_t>   //
+//   TMatrixTSparseRow_const <Double_t>  TMatrixTSparseRow <Double_t>   //
+//   TMatrixTSparseDiag_const<Double_t>  TMatrixTSparseDiag<Double_t>   //
+//                                                                      //
+//   TElementActionT   <Double_t>                                       //
+//   TElementPosActionT<Double_t>                                       //
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-//#include "TMatrixD.h"
-//#include "TVectorD.h"
+//#include "TMatrixTUtils.h"
+//#include "TMatrixDUtilsfwd.h"
 
-class TMatrixDEigen
-{
-protected :
+#endif
 
-   static void MakeHessenBerg  (TMatrixD &v,TVectorD &ortho,TMatrixD &H);
-   static void MakeSchurr      (TMatrixD &v,TVectorD &d,    TVectorD &e,TMatrixD &H);
-   static void Sort            (TMatrixD &v,TVectorD &d,    TVectorD &e);
+// @(#)root/matrix:$Id$
+// Authors: Fons Rademakers, Eddy Offermann   Nov 2003
 
-   TMatrixD fEigenVectors;   // Eigen-vectors of matrix
-   TVectorD fEigenValuesRe;  // Eigen-values
-   TVectorD fEigenValuesIm;  // Eigen-values
+/*************************************************************************
+ * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
+ * All rights reserved.                                                  *
+ *                                                                       *
+ * For the licensing terms see $ROOTSYS/LICENSE.                         *
+ * For the list of contributors see $ROOTSYS/README/CREDITS.             *
+ *************************************************************************/
 
-public :
+#ifndef ROOT_TMatrixDSym
+#define ROOT_TMatrixDSym
 
-   enum {kWorkMax = 100}; // size of work array
+//////////////////////////////////////////////////////////////////////////
+//                                                                      //
+// TMatrixDSym                                                          //
+//                                                                      //
+//  Instantation of TMatrixTSym<Double_t>                               //
+//                                                                      //
+//////////////////////////////////////////////////////////////////////////
 
-   TMatrixDEigen()
-     : fEigenVectors(), fEigenValuesRe(), fEigenValuesIm() {};
-   TMatrixDEigen(const TMatrixD &a);
-   TMatrixDEigen(const TMatrixDEigen &another);
-   virtual ~TMatrixDEigen() {}
+//#include "TMatrixTSym.h"
+//#include "TMatrixDSymfwd.h"
+//#include "TMatrixDUtils.h"
 
-// If matrix A has shape (rowLwb,rowUpb,rowLwb,rowUpb), then each eigen-vector
-// must have an index running between (rowLwb,rowUpb) .
-// For convenience, the column index of the eigen-vector matrix
-// also runs from rowLwb to rowUpb so that the returned matrix
-// has also index/shape (rowLwb,rowUpb,rowLwb,rowUpb) .
-// The same is true for the eigen-value vectors an matrix .
+#endif
 
-   const TMatrixD &GetEigenVectors () const { return fEigenVectors;  }
-   const TVectorD &GetEigenValuesRe() const { return fEigenValuesRe; }
-   const TVectorD &GetEigenValuesIm() const { return fEigenValuesIm; }
-   const TMatrixD  GetEigenValues  () const;
+// @(#)root/matrix:$Id$
+// Authors: Fons Rademakers, Eddy Offermann   Feb 2004
 
-   TMatrixDEigen &operator= (const TMatrixDEigen &source);
+/*************************************************************************
+ * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
+ * All rights reserved.                                                  *
+ *                                                                       *
+ * For the licensing terms see $ROOTSYS/LICENSE.                         *
+ * For the list of contributors see $ROOTSYS/README/CREDITS.             *
+ *************************************************************************/
 
-   ClassDef(TMatrixDEigen,1) // Eigen-Vectors/Values of a Matrix
+#ifndef ROOT_TMatrixDSparse
+#define ROOT_TMatrixDSparse
+
+//////////////////////////////////////////////////////////////////////////
+//                                                                      //
+// TMatrixDSparse                                                       //
+//                                                                      //
+//  Instantation of TMatrixTSparse<Double_t>                            //
+//                                                                      //
+//////////////////////////////////////////////////////////////////////////
+
+//#include "TMatrixTSparse.h"
+//#include "TMatrixDSparsefwd.h"
+//#include "TMatrixDUtils.h"
+
+#endif
+
+/*************************************************************************
+ * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
+ * All rights reserved.                                                  *
+ *                                                                       *
+ * For the licensing terms see $ROOTSYS/LICENSE.                         *
+ * For the list of contributors see $ROOTSYS/README/CREDITS.             *
+ *************************************************************************/
+
+#ifndef ROOT_TMatrixD
+#define ROOT_TMatrixD
+
+//////////////////////////////////////////////////////////////////////////
+//                                                                      //
+// TMatrixD                                                             //
+//                                                                      //
+//  Instantation of TMatrixT<Double_t>                                  //
+//                                                                      //
+//////////////////////////////////////////////////////////////////////////
+
+//#include "TMatrixT.h"
+//#include "TMatrixDfwd.h"
+//#include "TMatrixDUtils.h"
+
+#endif
+
+// @(#)root/matrix:$Id$
+// Authors: Fons Rademakers, Eddy Offermann   Nov 2003
+
+/*************************************************************************
+ * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
+ * All rights reserved.                                                  *
+ *                                                                       *
+ * For the licensing terms see $ROOTSYS/LICENSE.                         *
+ * For the list of contributors see $ROOTSYS/README/CREDITS.             *
+ *************************************************************************/
+
+#ifndef ROOT_TMatrixTLazy
+#define ROOT_TMatrixTLazy
+
+//////////////////////////////////////////////////////////////////////////
+//                                                                      //
+// Templates of Lazy Matrix classes.                                    //
+//                                                                      //
+//   TMatrixTLazy                                                       //
+//   TMatrixTSymLazy                                                    //
+//   THaarMatrixT                                                       //
+//   THilbertMatrixT                                                    //
+//   THilbertMatrixTSym                                                 //
+//                                                                      //
+//////////////////////////////////////////////////////////////////////////
+
+//#include "TMatrixTBase.h"
+
+template<class Element> class TVectorT;
+template<class Element> class TMatrixTBase;
+template<class Element> class TMatrixT;
+template<class Element> class TMatrixTSym;
+
+//////////////////////////////////////////////////////////////////////////
+//                                                                      //
+// TMatrixTLazy                                                         //
+//                                                                      //
+// Class used to make a lazy copy of a matrix, i.e. only copy matrix    //
+// when really needed (when accessed).                                  //
+//                                                                      //
+//////////////////////////////////////////////////////////////////////////
+
+template<class Element> class TMatrixTLazy : public TObject {
+//template<class Element> class TMatrixTLazy {
+
+friend class TMatrixTBase<Element>;
+friend class TMatrixT    <Element>;
+friend class TVectorT    <Element>;
+
+protected:
+   Int_t fRowUpb;
+   Int_t fRowLwb;
+   Int_t fColUpb;
+   Int_t fColLwb;
+
+   //TMatrixTLazy(const TMatrixTLazy<Element> &) : TObject(), fRowUpb(0),fRowLwb(0),fColUpb(0),fColLwb(0) { }
+   TMatrixTLazy(const TMatrixTLazy<Element> &) : fRowUpb(0),fRowLwb(0),fColUpb(0),fColLwb(0) { }
+   void operator=(const TMatrixTLazy<Element> &) { }
+
+private:
+   virtual void FillIn(TMatrixT<Element> &m) const = 0;
+
+public:
+   TMatrixTLazy() { fRowUpb = fRowLwb = fColUpb = fColLwb = 0; }
+   TMatrixTLazy(Int_t nrows, Int_t ncols)
+       : fRowUpb(nrows-1),fRowLwb(0),fColUpb(ncols-1),fColLwb(0) { }
+   TMatrixTLazy(Int_t row_lwb,Int_t row_upb,Int_t col_lwb,Int_t col_upb)
+       : fRowUpb(row_upb),fRowLwb(row_lwb),fColUpb(col_upb),fColLwb(col_lwb) { }
+   virtual ~TMatrixTLazy() {}
+
+   inline Int_t GetRowLwb() const { return fRowLwb; }
+   inline Int_t GetRowUpb() const { return fRowUpb; }
+   inline Int_t GetColLwb() const { return fColLwb; }
+   inline Int_t GetColUpb() const { return fColUpb; }
+
+   ClassDef(TMatrixTLazy,3)  // Template of Lazy Matrix class
 };
+
+//////////////////////////////////////////////////////////////////////////
+//                                                                      //
+// TMatrixTSymLazy                                                      //
+//                                                                      //
+// Class used to make a lazy copy of a matrix, i.e. only copy matrix    //
+// when really needed (when accessed).                                  //
+//                                                                      //
+//////////////////////////////////////////////////////////////////////////
+
+template<class Element> class TMatrixTSymLazy : public TObject {
+//template<class Element> class TMatrixTSymLazy {
+
+friend class TMatrixTBase<Element>;
+friend class TMatrixTSym <Element>;
+friend class TVectorT    <Element>;
+
+protected:
+   Int_t fRowUpb;
+   Int_t fRowLwb;
+
+   //TMatrixTSymLazy(const TMatrixTSymLazy<Element> &) : TObject(), fRowUpb(0),fRowLwb(0)  { }
+   TMatrixTSymLazy(const TMatrixTSymLazy<Element> &) : fRowUpb(0),fRowLwb(0)  { }
+   void operator=(const TMatrixTSymLazy<Element> &) { }
+
+private:
+   virtual void FillIn(TMatrixTSym<Element> &m) const = 0;
+
+public:
+   TMatrixTSymLazy() { fRowUpb = fRowLwb = 0; }
+   TMatrixTSymLazy(Int_t nrows)
+       : fRowUpb(nrows-1),fRowLwb(0) { }
+   TMatrixTSymLazy(Int_t row_lwb,Int_t row_upb)
+       : fRowUpb(row_upb),fRowLwb(row_lwb) { }
+   virtual ~TMatrixTSymLazy() {}
+
+   inline Int_t GetRowLwb() const { return fRowLwb; }
+   inline Int_t GetRowUpb() const { return fRowUpb; }
+
+   ClassDef(TMatrixTSymLazy,2)  // Template of Lazy Symmeytric class
+};
+
+//////////////////////////////////////////////////////////////////////////
+//                                                                      //
+// THaarMatrixT                                                         //
+//                                                                      //
+//////////////////////////////////////////////////////////////////////////
+
+template<class Element> class THaarMatrixT: public TMatrixTLazy<Element> {
+
+private:
+   void FillIn(TMatrixT<Element> &m) const;
+
+public:
+   THaarMatrixT() {}
+   THaarMatrixT(Int_t n,Int_t no_cols = 0);
+   virtual ~THaarMatrixT() {}
+
+   ClassDef(THaarMatrixT,2)  // Template of Haar Matrix class
+};
+
+//////////////////////////////////////////////////////////////////////////
+//                                                                      //
+// THilbertMatrixT                                                      //
+//                                                                      //
+//////////////////////////////////////////////////////////////////////////
+
+template<class Element> class THilbertMatrixT : public TMatrixTLazy<Element> {
+
+private:
+   void FillIn(TMatrixT<Element> &m) const;
+
+public:
+   THilbertMatrixT() {}
+   THilbertMatrixT(Int_t no_rows,Int_t no_cols);
+   THilbertMatrixT(Int_t row_lwb,Int_t row_upb,Int_t col_lwb,Int_t col_upb);
+   virtual ~THilbertMatrixT() {}
+
+   ClassDef(THilbertMatrixT,2)  // Template of Hilbert Matrix class
+};
+
+//////////////////////////////////////////////////////////////////////////
+//                                                                      //
+// THilbertMatrixTSym                                                   //
+//                                                                      //
+//////////////////////////////////////////////////////////////////////////
+
+template<class Element> class THilbertMatrixTSym : public TMatrixTSymLazy<Element> {
+
+private:
+   void FillIn(TMatrixTSym<Element> &m) const;
+
+public:
+   THilbertMatrixTSym() {}
+   THilbertMatrixTSym(Int_t no_rows);
+   THilbertMatrixTSym(Int_t row_lwb,Int_t row_upb);
+   virtual ~THilbertMatrixTSym() {}
+
+   ClassDef(THilbertMatrixTSym,2)  // Template of Symmetric Hilbert Matrix class
+};
+
 #endif
 
-/* @(#)root/base:$Id$ */
+// @(#)root/base:$Id$
+// Authors: Fons Rademakers, Eddy Offermann  Jan 2004
 
 /*************************************************************************
  * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
@@ -5855,77 +6257,74 @@ public :
  * For the list of contributors see $ROOTSYS/README/CREDITS.             *
  *************************************************************************/
 
-#ifndef ROOT_Varargs
-#define ROOT_Varargs
-
-#ifdef __CINT__
-#include <stdarg.h>
-#endif
-
-#if defined(sparc) && defined(__CC_ATT301__)
-
-   extern "C" __builtin_va_arg_incr(...);
-   typedef char *va_list;
-#   define va_end(ap)
-#   define va_start(ap, parmN) ap= (char*)(&parmN+1)
-#   define va_arg(ap, mode) ((mode*) __builtin_va_arg_incr((mode*)ap))[0]
-#   define va_(arg) __builtin_va_alist
-
-#   include <stdio.h>
-
-   extern "C" {
-      int vfprintf(FILE*, const char *fmt, va_list ap);
-      char *vsprintf(char*, const char *fmt, va_list ap);
-   };
-
-#else
-#   ifndef __CINT__
-#   include <stdarg.h>
-#   endif
-#   if defined(sparc) && !defined(__GNUG__) && !defined(__CC_SUN21__) && !defined(__SVR4)
-#      define va_(arg) __builtin_va_alist
-#   else
-#      define va_(arg) arg
-#   endif
-
-#endif
-
-#if !defined(R__VA_COPY)
-#  if defined(__GNUC__) && !defined(__FreeBSD__)
-#     define R__VA_COPY(to, from) __va_copy((to), (from))
-#  elif defined(__va_copy)
-#     define R__VA_COPY(to, from) __va_copy((to), (from))
-#  elif defined(va_copy)
-#     define R__VA_COPY(to, from) va_copy((to), (from))
-#  elif defined (R__VA_COPY_AS_ARRAY)
-#     define R__VA_COPY(to, from) memmove((to), (from), sizeof(va_list))
-#  elif defined(_WIN32) && _MSC_VER < 1310
-#     define R__VA_COPY(to, from) (*(to) = *(from))
-#  else
-#     define R__VA_COPY(to, from) ((to) = (from))
-#  endif
-#endif
-
-#endif
-
-
-
-#ifndef ROOT_TVectorD
-#define ROOT_TVectorD
+#ifndef ROOT_TMatrixTCramerInv
+#define ROOT_TMatrixTCramerInv
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
-// TVectorD                                                             //
+// TMatrixTCramerInv                                                    //
 //                                                                      //
-//  Instantation of TVectorT<Double_t>                                  //
+// Encapsulate templates of Cramer Inversion routines.                  //
+//                                                                      //
+// The 4x4, 5x5 and 6x6 are adapted from routines written by            //
+// Mark Fischler and Steven Haywood as part of the CLHEP package        //
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-//#include "TVectorT.h"
-//#include "TVectorDfwd.h"
-//#include "TMatrixD.h"
-//#include "TMatrixDSym.h"
-//#include "TMatrixDSparse.h"
+//#include "Rtypes.h"
+
+//#include "TMatrixT.h"
+
+namespace TMatrixTCramerInv {
+
+   template<class Element> Bool_t Inv2x2(TMatrixT<Element> &m,Double_t *determ);
+   template<class Element> Bool_t Inv3x3(TMatrixT<Element> &m,Double_t *determ);
+   template<class Element> Bool_t Inv4x4(TMatrixT<Element> &m,Double_t *determ);
+   template<class Element> Bool_t Inv5x5(TMatrixT<Element> &m,Double_t *determ);
+   template<class Element> Bool_t Inv6x6(TMatrixT<Element> &m,Double_t *determ);
+
+}
+
+#endif
+
+// @(#)root/base:$Id$
+// Authors: Fons Rademakers, Eddy Offermann  Oct 2004
+
+/*************************************************************************
+ * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
+ * All rights reserved.                                                  *
+ *                                                                       *
+ * For the licensing terms see $ROOTSYS/LICENSE.                         *
+ * For the list of contributors see $ROOTSYS/README/CREDITS.             *
+ *************************************************************************/
+
+#ifndef ROOT_TMatrixTSymCramerInv
+#define ROOT_TMatrixTSymCramerInv
+
+//////////////////////////////////////////////////////////////////////////
+//                                                                      //
+// TMatrixTSymCramerInv                                                 //
+//                                                                      //
+// Encapsulate templates of Cramer Inversion routines.                  //
+//                                                                      //
+// The 4x4, 5x5 and 6x6 are adapted from routines written by            //
+// Mark Fischler and Steven Haywood as part of the CLHEP package        //
+//                                                                      //
+//////////////////////////////////////////////////////////////////////////
+
+//#include "Rtypes.h"
+
+//#include "TMatrixTSym.h"
+
+namespace TMatrixTSymCramerInv {
+
+   template<class Element> Bool_t Inv2x2(TMatrixTSym<Element> &m,Double_t *determ);
+   template<class Element> Bool_t Inv3x3(TMatrixTSym<Element> &m,Double_t *determ);
+   template<class Element> Bool_t Inv4x4(TMatrixTSym<Element> &m,Double_t *determ);
+   template<class Element> Bool_t Inv5x5(TMatrixTSym<Element> &m,Double_t *determ);
+   template<class Element> Bool_t Inv6x6(TMatrixTSym<Element> &m,Double_t *determ);
+
+}
 
 #endif
 
@@ -6042,7 +6441,6 @@ void   ApplyGivens     (      Double_t &z1,Double_t &z2,Double_t  c,Double_t  s)
 
 #endif
 
-
 // @(#)root/matrix:$Id$
 // Authors: Fons Rademakers, Eddy Offermann   Dec 2003
 
@@ -6094,7 +6492,7 @@ public :
            const TMatrixD  GetMatrix ();
    virtual       Int_t     GetNrows  () const { return fLU.GetNrows(); }
    virtual       Int_t     GetNcols  () const { return fLU.GetNcols(); }
-           const TMatrixD &GetLU     ()       { if ( !TestBit(kDecomposed) ) Decompose();
+           const TMatrixD &GetLU     ()       { /*if ( !TestBit(kDecomposed) )*/ Decompose();
                                                 return fLU; }
 
    virtual       void      SetMatrix (const TMatrixD &a);
@@ -6120,6 +6518,71 @@ public :
    ClassDef(TDecompLU,1) // Matrix Decompositition LU
 };
 
+#endif
+
+// @(#)root/matrix:$Id$
+// Authors: Fons Rademakers, Eddy Offermann   Dec 2003
+
+/*************************************************************************
+ * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
+ * All rights reserved.                                                  *
+ *                                                                       *
+ * For the licensing terms see $ROOTSYS/LICENSE.                         *
+ * For the list of contributors see $ROOTSYS/README/CREDITS.             *
+ *************************************************************************/
+
+#ifndef ROOT_TMatrixDEigen
+#define ROOT_TMatrixDEigen
+
+//////////////////////////////////////////////////////////////////////////
+//                                                                      //
+// TMatrixDEigen                                                        //
+//                                                                      //
+// Eigenvalues and eigenvectors of a real matrix.                       //
+//                                                                      //
+//////////////////////////////////////////////////////////////////////////
+
+//#include "TMatrixD.h"
+//#include "TVectorD.h"
+
+class TMatrixDEigen
+{
+protected :
+
+   static void MakeHessenBerg  (TMatrixD &v,TVectorD &ortho,TMatrixD &H);
+   static void MakeSchurr      (TMatrixD &v,TVectorD &d,    TVectorD &e,TMatrixD &H);
+   static void Sort            (TMatrixD &v,TVectorD &d,    TVectorD &e);
+
+   TMatrixD fEigenVectors;   // Eigen-vectors of matrix
+   TVectorD fEigenValuesRe;  // Eigen-values
+   TVectorD fEigenValuesIm;  // Eigen-values
+
+public :
+
+   enum {kWorkMax = 100}; // size of work array
+
+   TMatrixDEigen()
+     : fEigenVectors(), fEigenValuesRe(), fEigenValuesIm() {};
+   TMatrixDEigen(const TMatrixD &a);
+   TMatrixDEigen(const TMatrixDEigen &another);
+   virtual ~TMatrixDEigen() {}
+
+// If matrix A has shape (rowLwb,rowUpb,rowLwb,rowUpb), then each eigen-vector
+// must have an index running between (rowLwb,rowUpb) .
+// For convenience, the column index of the eigen-vector matrix
+// also runs from rowLwb to rowUpb so that the returned matrix
+// has also index/shape (rowLwb,rowUpb,rowLwb,rowUpb) .
+// The same is true for the eigen-value vectors an matrix .
+
+   const TMatrixD &GetEigenVectors () const { return fEigenVectors;  }
+   const TVectorD &GetEigenValuesRe() const { return fEigenValuesRe; }
+   const TVectorD &GetEigenValuesIm() const { return fEigenValuesIm; }
+   const TMatrixD  GetEigenValues  () const;
+
+   TMatrixDEigen &operator= (const TMatrixDEigen &source);
+
+   ClassDef(TMatrixDEigen,1) // Eigen-Vectors/Values of a Matrix
+};
 #endif
 
 // @(#)root/matrix:$Id$
@@ -6183,14 +6646,13 @@ public :
 };
 #endif
 
-/////////////////////////////////////
-//////////////////////////////////////////
-//////////////////////////////////
-//////////////////////////////////////
-/////////////////////////////////
+//#include "TVectorDfwd.h"
+//#include "TMatrixD.h"
+//#include "TMatrixDSym.h"
+//#include "TMatrixDSparse.h"
+
 
 //class TBrowser;
-
 //class TMultiDimFet : public TNamed {
 class TMultiDimFet {
 
@@ -6286,7 +6748,7 @@ protected:
    virtual Double_t EvalFactor(Int_t p, Double_t x);
    virtual Double_t EvalControl(const Int_t *powers);
    //virtual void     MakeCoefficientErrors();
-   //virtual void     MakeCorrelation();
+   virtual void     MakeCorrelation();
    virtual Double_t MakeGramSchmidt(Int_t function);
    virtual void     MakeCoefficients();
    virtual void     MakeCandidates();
@@ -6313,7 +6775,7 @@ public:
    virtual void     AddTestRow(const Double_t *x, Double_t D, Double_t E=0);
    //virtual void     Browse(TBrowser* b);
    virtual void     Clear(Option_t *option=""); // *MENU*
-   //virtual void     Draw(Option_t * ="d") { }
+   virtual void     Draw(Option_t * ="d") { }
    virtual Double_t Eval(const Double_t *x, const Double_t *coeff=0);
    virtual void     FindParameterization(double precision); // *MENU*
    virtual void     ReleaseMemory();
@@ -6371,7 +6833,7 @@ public:
    //virtual void     MakeCode(const char *functionName="MDF", Option_t *option=""); // *MENU*
    //virtual void     MakeHistograms(Option_t* option="A"); // *MENU*
    //virtual void     MakeMethod(const Char_t* className="MDF", Option_t* option=""); // *MENU*
-   //virtual void     Print(Option_t *option="ps") const; // *MENU*
+   virtual void     Print(Option_t *option="ps") const; // *MENU*
    virtual void     PrintPolynomialsSpecial(Option_t *option="m") const; // *MENU*
 
    void             SetMaxAngle(Double_t angle=0);
@@ -6387,6 +6849,6 @@ public:
    void ReducePolynomial(double error);
    void ZeroDoubiousCoefficients(double error);
 
-   ClassDef(TMultiDimFet,1) // Multi dimensional fit class
+   ClassDef(TMultiDimFet,2) // Multi dimensional fit class
 };
 #endif
