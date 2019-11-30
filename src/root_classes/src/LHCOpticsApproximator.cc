@@ -1,8 +1,8 @@
 #include "LHCOpticsApproximator.h"
 #include <vector>
 #include <iostream>
-#include "TROOT.h"
-#include "TMath.h"
+//#include "TROOT.h"
+//#include "TMath.h"
 #include <boost/shared_ptr.hpp>
 #include "CurrentMemoryUsage.h"
 
@@ -31,15 +31,14 @@ void LHCOpticsApproximator::Init()
   trained_ = false;
 }
 
-
 LHCOpticsApproximator::LHCOpticsApproximator(std::string name, std::string title, TMultiDimFet::EMDFPolyType polynom_type, std::string beam_direction, double nominal_beam_energy)
 : x_parametrisation(5, polynom_type, "k"),
   theta_x_parametrisation(5, polynom_type, "k"),
   y_parametrisation(5, polynom_type, "k"),
   theta_y_parametrisation(5, polynom_type, "k")
 {
-  this->SetName(name.c_str());
-  this->SetTitle(title.c_str());
+  //this->SetName(name.c_str());
+  //this->SetTitle(title.c_str());
   Init();
 
   if(beam_direction == "lhcb1")
@@ -61,8 +60,8 @@ LHCOpticsApproximator::LHCOpticsApproximator(std::string name, std::string title
   this->theta_x_parametrisation = *given_theta_x_parametrisation;
   this->y_parametrisation = *given_y_parametrisation;
   this->theta_y_parametrisation = *given_theta_y_parametrisation;
-  this->SetName(name.c_str());
-  this->SetTitle(title.c_str());
+  //this->SetName(name.c_str());
+  //this->SetTitle(title.c_str());
   Init();
 
   if(beam_direction == "lhcb1")
@@ -166,7 +165,7 @@ bool LHCOpticsApproximator::Transport(const MadKinematicDescriptor *in, MadKinem
   return res;
 }
 
-
+/*
 LHCOpticsApproximator::LHCOpticsApproximator(const LHCOpticsApproximator &org) : TNamed(org), x_parametrisation(org.x_parametrisation), theta_x_parametrisation(org.theta_x_parametrisation), y_parametrisation(org.y_parametrisation), theta_y_parametrisation(org.theta_y_parametrisation)
 {
 //  std::cout<<"LHCOpticsApproximator::LHCOpticsApproximator(const LHCOpticsApproximator &org) entered"<<std::endl;
@@ -180,7 +179,7 @@ LHCOpticsApproximator::LHCOpticsApproximator(const LHCOpticsApproximator &org) :
     nominal_beam_momentum_ = org.nominal_beam_momentum_;
 //  std::cout<<"LHCOpticsApproximator::LHCOpticsApproximator(const LHCOpticsApproximator &org) left"<<std::endl;
 }
-
+*/
 
 double LHCOpticsApproximator::GetBegin(){
   return s_begin_;
@@ -191,7 +190,7 @@ double LHCOpticsApproximator::GetEnd(){
   return s_end_;
 }
 
-
+/*
 LHCOpticsApproximator & LHCOpticsApproximator::operator=(const LHCOpticsApproximator &org)
 {
   if(this!=&org)
@@ -212,7 +211,7 @@ LHCOpticsApproximator & LHCOpticsApproximator::operator=(const LHCOpticsApproxim
     nominal_beam_momentum_ = org.nominal_beam_momentum_;
   }
 }
-
+*/
 
 void LHCOpticsApproximator::Train(TTree *inp_tree, std::string data_prefix, polynomials_selection mode, int max_degree_x, int max_degree_tx, int max_degree_y, int max_degree_ty, bool common_terms, double *prec)
 {
@@ -222,7 +221,7 @@ void LHCOpticsApproximator::Train(TTree *inp_tree, std::string data_prefix, poly
   PrintCurrentMemoryUsage("Train, begin");
 
   InitializeApproximators(mode, max_degree_x, max_degree_tx, max_degree_y, max_degree_ty, common_terms);
-  std::cout<<this->GetName()<<" is being trained..."<<std::endl;
+  //std::cout<<this->GetName()<<" is being trained..."<<std::endl;
 
   //in-variables
   //x_in, theta_x_in, y_in, theta_y_in, ksi_in, s_in
@@ -547,7 +546,7 @@ void LHCOpticsApproximator::Test(TTree *inp_tree, TFile *f_out, std::string data
   if(inp_tree==NULL || f_out==NULL)
     return;
 
-  std::cout<<this->GetName()<<" is being tested..."<<std::endl;
+  //std::cout<<this->GetName()<<" is being tested..."<<std::endl;
   //in-variables
   //x_in, theta_x_in, y_in, theta_y_in, ksi_in, s_in
   double in_var[6];
@@ -606,13 +605,13 @@ void LHCOpticsApproximator::Test(TTree *inp_tree, TFile *f_out, std::string data
 
   PrintCurrentMemoryUsage("Test, before allocating the histograms");
   //test histogramms
-  TH1D *err_hists[4];
-  TH2D *err_inp_cor_hists[4][5];
-  TH2D *err_out_cor_hists[4][5];
+  //TH1D *err_hists[4];
+  //TH2D *err_inp_cor_hists[4][5];
+  //TH2D *err_out_cor_hists[4][5];
 
-  AllocateErrorHists(err_hists);
-  AllocateErrorInputCorHists(err_inp_cor_hists);
-  AllocateErrorOutputCorHists(err_out_cor_hists);
+  //AllocateErrorHists(err_hists);
+  //AllocateErrorInputCorHists(err_inp_cor_hists);
+  //AllocateErrorOutputCorHists(err_out_cor_hists);
 
   Long64_t entries = inp_tree->GetEntries();
   //set input and output variables for fitting
@@ -626,22 +625,22 @@ void LHCOpticsApproximator::Test(TTree *inp_tree, TFile *f_out, std::string data
     errors[2] = out_var[2] - y_parametrisation.Eval(in_var);
     errors[3] = out_var[3] - theta_y_parametrisation.Eval(in_var);
 
-    FillErrorHistograms(errors, err_hists);
-    FillErrorDataCorHistograms(errors, in_var, err_inp_cor_hists);
-    FillErrorDataCorHistograms(errors, out_var, err_out_cor_hists);
+    //FillErrorHistograms(errors, err_hists);
+    //FillErrorDataCorHistograms(errors, in_var, err_inp_cor_hists);
+    //FillErrorDataCorHistograms(errors, out_var, err_out_cor_hists);
   }
 
   PrintCurrentMemoryUsage("Test, before writing the histograms");
-  WriteHistograms(err_hists, err_inp_cor_hists, err_out_cor_hists, f_out, base_out_dir);
+  //WriteHistograms(err_hists, err_inp_cor_hists, err_out_cor_hists, f_out, base_out_dir);
   std::cout<<"Histograms have been written."<<std::endl;
 
-  DeleteErrorHists(err_hists);
-  DeleteErrorCorHistograms(err_inp_cor_hists);
-  DeleteErrorCorHistograms(err_out_cor_hists);
+  //DeleteErrorHists(err_hists);
+  //DeleteErrorCorHistograms(err_inp_cor_hists);
+  //DeleteErrorCorHistograms(err_out_cor_hists);
   PrintCurrentMemoryUsage("Test, end of function");
 }
 
-
+/*
 void LHCOpticsApproximator::AllocateErrorHists(TH1D *err_hists[4])
 {
   std::vector<std::string> error_labels;
@@ -659,7 +658,7 @@ void LHCOpticsApproximator::AllocateErrorHists(TH1D *err_hists[4])
     err_hists[i]->SetCanExtend(TH1::kAllAxes);
   }
 }
-
+*/
 
 void LHCOpticsApproximator::TestAperture(TTree *inp_tree, TTree *out_tree)  //x, theta_x, y, theta_y, ksi, mad_accepted, parametriz_accepted
 {
@@ -710,7 +709,7 @@ void LHCOpticsApproximator::TestAperture(TTree *inp_tree, TTree *out_tree)  //x,
   }
 }
 
-
+/*
 void LHCOpticsApproximator::AllocateErrorInputCorHists(TH2D *err_inp_cor_hists[4][5])
 {
   std::vector<std::string> error_labels;
@@ -741,7 +740,8 @@ void LHCOpticsApproximator::AllocateErrorInputCorHists(TH2D *err_inp_cor_hists[4
     }
   }
 }
-
+*/
+/*
 void LHCOpticsApproximator::AllocateErrorOutputCorHists(TH2D *err_out_cor_hists[4][5])
 {
   std::vector<std::string> error_labels;
@@ -772,8 +772,8 @@ void LHCOpticsApproximator::AllocateErrorOutputCorHists(TH2D *err_out_cor_hists[
     }
   }
 }
-
-
+*/
+/*
 void LHCOpticsApproximator::FillErrorHistograms(double errors[4], TH1D *err_hists[4])
 {
   for(int i=0; i<4; ++i)
@@ -781,8 +781,8 @@ void LHCOpticsApproximator::FillErrorHistograms(double errors[4], TH1D *err_hist
     err_hists[i]->Fill(errors[i]);
   }
 }
-
-
+*/
+/*
 void LHCOpticsApproximator::FillErrorDataCorHistograms(double errors[4], double var[5], TH2D *err_cor_hists[4][5])
 {
   for(int eri=0; eri<4; ++eri)
@@ -793,8 +793,8 @@ void LHCOpticsApproximator::FillErrorDataCorHistograms(double errors[4], double 
     }
   }
 }
-
-
+*/
+/*
 void LHCOpticsApproximator::DeleteErrorHists(TH1D *err_hists[4])
 {
   for(int i=0; i<4; ++i)
@@ -802,7 +802,8 @@ void LHCOpticsApproximator::DeleteErrorHists(TH1D *err_hists[4])
     delete err_hists[i];
   }
 }
-
+*/
+/*
 void LHCOpticsApproximator::DeleteErrorCorHistograms(TH2D *err_cor_hists[4][5])
 {
   for(int eri=0; eri<4; ++eri)
@@ -813,8 +814,8 @@ void LHCOpticsApproximator::DeleteErrorCorHistograms(TH2D *err_cor_hists[4][5])
     }
   }
 }
-
-
+*/
+/*
 void LHCOpticsApproximator::WriteHistograms(TH1D *err_hists[4], TH2D *err_inp_cor_hists[4][5], TH2D *err_out_cor_hists[4][5], TFile *f_out, std::string base_out_dir)
 {
   if(f_out==NULL)
@@ -869,6 +870,7 @@ void LHCOpticsApproximator::WriteHistograms(TH1D *err_hists[4], TH2D *err_inp_co
   gDirectory->cd("..");
   gDirectory->cd("..");
 }
+*/
 
 void LHCOpticsApproximator::PrintInputRange()
 {
