@@ -1,5 +1,5 @@
-import transporters.madx.ptc_track.transporter as ptc_track_transporter
-import transporters.madx.ptc_track.configuration as track_conf
+import transporters.ptc_track.transporter as ptc_track_transporter
+import transporters.ptc_track.configuration as track_conf
 import ROOT
 from concurrent.futures import ProcessPoolExecutor
 import utils.root_initializer as root_initializer
@@ -116,9 +116,11 @@ def train_tmultidimfit(input_vectors, output_vector, parameter_configuration):
 
 def initialize_tmultidimfit(parameters_number, max_pt_power):
     # Need initialized ROOT (previous invoking utils.root_initializer.initialise)
-    from ROOT import TMultiDimFet
+    # from ROOT import TMultiDimFet
+    from ROOT import MultiDimensionalFitter
 
-    approximator = TMultiDimFet(parameters_number, 0, ROOT.option)
+    # approximator = TMultiDimFet(parameters_number, 0, ROOT.option)
+    approximator = MultiDimensionalFitter(parameters_number, 0, ROOT.option)
 
     ROOT.mPowers[0] = 2
     ROOT.mPowers[1] = 4
