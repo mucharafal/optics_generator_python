@@ -42,7 +42,7 @@ transporter2 = "approximator"
 
 for configuration in configurations:
     approximator_name=configuration.attrib.get("optics_parametrisation_name")
-    item_number=int(configuration.attrib.get("id"))-1
+    item_number=int(configuration.attrib.get("id"))
     s=float(configuration.attrib.get("to_marker_s_pos"))
 
     track_configuration = PtcTrackConfiguration.get_track_configuration_from_xml_file(path_to_xml_file, item_number)

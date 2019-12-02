@@ -73,7 +73,7 @@ path_to_approximator = os.path.join(path_to_optic, serialized_approximator_file_
 
 for configuration in configurations:
     approximator_name = configuration.attrib.get("optics_parametrisation_name")
-    item_number = int(configuration.attrib.get("id"))-1
+    item_number = int(configuration.attrib.get("id"))
     s = float(configuration.attrib.get("to_marker_s_pos"))
 
     twiss_configuration = PtcTwissConfiguration.get_configuration_from_file(path_to_xml_file, item_number, True)
