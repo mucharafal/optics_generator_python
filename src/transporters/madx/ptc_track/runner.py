@@ -4,6 +4,7 @@ import numpy as np
 import utils.working_directory as working_directory
 from concurrent.futures import ProcessPoolExecutor
 from datetime import date
+import time
 
 
 def compute_trajectory(particles, madx_configuration, number_of_workers):
@@ -135,9 +136,26 @@ def __read_in_segment(header, input_file, columns_number):
     parameters = header.split()[1:]
     number_of_particles = int(parameters[2])
     segment_name = parameters[4]
-    values_vector = np.fromfile(input_file, count=number_of_particles*columns_number, sep=" ")
+
+    desired_vector_size = columns_number * number_of_particles
+    values_vector = __read_in_vector(input_file, desired_vector_size)
+
     matrix = np.reshape(values_vector, (number_of_particles, columns_number))
     return segment_name, matrix
+
+
+def __read_in_vector(input_file, number_of_values):
+    current_position_in_file = input_file.tell()
+
+    values_vector = np.fromfile(input_file, count=number_of_values, sep=" ")
+    tries_number = 0
+    while values_vector.shape[0] < number_of_values and tries_number < 5:
+        time.sleep(.1)
+        input_file.seek(current_position_in_file)
+        values_vector = np.fromfile(input_file, count=number_of_values, sep=" ")
+        tries_number += 1
+
+    return values_vector
 
 
 def merge_segments(destiny_segments, source_segments):
