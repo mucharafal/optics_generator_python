@@ -4,6 +4,7 @@ import numpy as np
 import utils.working_directory as working_directory
 from concurrent.futures import ProcessPoolExecutor
 from datetime import date
+import time
 
 
 def compute_trajectory(particles, madx_configuration, number_of_workers):
@@ -96,7 +97,6 @@ def __run_madx(path_to_madx_script):
     with open(path_to_madx_script) as f:
         res = subprocess.run("madx", stdin=f, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         # print(res.stdout) # if output from madx is needed
-        res.stdout = open(os.devnull, 'w')
 
 
 def __read_in_madx_output_file(filename):
@@ -105,23 +105,31 @@ def __read_in_madx_output_file(filename):
     :param filename: filename if it is in current directory or path to file
     :return: dictionary, where keys are names of segments and values are numpy matrix with data
     """
-    with open(filename, "r") as input_file:
-        # skip header
-        line = input_file.readline()
-        while line[0] != "*":
-            line = input_file.readline()
-        parameters = line.split()
-        # skip '*'
-        parameters = parameters[1:]
-        segments = {}
-        while line[0] != "#":
-            line = input_file.readline()
+    tries_counter = 0
+    while tries_counter < 5:
+        try:
+            with open(filename, "r+") as input_file:
+                # skip header
+                line = input_file.readline()
+                while line[0] != "*":
+                    line = input_file.readline()
+                parameters = line.split()
+                # skip '*'
+                parameters = parameters[1:]
+                segments = {}
+                while line[0] != "#":
+                    line = input_file.readline()
 
-        while len(line) > 0 and line[0] == "#":
-            (segment_name, matrix) = __read_in_segment(line, input_file, len(parameters))
-            segments[segment_name] = matrix
-            line = input_file.readline()
-        return segments
+                while len(line) > 0 and line[0] == "#":
+                    (segment_name, matrix) = __read_in_segment(line, input_file, len(parameters))
+                    segments[segment_name] = matrix
+                    line = input_file.readline()
+                return segments
+        except:
+            tries_counter += 1
+            print("Reread")
+            time.sleep(1)
+    raise ValueError("Cannot open madx output file")
 
 
 def __read_in_segment(header, input_file, columns_number):
@@ -135,9 +143,27 @@ def __read_in_segment(header, input_file, columns_number):
     parameters = header.split()[1:]
     number_of_particles = int(parameters[2])
     segment_name = parameters[4]
-    values_vector = np.fromfile(input_file, count=number_of_particles*columns_number, sep=" ")
+
+    desired_vector_size = columns_number * number_of_particles
+    values_vector = __read_in_vector(input_file, desired_vector_size)
+
     matrix = np.reshape(values_vector, (number_of_particles, columns_number))
     return segment_name, matrix
+
+
+def __read_in_vector(input_file, number_of_values):
+    current_position_in_file = input_file.tell()
+
+    values_vector = np.fromfile(input_file, count=number_of_values, sep=" ")
+    tries_number = 0
+    while values_vector.shape[0] < number_of_values and tries_number < 5:
+        time.sleep(.1)
+        with open(input_file.name, "r+") as new_input_file:
+            new_input_file.seek(current_position_in_file)
+            values_vector = np.fromfile(new_input_file, count=number_of_values, sep=" ")
+            tries_number += 1
+
+    return values_vector
 
 
 def merge_segments(destiny_segments, source_segments):
