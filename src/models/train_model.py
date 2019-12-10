@@ -1,17 +1,17 @@
 import transporters.madx.ptc_track.transporter as ptc_track_transporter
-import transporters.madx.ptc_track.configuration as track_conf
 import ROOT
 from concurrent.futures import ProcessPoolExecutor
 import utils.root_initializer as root_initializer
 import data.particles_generator as pg
 from data.parameters_names import ParametersNames as Parameters
+from transporters.madx.ptc_track.configuration import PtcTrackConfiguration
 
 
 def train_from_configuration(configuration_object):
     root_initializer.initialise()
 
     # Generate data for approximator
-    madx_configuration = track_conf.PtcTrackConfiguration(configuration_object.transport_configuration)
+    madx_configuration = PtcTrackConfiguration.get_track_configuration_from_xml_configuration_object(configuration_object.transport_configuration)
     training_sample_configuration = configuration_object.training_sample_configuration
     approximator_dataset, apertures_datasets = generate_training_dataset(madx_configuration,
                                                                          training_sample_configuration)
@@ -31,7 +31,7 @@ def generate_training_dataset(madx_configuration, training_sample_configuration)
 
     output_segments = ptc_track_transporter.transport(madx_configuration, input_particles)
 
-    approximator_segment_name = madx_configuration.approximator_transport_configuration.end_place.name
+    approximator_segment_name = madx_configuration.end_place_name
 
     approximator_dataset = TrainingDataset(input_particles, output_segments["end"], approximator_segment_name)
     apertures_datasets = [TrainingDataset(input_particles, aperture_segment, aperture_name)

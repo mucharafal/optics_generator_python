@@ -24,7 +24,11 @@ class PtcTrackConfiguration(MadxConfiguration):
     def get_track_configuration_from_xml_file(path_to_xml_file, item_number):
         approximator_configuration = xml_parser.get_approximator_configurations_from(path_to_xml_file)[item_number]
         approximator_transport_configuration = approximator_configuration.transport_configuration
-        atc = approximator_transport_configuration      # for shorter name
+        return PtcTrackConfiguration.get_track_configuration_from_xml_configuration_object(approximator_transport_configuration)
+
+    @staticmethod
+    def get_track_configuration_from_xml_configuration_object(approximator_transport_configuration):
+        atc = approximator_transport_configuration  # for shorter name
         return PtcTrackConfiguration(atc.end_place.name,
                                      atc.end_place.distance,
                                      atc.end_place.name_of_place_from,

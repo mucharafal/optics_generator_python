@@ -17,7 +17,7 @@ class PtcTwissConfiguration(MadxConfiguration):
     @staticmethod
     def get_configuration_from_file(path_to_xml_configuration, item_number, if_filter_by_s=False):
         configurations = xml_parser.get_approximator_configurations_from(path_to_xml_configuration)
-        approximator_transport_configuration = configurations.transport_configuration
+        approximator_transport_configuration = configurations[item_number].transport_configuration
         atc = approximator_transport_configuration  # for shorter name
         return PtcTwissConfiguration(atc.end_place.name,
                                      atc.end_place.distance,
