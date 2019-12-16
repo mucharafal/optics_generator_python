@@ -43,5 +43,5 @@ cd $2
 if [ $1 != "0" ]; then
   python3 ./src/output_generation/plots_errors.py $xml $4
   python3 ./src/output_generation/plots_optics.py $xml $4
-  echo shit
+  echo finished
 fi

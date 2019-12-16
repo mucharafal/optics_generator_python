@@ -57,7 +57,7 @@ class GridConfiguration:
                                  pt_configuration)
 
     @classmethod
-    def get_configuration_from_xml(cls, xml_root_configuration):
+    def get_configuration_from_xml_object(cls, xml_root_configuration):
         xml_configuration = xml_root_configuration.attrib
         return cls.by_boundary(
             float(xml_configuration["x_min"]), float(xml_configuration["x_max"]), 1,

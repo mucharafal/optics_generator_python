@@ -32,20 +32,20 @@ if os.path.isdir(output_path):
     shutil.rmtree(output_path)
 os.makedirs(output_path)
 
-configurations = app_conf.get_xml_configuration_from_file(path_to_xml_file)
+configurations = app_conf.get_approximator_configurations_from(path_to_xml_file)
 
-serialized_approximator_file_name=configurations[0].attrib.get("optics_parametrisation_file")
+serialized_approximator_file_name = configurations[0].destination_file_name
 path_to_approximator = os.path.join(path_to_optic, serialized_approximator_file_name)
 
 transporter1 = "ptc_track"
 transporter2 = "approximator"
 
 for configuration in configurations:
-    approximator_name=configuration.attrib.get("optics_parametrisation_name")
-    item_number=int(configuration.attrib.get("id"))
-    s=float(configuration.attrib.get("to_marker_s_pos"))
+    approximator_name = configuration.approximator_configuration.name_of_approximator
+    s = configuration.transport_configuration.end_place.distance
 
-    track_configuration = PtcTrackConfiguration.get_track_configuration_from_xml_file(path_to_xml_file, item_number)
+    track_configuration = PtcTrackConfiguration.get_track_configuration_from_xml_configuration_object(
+        configuration.transport_configuration)
     approximator_configuration = ApproximatorConfiguration(path_to_approximator, approximator_name)
 
     transporters = {
@@ -53,12 +53,11 @@ for configuration in configurations:
         transporter2: approximator_configuration
     }
 
-    test_sample_configuration = grid_configuration_module.CanonicalCoordinatesGridConfiguration\
-        .get_configuration_from_xml(configuration)
+    test_sample_configuration = configuration.training_sample_configuration
     particles = test_sample_configuration.generate_randomly()
 
     title_sufix = path_to_optic + "\nError over training scope\n"
-    title_sufix += configuration.attrib.get("to_marker_name") + "; s = " + str(s)
+    title_sufix += configuration.transport_configuration.end_place.name + "; s = " + str(s)
 
     stat_path = os.path.join(output_path, "Station_"+str(s))
 

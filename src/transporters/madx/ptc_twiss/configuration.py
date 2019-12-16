@@ -18,12 +18,17 @@ class PtcTwissConfiguration(MadxConfiguration):
     def get_configuration_from_file(path_to_xml_configuration, item_number, if_filter_by_s=False):
         configurations = xml_parser.get_approximator_configurations_from(path_to_xml_configuration)
         approximator_transport_configuration = configurations[item_number].transport_configuration
-        atc = approximator_transport_configuration  # for shorter name
-        return PtcTwissConfiguration(atc.end_place.name,
-                                     atc.end_place.distance,
-                                     atc.end_place.name_of_place_from,
-                                     atc.end_place.beam,
-                                     atc.madx_input_script_file_name,
+        return PtcTwissConfiguration.get_configuration_from_approximator_training_configuration_object(
+            approximator_transport_configuration, if_filter_by_s
+        )
+
+    @staticmethod
+    def get_configuration_from_approximator_training_configuration_object(configuration, if_filter_by_s):
+        return PtcTwissConfiguration(configuration.end_place.name,
+                                     configuration.end_place.distance,
+                                     configuration.end_place.name_of_place_from,
+                                     configuration.end_place.beam,
+                                     configuration.madx_input_script_file_name,
                                      if_filter_by_s)
 
     def get_configuration(self):
