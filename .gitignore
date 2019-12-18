@@ -21,4 +21,11 @@ src/transporters/ptc_twiss/__pycache__/
 src/data/readers/__pycache__/
 
 src/output_generation/internal_mag_pot.txt
+
 src/output_generation/log.madx
+
+root*
+
+src/transporters/madx/__pycache__/
+src/transporters/madx/ptc_track/__pycache__/
+src/transporters/madx/ptc_twiss/__pycache__/

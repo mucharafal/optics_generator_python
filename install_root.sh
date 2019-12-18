@@ -72,7 +72,7 @@ cd root-$ROOT_VERSION
 mkdir obj
 cd obj
 cmake -DPYTHON_EXECUTABLE=$(which $PYTHON) ..
-cmake --build -j4 . 
+cmake --build . -j4
 
 if [[ $? -eq 0 ]]; then
     echo "ROOT successfully installed in '$INSTALL_PATH/root-$ROOT_VERSION'"
