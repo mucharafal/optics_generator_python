@@ -3,13 +3,14 @@
 
 #include <string>
 #include <iostream>
-#include "TNamed.h"
+//#include "TNamed.h"
 #include "TTree.h"
-#include "TH1D.h"
-#include "TH2D.h"
+//#include "TH1D.h"
+//#include "TH2D.h"
 #include "TFile.h"
 
-#include "TMultiDimFet.h"
+//#include "TMultiDimFet.h"
+#include "MultiDimensionalFitter.h"
 //#include <boost/shared_ptr.hpp>
 
 
@@ -36,17 +37,17 @@ class LHCApertureApproximator;
 //class finds the parametrisation of MADX proton transport and transports the protons according to it
 //5 phase space variables are taken in to confoguration:
 //x, y, theta_x, theta_y, ksi
-class LHCOpticsApproximator : public TNamed
+class LHCOpticsApproximator //: public TNamed
 {
   public:
     LHCOpticsApproximator();
     //begin and end position along the beam of the particle to transport, training_tree, prefix of data branch in the tree
-    LHCOpticsApproximator(std::string name, std::string title, TMultiDimFet::EMDFPolyType polynom_type,
+    LHCOpticsApproximator(std::string name, std::string title, MultiDimensionalFitter::EMDFPolyType polynom_type,
         std::string beam_direction, double nominal_beam_energy);
-    LHCOpticsApproximator(std::string name, std::string title, TMultiDimFet::EMDFPolyType polynom_type, std::string beam_direction, double nominal_beam_energy,
-        TMultiDimFet *given_x_parametrisation, TMultiDimFet *given_theta_x_parametrisation, TMultiDimFet *given_y_parametrisation, TMultiDimFet *given_theta_y_parametrisation);
-    LHCOpticsApproximator(const LHCOpticsApproximator &org);
-    LHCOpticsApproximator & operator=(const LHCOpticsApproximator &org);
+    LHCOpticsApproximator(std::string name, std::string title, MultiDimensionalFitter::EMDFPolyType polynom_type, std::string beam_direction, double nominal_beam_energy,
+        MultiDimensionalFitter *given_x_parametrisation, MultiDimensionalFitter *given_theta_x_parametrisation, MultiDimensionalFitter *given_y_parametrisation, MultiDimensionalFitter *given_theta_y_parametrisation);
+    //(const LHCOpticsApproximator &org);
+    //LHCOpticsApproximator & operator=(const LHCOpticsApproximator &org);
 
     enum polynomials_selection{AUTOMATIC, PREDEFINED};
     enum beam_type{lhcb1, lhcb2};
@@ -63,7 +64,7 @@ class LHCOpticsApproximator : public TNamed
     bool CheckInputRange(double *in);
     void AddRectEllipseAperture(const LHCOpticsApproximator &in, double rect_x, double rect_y, double r_el_x, double r_el_y);
     void PrintOpticalFunctions();
-    void PrintCoordinateOpticalFunctions(TMultiDimFet &parametrization, const std::string &coord_name, const std::vector<std::string> &input_vars);
+    void PrintCoordinateOpticalFunctions(MultiDimensionalFitter &parametrization, const std::string &coord_name, const std::vector<std::string> &input_vars);
     void GetLineariasedTransportMatrixX(double mad_init_x, double mad_init_thx, double mad_init_y, double mad_init_thy, 
         double mad_init_xi, TMatrixD &tr_matrix, double d_mad_x=10e-6, double d_mad_thx=10e-6);  //[m], [rad], xi:-1...0
     void GetLineariasedTransportMatrixY(
@@ -85,14 +86,14 @@ class LHCOpticsApproximator : public TNamed
     double nominal_beam_energy_;  //GeV
     double nominal_beam_momentum_;  //GeV/c
     bool trained_;  //trained polynomials
-    std::vector<TMultiDimFet*> out_polynomials;  //! pointers to polynomials
+    std::vector<MultiDimensionalFitter*> out_polynomials;  //! pointers to polynomials
     std::vector<std::string> coord_names;
     std::vector<LHCApertureApproximator> apertures_;  //apertures on the way
 
-    TMultiDimFet x_parametrisation;  // polynomial approximation for x
-    TMultiDimFet theta_x_parametrisation;  // polynomial approximation for theta_x
-    TMultiDimFet y_parametrisation;  // polynomial approximation for y
-    TMultiDimFet theta_y_parametrisation;  // polynomial approximation for theta_y
+    MultiDimensionalFitter x_parametrisation;  // polynomial approximation for x
+    MultiDimensionalFitter theta_x_parametrisation;  // polynomial approximation for theta_x
+    MultiDimensionalFitter y_parametrisation;  // polynomial approximation for y
+    MultiDimensionalFitter theta_y_parametrisation;  // polynomial approximation for theta_y
 
 
 
@@ -100,22 +101,22 @@ class LHCOpticsApproximator : public TNamed
     enum variable_type {X, THETA_X, Y, THETA_Y};
     //internal methods
     void InitializeApproximators(polynomials_selection mode, int max_degree_x, int max_degree_tx, int max_degree_y, int max_degree_ty, bool common_terms);
-    void SetDefaultAproximatorSettings(TMultiDimFet &approximator, variable_type var_type, int max_degree);
-    void SetTermsManually(TMultiDimFet &approximator, variable_type variable, int max_degree, bool common_terms);
+    void SetDefaultAproximatorSettings(MultiDimensionalFitter &approximator, variable_type var_type, int max_degree);
+    void SetTermsManually(MultiDimensionalFitter &approximator, variable_type variable, int max_degree, bool common_terms);
 
-    void AllocateErrorHists(TH1D *err_hists[4]);
-    void AllocateErrorInputCorHists(TH2D *err_inp_cor_hists[4][5]);
-    void AllocateErrorOutputCorHists(TH2D *err_out_cor_hists[4][5]);
+    //void AllocateErrorHists(TH1D *err_hists[4]);
+    //void AllocateErrorInputCorHists(TH2D *err_inp_cor_hists[4][5]);
+    //void AllocateErrorOutputCorHists(TH2D *err_out_cor_hists[4][5]);
 
-    void DeleteErrorHists(TH1D *err_hists[4]);
-    void DeleteErrorCorHistograms(TH2D *err_cor_hists[4][5]);
+    //void DeleteErrorHists(TH1D *err_hists[4]);
+    //void DeleteErrorCorHistograms(TH2D *err_cor_hists[4][5]);
 
-    void FillErrorHistograms(double errors[4], TH1D *err_hists[4]);
-    void FillErrorDataCorHistograms(double errors[4], double var[5], TH2D *err_cor_hists[4][5]);
+    //void FillErrorHistograms(double errors[4], TH1D *err_hists[4]);
+    //void FillErrorDataCorHistograms(double errors[4], double var[5], TH2D *err_cor_hists[4][5]);
 
-    void WriteHistograms(TH1D *err_hists[4], TH2D *err_inp_cor_hists[4][5], TH2D *err_out_cor_hists[4][5], TFile *f_out, std::string base_out_dir);
+    //void WriteHistograms(TH1D *err_hists[4], TH2D *err_inp_cor_hists[4][5], TH2D *err_out_cor_hists[4][5], TFile *f_out, std::string base_out_dir);
 
-    ClassDef(LHCOpticsApproximator,1) // Proton transport approximator
+    ClassDef(LHCOpticsApproximator,2) // Proton transport approximator
 };
 
 

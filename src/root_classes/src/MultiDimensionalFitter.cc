@@ -1,18 +1,15 @@
-// @(#)root/hist:$Name: v5-12-00e $:$Id: TMultiDimFit.cxx,v 1.26 2006/05/26 09:27:12 brun Exp $
-// Author: Christian Holm Christensen 07/11/2000
-
-
-#include "Riostream.h"
-#include "TMultiDimFet.h"
-#include "TMath.h"
-#include "TH1.h"
-#include "TH2.h"
-#include "TROOT.h"
-#include "TBrowser.h"
-#include "TDecompChol.h"
+//#include "Riostream.h"
+//#include "TMultiDimFet.h"
+#include "MultiDimensionalFitter.h"
+//#include "TMath.h"
+//#include "TH1.h"
+//#include "TH2.h"
+//#include "TROOT.h"
+//#include "TBrowser.h"
+//#include "TDecompChol.h"
 #include <map>
 #include <iostream>
-#include "TMultiDimFit_wrapper.h"
+//#include "TMultiDimFit_wrapper.h"
 
 #define RADDEG (180. / TMath::Pi())
 #define DEGRAD (TMath::Pi() / 180.)
@@ -29,20 +26,19 @@
 #define PARAM_RELERR   3
 #define PARAM_MAXTERMS 4
 
-
 //____________________________________________________________________
 static void mdfHelper(int&, double*, double&, double*, int);
 
 //____________________________________________________________________
-ClassImp(TMultiDimFet);
+ClassImp(MultiDimensionalFitter);
 
 //____________________________________________________________________
 // Static instance. Used with mdfHelper and TMinuit
-TMultiDimFet* TMultiDimFet::fgInstance = 0;
+MultiDimensionalFitter* MultiDimensionalFitter::fgInstance = 0;
 
 
 //____________________________________________________________________
-TMultiDimFet::TMultiDimFet()
+MultiDimensionalFitter::MultiDimensionalFitter()
 {
    // Empty CTOR. Do not use
    fMeanQuantity            = 0;
@@ -72,7 +68,7 @@ TMultiDimFet::TMultiDimFet()
    //fMaxPowers               = 0;
    //fMaxPowersFinal          = 0;
 
-   fHistograms              = 0;
+   //fHistograms              = 0;
    fHistogramMask           = 0;
    //fPowerIndex              = 0;
    //fFunctionCodes           = 0;
@@ -83,12 +79,12 @@ TMultiDimFet::TMultiDimFet()
    //fMinVariables(0);
    //fMeanVariables(0);
 
-   fFitter                  = 0;
+   //fFitter                  = 0;
    fgInstance               = 0;
 }
 
 
-TMultiDimFet::TMultiDimFet(const TMultiDimFet &in)
+MultiDimensionalFitter::MultiDimensionalFitter(const MultiDimensionalFitter &in)
 {
    fMeanQuantity = in.fMeanQuantity;         // Mean of dependent quantity
 
@@ -150,9 +146,9 @@ TMultiDimFet::TMultiDimFet(const TMultiDimFet &in)
    fTestPrecision = 0.0;        //! Relative precision of test
    fCorrelationCoeff = 0.0;     //! Multi Correlation coefficient
    fTestCorrelationCoeff = 0.0; //! Multi Correlation coefficient
-   fHistograms = 0;           //! List of histograms
+   //fHistograms = 0;           //! List of histograms
    fHistogramMask = 0;        //! Bit pattern of hisograms used
-   fFitter = 0;            //! Fit object (MINUIT)
+   //fFitter = 0;            //! Fit object (MINUIT)
 
    fPolyType = in.fPolyType;             // Type of polynomials to use
    fShowCorrelation = in.fShowCorrelation;      // print correlation matrix
@@ -160,7 +156,7 @@ TMultiDimFet::TMultiDimFet(const TMultiDimFet &in)
    fIsVerbose = in.fIsVerbose;            //
 }
 
-const TMultiDimFet &TMultiDimFet::operator=(const TMultiDimFet &in)
+const MultiDimensionalFitter &MultiDimensionalFitter::operator=(const MultiDimensionalFitter &in)
 {
    if(this==&in)
    {
@@ -227,9 +223,9 @@ const TMultiDimFet &TMultiDimFet::operator=(const TMultiDimFet &in)
    fTestPrecision = 0.0;        //! Relative precision of test
    fCorrelationCoeff = 0.0;     //! Multi Correlation coefficient
    fTestCorrelationCoeff = 0.0; //! Multi Correlation coefficient
-   fHistograms = 0;           //! List of histograms
+   //fHistograms = 0;           //! List of histograms
    fHistogramMask = 0;        //! Bit pattern of hisograms used
-   fFitter = 0;            //! Fit object (MINUIT)
+   //fFitter = 0;            //! Fit object (MINUIT)
 
    fPolyType = in.fPolyType;             // Type of polynomials to use
    fShowCorrelation = in.fShowCorrelation;      // print correlation matrix
@@ -237,7 +233,7 @@ const TMultiDimFet &TMultiDimFet::operator=(const TMultiDimFet &in)
    fIsVerbose = in.fIsVerbose;            //
    return in;
 }
-
+/*
 TMultiDimFet::EMDFPolyType mapType(TMultiDimFit::EMDFPolyType type) {
    switch (type)
     {
@@ -321,15 +317,15 @@ TMultiDimFet::TMultiDimFet(TMultiDimFit_wrapper &in)
    fIsUserFunction = in.getFIsUserFunction();       // Flag for user defined function
    fIsVerbose = in.getFIsVerbose();            //
 }
-
+*/
 
 
 
 //____________________________________________________________________
-TMultiDimFet::TMultiDimFet(Int_t dimension,
+MultiDimensionalFitter::MultiDimensionalFitter(Int_t dimension,
                            EMDFPolyType type,
                            Option_t *option)
-  : TNamed("multidimfit","Multi-dimensional fit object"),
+  : //TNamed("multidimfit","Multi-dimensional fit object"),
     fQuantity(dimension),
     fSqError(dimension),
     fVariables(dimension*100),
@@ -388,7 +384,7 @@ TMultiDimFet::TMultiDimFet(Int_t dimension,
 
    fIsUserFunction         = kFALSE;
 
-   fHistograms             = 0;
+   //fHistograms             = 0;
    fHistogramMask          = 0;
 
    //fPowerIndex             = 0;
@@ -399,12 +395,12 @@ TMultiDimFet::TMultiDimFet(Int_t dimension,
    fMaxPowers.resize(dimension);
    //fMaxPowersFinal         = new Int_t[dimension];
    fMaxPowersFinal.resize(dimension);
-   fFitter                 = 0;
+   //fFitter                 = 0;
 }
 
 
 //____________________________________________________________________
-TMultiDimFet::~TMultiDimFet()
+MultiDimensionalFitter::~MultiDimensionalFitter()
 {
    // Destructor
 /*   if(fPowers)
@@ -417,13 +413,13 @@ TMultiDimFet::~TMultiDimFet()
      delete [] fPowerIndex;
    if(fFunctionCodes)
      delete [] fFunctionCodes;*/
-   if (fHistograms) fHistograms->Clear("nodelete");
-     delete fHistograms;
+   //if (fHistograms) fHistograms->Clear("nodelete");
+     //delete fHistograms;
 }
 
 
 //____________________________________________________________________
-void TMultiDimFet::AddRow(const Double_t *x, Double_t D, Double_t E)
+void MultiDimensionalFitter::AddRow(const Double_t *x, Double_t D, Double_t E)
 {
    // Add a row consisting of fNVariables independent variables, the
    // known, dependent quantity, and optionally, the square error in
@@ -502,7 +498,7 @@ void TMultiDimFet::AddRow(const Double_t *x, Double_t D, Double_t E)
 
 
 //____________________________________________________________________
-void TMultiDimFet::AddTestRow(const Double_t *x, Double_t D, Double_t E)
+void MultiDimensionalFitter::AddTestRow(const Double_t *x, Double_t D, Double_t E)
 {
    // Add a row consisting of fNVariables independent variables, the
    // known, dependent quantity, and optionally, the square error in
@@ -545,16 +541,16 @@ void TMultiDimFet::AddTestRow(const Double_t *x, Double_t D, Double_t E)
       j = fNVariables * (fTestSampleSize - 1) + i;
       fTestVariables(j) = x[i];
 
-      if (x[i] > fMaxVariables(i))
-         Warning("AddTestRow", "variable %d (row: %d) too large: %f > %f",
-         i, fTestSampleSize, x[i], fMaxVariables(i));
-      if (x[i] < fMinVariables(i))
-         Warning("AddTestRow", "variable %d (row: %d) too small: %f < %f",
-         i, fTestSampleSize, x[i], fMinVariables(i));
+      if (x[i] > fMaxVariables(i)) {}
+         //Warning("AddTestRow", "variable %d (row: %d) too large: %f > %f",
+         //i, fTestSampleSize, x[i], fMaxVariables(i));
+      if (x[i] < fMinVariables(i)) {}
+         //Warning("AddTestRow", "variable %d (row: %d) too small: %f < %f",
+         //i, fTestSampleSize, x[i], fMinVariables(i));
    }
 }
 
-
+/*
 //____________________________________________________________________
 void TMultiDimFet::Browse(TBrowser* b)
 {
@@ -604,10 +600,10 @@ void TMultiDimFet::Browse(TBrowser* b)
    if (fFitter)
       b->Add(fFitter, fFitter->GetName());
 }
-
+*/
 
 //____________________________________________________________________
-void TMultiDimFet::Clear(Option_t *option)
+void MultiDimensionalFitter::Clear(Option_t *option)
 {
    // Clear internal structures and variables
    Int_t i, j, n = fNVariables, m = fMaxFunctions;
@@ -682,7 +678,7 @@ void TMultiDimFet::Clear(Option_t *option)
    fCoefficients.Zero();
    fCoefficientsRMS.Zero();
    fResiduals.Zero();
-   fHistograms->Clear(option);
+   //fHistograms->Clear(option);
 
    // Options
    fPolyType                     = kMonomials;
@@ -692,7 +688,7 @@ void TMultiDimFet::Clear(Option_t *option)
 
 
 //____________________________________________________________________
-Double_t TMultiDimFet::Eval(const Double_t *x, const Double_t* coeff)
+Double_t MultiDimensionalFitter::Eval(const Double_t *x, const Double_t* coeff)
 {
    // Evaluate parameterization at point x. Optional argument coeff is
    // a vector of coefficients for the parameterisation, fNCoefficients
@@ -719,7 +715,7 @@ Double_t TMultiDimFet::Eval(const Double_t *x, const Double_t* coeff)
 }
 
 
-void TMultiDimFet::ReducePolynomial(double error)
+void MultiDimensionalFitter::ReducePolynomial(double error)
 {
   if(error == 0.0)
     return;
@@ -729,7 +725,7 @@ void TMultiDimFet::ReducePolynomial(double error)
   }
 }
 
-void TMultiDimFet::ZeroDoubiousCoefficients(double error)
+void MultiDimensionalFitter::ZeroDoubiousCoefficients(double error)
 {
   typedef std::multimap<double, int> cmt;
   cmt m;
@@ -777,7 +773,7 @@ void TMultiDimFet::ZeroDoubiousCoefficients(double error)
 
 
 //____________________________________________________________________
-Double_t TMultiDimFet::EvalControl(const Int_t *iv)
+Double_t MultiDimensionalFitter::EvalControl(const Int_t *iv)
 {
    // PRIVATE METHOD:
    // Calculate the control parameter from the passed powers
@@ -791,7 +787,7 @@ Double_t TMultiDimFet::EvalControl(const Int_t *iv)
 }
 
 //____________________________________________________________________
-Double_t TMultiDimFet::EvalFactor(Int_t p, Double_t x)
+Double_t MultiDimensionalFitter::EvalFactor(Int_t p, Double_t x)
 {
    // PRIVATE METHOD:
    // Evaluate function with power p at variable value x
@@ -827,7 +823,7 @@ Double_t TMultiDimFet::EvalFactor(Int_t p, Double_t x)
 
 
 //____________________________________________________________________
-void TMultiDimFet::FindParameterization(double precision)
+void MultiDimensionalFitter::FindParameterization(double precision)
 {
    // Find the parameterization
    //
@@ -847,7 +843,7 @@ void TMultiDimFet::FindParameterization(double precision)
 }
 
 
-void TMultiDimFet::ReleaseMemory()
+void MultiDimensionalFitter::ReleaseMemory()
 {
    fFunctions.ResizeTo(1,1);
    fOrthFunctions.ResizeTo(1,1);
@@ -860,7 +856,7 @@ void TMultiDimFet::ReleaseMemory()
 
 
 //____________________________________________________________________
-void TMultiDimFet::Fit(Option_t *option)
+void MultiDimensionalFitter::Fit(Option_t *option)
 {
    // Try to fit the found parameterisation to the test sample.
    //
@@ -888,8 +884,8 @@ void TMultiDimFet::Fit(Option_t *option)
       sumSqD       += fTestQuantity(i) * fTestQuantity(i);
       sumR         += res;
       sumSqR       += res * res;
-      if (TESTBIT(fHistogramMask,HIST_RTEST))
-         ((TH1D*)fHistograms->FindObject("res_test"))->Fill(res);
+      //if (TESTBIT(fHistogramMask,HIST_RTEST))
+         //((TH1D*)fHistograms->FindObject("res_test"))->Fill(res);
    }
    Double_t dAvg         = sumSqD - (sumD * sumD) / fTestSampleSize;
    Double_t rAvg         = sumSqR - (sumR * sumR) / fTestSampleSize;
@@ -903,37 +899,37 @@ void TMultiDimFet::Fit(Option_t *option)
    if (!opt.Contains("m"))
       MakeChi2();
 
-   if (fNCoefficients * 50 > fTestSampleSize)
-      Warning("Fit", "test sample is very small");
+   if (fNCoefficients * 50 > fTestSampleSize) {}
+      //Warning("Fit", "test sample is very small");
 
    if (!opt.Contains("m"))
       return;
 
-   fFitter = TVirtualFitter::Fitter(0,fNCoefficients);
-   fFitter->SetFCN(mdfHelper);
+   //fFitter = TVirtualFitter::Fitter(0,fNCoefficients);
+   //fFitter->SetFCN(mdfHelper);
 
    const Int_t  maxArgs = 16;
    Int_t           args = 1;
    Double_t*   arglist  = new Double_t[maxArgs];
    arglist[0]           = -1;
-   fFitter->ExecuteCommand("SET PRINT",arglist,args);
+   //fFitter->ExecuteCommand("SET PRINT",arglist,args);
 
    for (i = 0; i < fNCoefficients; i++) {
       Double_t startVal = fCoefficients(i);
       Double_t startErr = fCoefficientsRMS(i);
-      fFitter->SetParameter(i, Form("coeff%02d",i),
-         startVal, startErr, 0, 0);
+      //fFitter->SetParameter(i, Form("coeff%02d",i),
+         //startVal, startErr, 0, 0);
    }
 
    // arglist[0]           = 0;
    args                 = 1;
    // fFitter->ExecuteCommand("SET PRINT",arglist,args);
-   fFitter->ExecuteCommand("MIGRAD",arglist,args);
+   //fFitter->ExecuteCommand("MIGRAD",arglist,args);
 
    for (i = 0; i < fNCoefficients; i++) {
       Double_t val = 0, err = 0, low = 0, high = 0;
-      fFitter->GetParameter(i, Form("coeff%02d",i),
-         val, err, low, high);
+      //fFitter->GetParameter(i, Form("coeff%02d",i),
+         //val, err, low, high);
       fCoefficients(i)    = val;
       fCoefficientsRMS(i) = err;
    }
@@ -941,7 +937,7 @@ void TMultiDimFet::Fit(Option_t *option)
 
 
 //____________________________________________________________________
-void TMultiDimFet::MakeCandidates()
+void MultiDimensionalFitter::MakeCandidates()
 {
    // PRIVATE METHOD:
    // Create list of candidate functions for the parameterisation. See
@@ -1074,7 +1070,7 @@ void TMultiDimFet::MakeCandidates()
 
 
 //____________________________________________________________________
-Double_t TMultiDimFet::MakeChi2(const Double_t* coeff)
+Double_t MultiDimensionalFitter::MakeChi2(const Double_t* coeff)
 {
    // Calculate Chi square over either the test sample. The optional
    // argument coeff is a vector of coefficients to use in the
@@ -1103,7 +1099,7 @@ Double_t TMultiDimFet::MakeChi2(const Double_t* coeff)
    return fChi2;
 }
 
-
+/*
 //____________________________________________________________________
 void TMultiDimFet::MakeCode(const char* filename, Option_t *option)
 {
@@ -1138,9 +1134,9 @@ void TMultiDimFet::MakeCode(const char* filename, Option_t *option)
 
    MakeRealCode(outName.Data(),"",option);
 }
+*/
 
-
-
+/*
 //____________________________________________________________________
 void TMultiDimFet::MakeCoefficientErrors()
 {
@@ -1192,10 +1188,10 @@ void TMultiDimFet::MakeCoefficientErrors()
    for (i = 0; i < fNCoefficients; i++)
       fCoefficientsRMS(i) = TMath::Sqrt(curvatureMatrix(i,i));
 }
-
+*/
 
 //____________________________________________________________________
-void TMultiDimFet::MakeCoefficients()
+void MultiDimensionalFitter::MakeCoefficients()
 {
    // PRIVATE METHOD:
    // Invert the model matrix B, and compute final coefficients. For a
@@ -1258,29 +1254,30 @@ void TMultiDimFet::MakeCoefficients()
    fCorrelationCoeff = fSumSqResidual / fSumSqAvgQuantity;
    fPrecision        = TMath::Sqrt(sqRes / fSumSqQuantity);
 
+    /*
    // If we use histograms, fill some more
    if (TESTBIT(fHistogramMask,HIST_RD) ||
       TESTBIT(fHistogramMask,HIST_RTRAI) ||
       TESTBIT(fHistogramMask,HIST_RX)) {
          for (i = 0; i < fSampleSize; i++) {
-            if (TESTBIT(fHistogramMask,HIST_RD))
-               ((TH2D*)fHistograms->FindObject("res_d"))->Fill(fQuantity(i),
-               fResiduals(i));
-            if (TESTBIT(fHistogramMask,HIST_RTRAI))
-               ((TH1D*)fHistograms->FindObject("res_train"))->Fill(fResiduals(i));
+            //if (TESTBIT(fHistogramMask,HIST_RD))
+            //   ((TH2D*)fHistograms->FindObject("res_d"))->Fill(fQuantity(i),
+            //   fResiduals(i));
+            //if (TESTBIT(fHistogramMask,HIST_RTRAI))
+            //   ((TH1D*)fHistograms->FindObject("res_train"))->Fill(fResiduals(i));
 
-            if (TESTBIT(fHistogramMask,HIST_RX))
-               for (j = 0; j < fNVariables; j++)
-                  ((TH2D*)fHistograms->FindObject(Form("res_x_%d",j)))
-                  ->Fill(fVariables(i * fNVariables + j),fResiduals(i));
+            //if (TESTBIT(fHistogramMask,HIST_RX))
+            //   for (j = 0; j < fNVariables; j++)
+            //      ((TH2D*)fHistograms->FindObject(Form("res_x_%d",j)))
+             //     ->Fill(fVariables(i * fNVariables + j),fResiduals(i));
          }
    } // If histograms
-
+    */
 }
 
 
 //____________________________________________________________________
-void TMultiDimFet::MakeCorrelation()
+void MultiDimensionalFitter::MakeCorrelation()
 {
    // PRIVATE METHOD:
    // Compute the correlation matrix
@@ -1335,7 +1332,7 @@ void TMultiDimFet::MakeCorrelation()
 
 
 //____________________________________________________________________
-Double_t TMultiDimFet::MakeGramSchmidt(Int_t function)
+Double_t MultiDimensionalFitter::MakeGramSchmidt(Int_t function)
 {
    // PRIVATE METHOD:
    // Make Gram-Schmidt orthogonalisation. The class description gives
@@ -1414,7 +1411,7 @@ Double_t TMultiDimFet::MakeGramSchmidt(Int_t function)
    return dResidur;
 }
 
-
+/*
 //____________________________________________________________________
 void TMultiDimFet::MakeHistograms(Option_t *option)
 {
@@ -1441,8 +1438,8 @@ void TMultiDimFet::MakeHistograms(Option_t *option)
    if (opt.Length() < 1)
       return;
 
-   if (!fHistograms)
-      fHistograms = new TList;
+   //if (!fHistograms)
+      //fHistograms = new TList;
 
    // Counter variable
    Int_t i = 0;
@@ -1531,8 +1528,8 @@ void TMultiDimFet::MakeHistograms(Option_t *option)
          fMaxQuantity - fMeanQuantity));
    }
 }
-
-
+*/
+/*
 //____________________________________________________________________
 void TMultiDimFet::MakeMethod(const Char_t* classname, Option_t* option)
 {
@@ -1582,11 +1579,11 @@ void TMultiDimFet::MakeMethod(const Char_t* classname, Option_t* option)
 
    MakeRealCode(Form("%sMDF.cxx", classname), classname, option);
 }
-
+*/
 
 
 //____________________________________________________________________
-void TMultiDimFet::MakeNormalized()
+void MultiDimensionalFitter::MakeNormalized()
 {
    // PRIVATE METHOD:
    // Normalize data to the interval [-1;1]. This is needed for the
@@ -1597,31 +1594,31 @@ void TMultiDimFet::MakeNormalized()
    Int_t k = 0;
 
    for (i = 0; i < fSampleSize; i++) {
-      if (TESTBIT(fHistogramMask,HIST_DORIG))
-         ((TH1D*)fHistograms->FindObject("d_orig"))->Fill(fQuantity(i));
+      //if (TESTBIT(fHistogramMask,HIST_DORIG))
+         //((TH1D*)fHistograms->FindObject("d_orig"))->Fill(fQuantity(i));
 
       fQuantity(i) -= fMeanQuantity;
       fSumSqAvgQuantity  += fQuantity(i) * fQuantity(i);
 
-      if (TESTBIT(fHistogramMask,HIST_DSHIF))
-         ((TH1D*)fHistograms->FindObject("d_shifted"))->Fill(fQuantity(i));
+      //if (TESTBIT(fHistogramMask,HIST_DSHIF))
+         //((TH1D*)fHistograms->FindObject("d_shifted"))->Fill(fQuantity(i));
 
       for (j = 0; j < fNVariables; j++) {
          Double_t range = 1. / (fMaxVariables(j) - fMinVariables(j));
          k              = i * fNVariables + j;
 
          // Fill histograms of original independent variables
-         if (TESTBIT(fHistogramMask,HIST_XORIG))
-            ((TH1D*)fHistograms->FindObject(Form("x_%d_orig",j)))
-            ->Fill(fVariables(k));
+         //if (TESTBIT(fHistogramMask,HIST_XORIG))
+            //((TH1D*)fHistograms->FindObject(Form("x_%d_orig",j)))
+            //->Fill(fVariables(k));
 
          // Normalise independent variables
          fVariables(k) = 1 + 2 * range * (fVariables(k) - fMaxVariables(j));
 
          // Fill histograms of normalised independent variables
-         if (TESTBIT(fHistogramMask,HIST_XNORM))
-            ((TH1D*)fHistograms->FindObject(Form("x_%d_norm",j)))
-            ->Fill(fVariables(k));
+         //if (TESTBIT(fHistogramMask,HIST_XNORM))
+            //((TH1D*)fHistograms->FindObject(Form("x_%d_norm",j)))
+            //->Fill(fVariables(k));
 
       }
    }
@@ -1639,7 +1636,7 @@ void TMultiDimFet::MakeNormalized()
 
 
 //____________________________________________________________________
-void TMultiDimFet::MakeParameterization()
+void MultiDimensionalFitter::MakeParameterization()
 {
    // PRIVATE METHOD:
    // Find the parameterization over the training sample. A full account
@@ -1790,7 +1787,7 @@ void TMultiDimFet::MakeParameterization()
    fRMS = TMath::Sqrt(fError / fSampleSize);
 }
 
-
+/*
 //____________________________________________________________________
 void TMultiDimFet::MakeRealCode(const char *filename,
                                 const char *classname,
@@ -1968,10 +1965,10 @@ void TMultiDimFet::MakeRealCode(const char *filename,
    if (fIsVerbose)
       std::cout << "done" << std::endl;
 }
-
+*/
 
 //____________________________________________________________________
-void TMultiDimFet::Print(Option_t *option) const
+void MultiDimensionalFitter::Print(Option_t *option) const
 {
    // Print statistics etc.
    // Options are
@@ -2107,10 +2104,10 @@ void TMultiDimFet::Print(Option_t *option) const
          << " Reduced Chi square over sample:        "
          << fChi2 / (fSampleSize - fNCoefficients) << std::endl
          << std::endl;
-      if (fFitter) {
-         fFitter->PrintResults(1,1);
-         std::cout << std::endl;
-      }
+      //if (fFitter) {
+        // fFitter->PrintResults(1,1);
+         //std::cout << std::endl;
+      //}
    }
 
    if (opt.Contains("c")){
@@ -2129,11 +2126,11 @@ void TMultiDimFet::Print(Option_t *option) const
       }
       std::cout << std::endl;
    }
-   if (opt.Contains("k") && fCorrelationMatrix.IsValid()) {
+   //if (opt.Contains("k") && fCorrelationMatrix.IsValid()) {
       std::cout << "Correlation Matrix:" << std::endl
          << "-------------------";
       fCorrelationMatrix.Print();
-   }
+   //}
 
    if (opt.Contains("m")) {
       std::cout.precision(25);
@@ -2142,8 +2139,8 @@ void TMultiDimFet::Print(Option_t *option) const
          << "  Normalised variables: " << std::endl;
       for (i = 0; i < fNVariables; i++)
          std::cout << "\ty" << i << "\t:= 1 + 2 * (x" << i << " - "
-         << fMaxVariables(i) << ") / (" 
-         << fMaxVariables(i) << " - " << fMinVariables(i) << ")" 
+         << fMaxVariables(i) << ") / ("
+         << fMaxVariables(i) << " - " << fMinVariables(i) << ")"
          << std::endl;
       std::cout << std::endl
          << "  f[";
@@ -2156,11 +2153,11 @@ void TMultiDimFet::Print(Option_t *option) const
          if (i != 0)
             std::cout << " " << (fCoefficients(i) < 0 ? "- " : "+ ")
             << TMath::Abs(fCoefficients(i));
-         else 
+         else
             std::cout << fCoefficients(i);
          for (Int_t j = 0; j < fNVariables; j++) {
             Int_t p = fPowers[fPowerIndex[i] * fNVariables + j];
-            switch (p) { 
+            switch (p) {
                case 1: break;
                case 2: std::cout << " * y" << j; break;
                default:
@@ -2178,7 +2175,7 @@ void TMultiDimFet::Print(Option_t *option) const
 }
 
 //____________________________________________________________________
-void TMultiDimFet::PrintPolynomialsSpecial(Option_t *option) const
+void MultiDimensionalFitter::PrintPolynomialsSpecial(Option_t *option) const
 {
    //   M        Pretty print formula
    //
@@ -2233,7 +2230,7 @@ void TMultiDimFet::PrintPolynomialsSpecial(Option_t *option) const
 
 
 //____________________________________________________________________
-Bool_t TMultiDimFet::Select(const Int_t *)
+Bool_t MultiDimensionalFitter::Select(const Int_t *)
 {
    // Selection method. User can override this method for specialized
    // selection of acceptable functions in fit. Default is to select
@@ -2248,7 +2245,7 @@ Bool_t TMultiDimFet::Select(const Int_t *)
 }
 
 //____________________________________________________________________
-void TMultiDimFet::SetMaxAngle(Double_t ang)
+void MultiDimensionalFitter::SetMaxAngle(Double_t ang)
 {
    // Set the max angle (in degrees) between the initial data vector to
    // be fitted, and the new candidate function to be included in the
@@ -2256,7 +2253,7 @@ void TMultiDimFet::SetMaxAngle(Double_t ang)
    // selection criteria. See also
    // Begin_Html<a href="#TMultiDimFet:description">class description</a>End_Html
    if (ang >= 90 || ang < 0) {
-      Warning("SetMaxAngle", "angle must be in [0,90)");
+      //Warning("SetMaxAngle", "angle must be in [0,90)");
       return;
    }
 
@@ -2264,14 +2261,14 @@ void TMultiDimFet::SetMaxAngle(Double_t ang)
 }
 
 //____________________________________________________________________
-void TMultiDimFet::SetMinAngle(Double_t ang)
+void MultiDimensionalFitter::SetMinAngle(Double_t ang)
 {
    // Set the min angle (in degrees) between a new candidate function
    // and the subspace spanned by the previously accepted
    // functions. See also
    // Begin_Html<a href="#TMultiDimFet:description">class description</a>End_Html
    if (ang > 90 || ang <= 0) {
-      Warning("SetMinAngle", "angle must be in [0,90)");
+      //Warning("SetMinAngle", "angle must be in [0,90)");
       return;
    }
 
@@ -2281,7 +2278,7 @@ void TMultiDimFet::SetMinAngle(Double_t ang)
 
 
 //____________________________________________________________________
-void TMultiDimFet::SetPowers(const Int_t* powers, Int_t terms)
+void MultiDimensionalFitter::SetPowers(const Int_t* powers, Int_t terms)
 {
    // Define a user function. The input array must be of the form
    // (p11, ..., p1N, ... ,pL1, ..., pLN)
@@ -2303,7 +2300,7 @@ void TMultiDimFet::SetPowers(const Int_t* powers, Int_t terms)
 }
 
 //____________________________________________________________________
-void TMultiDimFet::SetPowerLimit(Double_t limit)
+void MultiDimensionalFitter::SetPowerLimit(Double_t limit)
 {
    // Set the user parameter for the function selection. The bigger the
    // limit, the more functions are used. The meaning of this variable
@@ -2313,7 +2310,7 @@ void TMultiDimFet::SetPowerLimit(Double_t limit)
 }
 
 //____________________________________________________________________
-void TMultiDimFet::SetMaxPowers(const Int_t* powers)
+void MultiDimensionalFitter::SetMaxPowers(const Int_t* powers)
 {
    // Set the maximum power to be considered in the fit for each
    // variable. See also
@@ -2326,7 +2323,7 @@ void TMultiDimFet::SetMaxPowers(const Int_t* powers)
 }
 
 //____________________________________________________________________
-void TMultiDimFet::SetMinRelativeError(Double_t error)
+void MultiDimensionalFitter::SetMinRelativeError(Double_t error)
 {
    // Set the acceptable relative error for when sum of square
    // residuals is considered minimized. For a full account, refer to
@@ -2337,7 +2334,7 @@ void TMultiDimFet::SetMinRelativeError(Double_t error)
 
 
 //____________________________________________________________________
-Bool_t TMultiDimFet::TestFunction(Double_t squareResidual,
+Bool_t MultiDimensionalFitter::TestFunction(Double_t squareResidual,
                                   Double_t dResidur)
 {
    // PRIVATE METHOD:
@@ -2375,6 +2372,6 @@ void mdfHelper(int& /*npar*/, double* /*divs*/, double& chi2,
    // Helper function for doing the minimisation of Chi2 using Minuit
 
    // Get pointer  to current TMultiDimFet object.
-   TMultiDimFet* mdf = TMultiDimFet::Instance();
+   MultiDimensionalFitter* mdf = MultiDimensionalFitter::Instance();
    chi2     = mdf->MakeChi2(coeffs);
 }
