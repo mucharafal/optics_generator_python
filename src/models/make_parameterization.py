@@ -7,15 +7,12 @@ parser.add_argument("path to xml", metavar='path', type=str, help="Path to xml f
 parser.add_argument("-v", "--verbose", dest='logging-level', action='store_const', const=logging.DEBUG, default=logging.INFO, help="Verbosity of program, if set, logs from madx will be created")
 args = parser.parse_args()
 
-
 logger = logging.getLogger()
 logger.setLevel(getattr(args, "logging-level"))
-
 
 import models.train_model as trainer
 from ROOT import TObject, TFile
 import os
-import sys
 import xml_parser.approximator_training_configuration as xml_parser
 
 
@@ -31,8 +28,7 @@ def main(path_to_xml_file, path_to_optics):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) == 3:
-        path_to_xml_file = getattr(args, "path to xml")
-        path_to_optic = os.path.split(path_to_xml_file)[0]
-        main(path_to_xml_file, path_to_optic)
+    path_to_xml_file = getattr(args, "path to xml")
+    path_to_optic = os.path.split(path_to_xml_file)[0]
+    main(path_to_xml_file, path_to_optic)
 

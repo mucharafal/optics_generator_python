@@ -1,37 +1,44 @@
-import transporters.ptc_track.transporter as ptc_track_transporter
-import transporters.ptc_track.configuration as track_conf
+import transporters.madx.ptc_track.transporter as ptc_track_transporter
 import ROOT
 from concurrent.futures import ProcessPoolExecutor
 import utils.root_initializer as root_initializer
 import data.particles_generator as pg
 from data.parameters_names import ParametersNames as Parameters
+from transporters.madx.ptc_track.configuration import PtcTrackConfiguration
 
 
 def train_from_configuration(configuration_object):
+    """
+    Train approximator defined in configuration_object. Return trained LHCOpticsApproximator object.
+    For more details about approximator, please look into root_classes package.
+    :param configuration_object: configuration object of training
+    :type configuration_object: ApproximatorTrainingConfiguration
+    :return: trained LHCOpticsApproximator object
+    """
     root_initializer.initialise()
 
     # Generate data for approximator
-    madx_configuration = track_conf.PtcTrackConfiguration(configuration_object.transport_configuration)
+    madx_configuration = PtcTrackConfiguration.get_track_configuration_from_xml_configuration_object(configuration_object.transport_configuration)
     training_sample_configuration = configuration_object.training_sample_configuration
-    approximator_dataset, apertures_datasets = generate_training_dataset(madx_configuration,
-                                                                         training_sample_configuration)
+    approximator_dataset, apertures_datasets = __generate_training_dataset(madx_configuration,
+                                                                           training_sample_configuration)
 
     approximator_dataset.name = configuration_object.approximator_configuration.name_of_approximator
 
-    approximator = train_lhc_optics_approximator_with_apertures(configuration_object.approximator_configuration,
-                                                                configuration_object.apertures_configurations,
-                                                                approximator_dataset, apertures_datasets)
+    approximator = __train_lhc_optics_approximator_with_apertures(configuration_object.approximator_configuration,
+                                                                  configuration_object.apertures_configurations,
+                                                                  approximator_dataset, apertures_datasets)
 
     return approximator
 
 
-def generate_training_dataset(madx_configuration, training_sample_configuration):
+def __generate_training_dataset(madx_configuration, training_sample_configuration):
     # Generate beginning positions
     input_particles = pg.generate_particles_randomly(training_sample_configuration)
 
     output_segments = ptc_track_transporter.transport(madx_configuration, input_particles)
 
-    approximator_segment_name = madx_configuration.approximator_transport_configuration.end_place.name
+    approximator_segment_name = madx_configuration.end_place_name
 
     approximator_dataset = TrainingDataset(input_particles, output_segments["end"], approximator_segment_name)
     apertures_datasets = [TrainingDataset(input_particles, aperture_segment, aperture_name)
@@ -48,11 +55,11 @@ class TrainingDataset:
         self.name = name
 
 
-def train_lhc_optics_approximator_with_apertures(approximator_configuration, apertures_configurations,
-                                                 approximator_training_dataset, apertures_training_datasets):
-    approximator = train_lhc_optics_approximator(approximator_configuration, approximator_training_dataset)
+def __train_lhc_optics_approximator_with_apertures(approximator_configuration, apertures_configurations,
+                                                   approximator_training_dataset, apertures_training_datasets):
+    approximator = __train_lhc_optics_approximator(approximator_configuration, approximator_training_dataset)
 
-    apertures = [train_lhc_optics_approximator(approximator_configuration, aperture_dataset)
+    apertures = [__train_lhc_optics_approximator(approximator_configuration, aperture_dataset)
                  for aperture_dataset in apertures_training_datasets]
 
     for aperture_configuration in apertures_configurations:
@@ -65,22 +72,22 @@ def train_lhc_optics_approximator_with_apertures(approximator_configuration, ape
     return approximator
 
 
-def train_lhc_optics_approximator(approximator_configuration, approximator_training_dataset):
-    parameters_approximators = train_approximators(approximator_training_dataset.input_particles,
-                                                   approximator_training_dataset.output_particles,
-                                                   approximator_configuration)
+def __train_lhc_optics_approximator(approximator_configuration, approximator_training_dataset):
+    parameters_approximators = __train_approximators(approximator_training_dataset.input_particles,
+                                                     approximator_training_dataset.output_particles,
+                                                     approximator_configuration)
 
     # Create LHCOpticsApproximator
 
-    approximator = compose_lhc_optics_approximator(parameters_approximators, approximator_configuration,
-                                                   approximator_training_dataset.name)
+    approximator = __compose_lhc_optics_approximator(parameters_approximators, approximator_configuration,
+                                                     approximator_training_dataset.name)
 
     return approximator
 
 
-def train_approximators(input_particles, output_particles, approximator_configuration):
+def __train_approximators(input_particles, output_particles, approximator_configuration):
     input_parameters = [Parameters.X, Parameters.THETA_X, Parameters.Y, Parameters.THETA_Y, Parameters.PT]
-    input_vectors = [input_particles.get_values_of(parameter) for parameter in input_parameters]
+    input_vectors = [input_particles.get_column(parameter) for parameter in input_parameters]
 
     output_parameters = [Parameters.X, Parameters.THETA_X, Parameters.Y, Parameters.THETA_Y]
 
@@ -89,11 +96,11 @@ def train_approximators(input_particles, output_particles, approximator_configur
     with ProcessPoolExecutor(number_of_processes) as executor:
         futures = []
         for parameter in output_parameters:
-            output_vector = output_particles.get_values_of(parameter)
+            output_vector = output_particles.get_column(parameter)
             parameter_configuration = [configuration for configuration in
                                        approximator_configuration.parameters_configurations
                                        if configuration.parameter == parameter][0]
-            futures.append(executor.submit(train_tmultidimfit,
+            futures.append(executor.submit(__train_multidimensionalfitter,
                                            input_vectors, output_vector,
                                            parameter_configuration))
 
@@ -106,20 +113,18 @@ def train_approximators(input_particles, output_particles, approximator_configur
     return approximators
 
 
-def train_tmultidimfit(input_vectors, output_vector, parameter_configuration):
+def __train_multidimensionalfitter(input_vectors, output_vector, parameter_configuration):
     number_of_input_parameters = len(input_vectors)
-    approximator = initialize_tmultidimfit(number_of_input_parameters, parameter_configuration.max_degree)
-    insert_data_to_approximator(approximator, input_vectors, output_vector)
+    approximator = __initialize_multidimensionalfitter(number_of_input_parameters, parameter_configuration.max_degree)
+    __insert_data_to_approximator(approximator, input_vectors, output_vector)
     approximator.FindParameterization(parameter_configuration.precision)
     return approximator
 
 
-def initialize_tmultidimfit(parameters_number, max_pt_power):
+def __initialize_multidimensionalfitter(parameters_number, max_pt_power):
     # Need initialized ROOT (previous invoking utils.root_initializer.initialise)
-    # from ROOT import TMultiDimFet
     from ROOT import MultiDimensionalFitter
-
-    # approximator = TMultiDimFet(parameters_number, 0, ROOT.option)
+    
     approximator = MultiDimensionalFitter(parameters_number, 0, ROOT.option)
 
     ROOT.mPowers[0] = 2
@@ -138,7 +143,7 @@ def initialize_tmultidimfit(parameters_number, max_pt_power):
     return approximator
 
 
-def insert_data_to_approximator(approximator, input_vectors, expected_output):
+def __insert_data_to_approximator(approximator, input_vectors, expected_output):
     rows_number = len(expected_output)
     parameters_number = len(input_vectors)
     for counter in range(rows_number):
@@ -148,10 +153,10 @@ def insert_data_to_approximator(approximator, input_vectors, expected_output):
         approximator.AddRow(ROOT.x_in, expected_output[counter], 0)
 
 
-def compose_lhc_optics_approximator(approximators, approximator_configuration, approximator_name):
+def __compose_lhc_optics_approximator(approximators, approximator_configuration, approximator_name):
     from ROOT import LHCOpticsApproximator
 
-    polynomial_type = map_polynomial_type(approximator_configuration.polynomials_type)
+    polynomial_type = __map_polynomial_type(approximator_configuration.polynomials_type)
 
     approximator = LHCOpticsApproximator(approximator_name, approximator_name,
                                          polynomial_type,
@@ -165,7 +170,7 @@ def compose_lhc_optics_approximator(approximators, approximator_configuration, a
     return approximator
 
 
-def map_polynomial_type(polynomial_type):
+def __map_polynomial_type(polynomial_type):
     mapping = {
         "kMonomials": 0,
         "kChebychev": 1,
