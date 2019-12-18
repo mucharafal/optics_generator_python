@@ -3,7 +3,7 @@ from data.parameters_names import ParametersNames as Parameters
 from data.particles import CanonicalCoordinates
 
 
-def read_in_output_file(file_name):
+def read_in_file(file_name):
     with open(file_name) as file_object:
         # skip header
         line_with_parameters = __skip_header(file_object)
@@ -33,13 +33,13 @@ def __process_line_with_parameters(line):
 def __get_mapping_from_parameters_list(parameters_as_strings):
     mapping = {}
     for index in range(len(parameters_as_strings)):
-        parameter_object = __map_string_to_object_parameter_if_possible(parameters_as_strings[index])
+        parameter_object = __map_string_to_parameter_object_if_possible(parameters_as_strings[index])
         mapping[parameter_object] = index
 
     return mapping
 
 
-def __map_string_to_object_parameter_if_possible(string):
+def __map_string_to_parameter_object_if_possible(string):
     mapping = __get_dict()
     if string in mapping:
         return mapping[string]
@@ -48,6 +48,12 @@ def __map_string_to_object_parameter_if_possible(string):
 
 
 def __get_dict():
+    """
+    Return dict where:
+    - key is name of column in ptc_twiss output file
+    - value- appropriate ParametersNames value
+    :return:
+    """
     return {
         "X": Parameters.X,
         "Y": Parameters.Y,

@@ -67,7 +67,7 @@ def __subtract_particles(particles1, particles2):
 def __merge_particles(particles1, particles2):
     output_particles = particles1
     for key in particles2.get_mapping():
-        output_particles = output_particles.add_column(key, particles2.get_values_of(key))
+        output_particles = output_particles.add_column(key, particles2.get_column(key))
 
     return output_particles
 

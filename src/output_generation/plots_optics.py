@@ -25,6 +25,9 @@ from transporters.madx.ptc_track.configuration import PtcTrackConfiguration
 from transporters.approximator.configuration import ApproximatorConfiguration
 
 
+sns.set_style("whitegrid")
+
+
 def get_particles():
     x_min = 0
     x_max = 0
@@ -56,7 +59,7 @@ def get_particles():
     particles = grid_configuration.generate_grid()
     return particles
 
-sns.set_style("whitegrid")
+
 path_to_xml_file = getattr(args, "path to xml")
 path_to_optic = os.path.split(path_to_xml_file)[0]
 output_dir = getattr(args, "name of folder with plots")
@@ -66,18 +69,20 @@ if os.path.isdir(output_path):
     shutil.rmtree(output_path)
 os.makedirs(output_path)
 
-configurations = app_conf.get_xml_configuration_from_file(path_to_xml_file)
+configurations = app_conf.get_approximator_configurations_from(path_to_xml_file)
 
-serialized_approximator_file_name=configurations[0].attrib.get("optics_parametrisation_file")
+serialized_approximator_file_name = configurations[0].destination_file_name
 path_to_approximator = os.path.join(path_to_optic, serialized_approximator_file_name)
 
 for configuration in configurations:
-    approximator_name = configuration.attrib.get("optics_parametrisation_name")
-    item_number = int(configuration.attrib.get("id"))
-    s = float(configuration.attrib.get("to_marker_s_pos"))
 
-    twiss_configuration = PtcTwissConfiguration.get_configuration_from_file(path_to_xml_file, item_number, True)
-    track_configuration = PtcTrackConfiguration.get_track_configuration_from_xml_file(path_to_xml_file, item_number)
+    approximator_name = configuration.approximator_configuration.name_of_approximator
+    s = configuration.transport_configuration.end_place.distance
+
+    track_configuration = PtcTrackConfiguration.get_track_configuration_from_xml_configuration_object(
+        configuration.transport_configuration)
+    twiss_configuration = PtcTwissConfiguration.get_configuration_from_approximator_training_configuration_object(
+        configuration.transport_configuration, True)
     approximator_configuration = ApproximatorConfiguration(path_to_approximator, approximator_name)
 
     particles = get_particles()

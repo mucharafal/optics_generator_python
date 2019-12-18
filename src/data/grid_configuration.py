@@ -54,10 +54,10 @@ class GridConfiguration:
         theta_y_configuration = ParameterConfiguration(Parameters.THETA_Y, theta_y_min, theta_y_max, theta_y_resolution)
         pt_configuration = ParameterConfiguration(Parameters.PT, pt_min, pt_max, pt_resolution)
         return cls(x_configuration, theta_x_configuration, y_configuration, theta_y_configuration,
-                                 pt_configuration)
+                   pt_configuration)
 
     @classmethod
-    def get_configuration_from_xml(cls, xml_root_configuration):
+    def get_configuration_from_xml_object(cls, xml_root_configuration):
         xml_configuration = xml_root_configuration.attrib
         return cls.by_boundary(
             float(xml_configuration["x_min"]), float(xml_configuration["x_max"]), 1,
