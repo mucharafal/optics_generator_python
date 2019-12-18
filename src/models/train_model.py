@@ -87,7 +87,7 @@ def __train_lhc_optics_approximator(approximator_configuration, approximator_tra
 
 def __train_approximators(input_particles, output_particles, approximator_configuration):
     input_parameters = [Parameters.X, Parameters.THETA_X, Parameters.Y, Parameters.THETA_Y, Parameters.PT]
-    input_vectors = [input_particles.get_values_of(parameter) for parameter in input_parameters]
+    input_vectors = [input_particles.get_column(parameter) for parameter in input_parameters]
 
     output_parameters = [Parameters.X, Parameters.THETA_X, Parameters.Y, Parameters.THETA_Y]
 
@@ -96,7 +96,7 @@ def __train_approximators(input_particles, output_particles, approximator_config
     with ProcessPoolExecutor(number_of_processes) as executor:
         futures = []
         for parameter in output_parameters:
-            output_vector = output_particles.get_values_of(parameter)
+            output_vector = output_particles.get_column(parameter)
             parameter_configuration = [configuration for configuration in
                                        approximator_configuration.parameters_configurations
                                        if configuration.parameter == parameter][0]

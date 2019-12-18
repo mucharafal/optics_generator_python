@@ -12,7 +12,7 @@ def compute_optical_function(universal_transporter, particles, delta_parameter_n
     :param delta_alternative_value: value used if standard way of computing delta return 0
     :return:
     """
-    particles_canonical = particles.get_canonical_coordinates()
+    particles_canonical = particles.transform_to_canonical_coordinates()
     x1 = universal_transporter(particles_canonical)["end"].get_canonical_coordinates_of(transported_parameter_name)
     delta_x = compute_delta(particles_canonical, delta_parameter_name, delta_alternative_value)
     shifted_particles = particles_canonical.shift_parameter(delta_parameter_name, delta_x)

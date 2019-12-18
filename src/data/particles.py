@@ -16,7 +16,7 @@ class Particles:
             raise Exception("Incorrect mapping")
         self.mapping = mapping
 
-    def get_values_of(self, parameter_name):
+    def get_column(self, parameter_name):
         index = self.mapping[parameter_name]
         return np.copy(self.particles.T[index].reshape(-1, 1))
 
@@ -26,8 +26,8 @@ class Particles:
     def get_default_coordinates_of(self, *parameters):
         result_matrix = None
         for parameter in parameters:
-            result_matrix = self.get_values_of(parameter) if result_matrix is None else \
-                np.append(result_matrix, self.get_values_of(parameter), axis=1)
+            result_matrix = self.get_column(parameter) if result_matrix is None else \
+                np.append(result_matrix, self.get_column(parameter), axis=1)
 
         return result_matrix
 
@@ -67,7 +67,7 @@ class Particles:
         return self.__class__(matrix, self.mapping)
 
     def to_pandas_data_frame(self):
-        columns = {parameter_name: self.get_values_of(parameter_name).reshape((-1,)) for parameter_name in self.mapping}
+        columns = {parameter_name: self.get_column(parameter_name).reshape((-1,)) for parameter_name in self.mapping}
         data_frame = DataFrame(columns)
         return data_frame
 
@@ -88,11 +88,11 @@ class GeometricalCoordinates(Particles):
         for parameter in parameters:
             vector_to_add = None
             if parameter == Parameters.THETA_X or parameter == Parameters.THETA_Y:
-                vector_in_geometrical_coordinates = self.get_values_of(parameter)
-                vector_of_pt = self.get_values_of(Parameters.PT)
+                vector_in_geometrical_coordinates = self.get_column(parameter)
+                vector_of_pt = self.get_column(Parameters.PT)
                 vector_to_add = transform_from_geometrical_coordinates(vector_in_geometrical_coordinates, vector_of_pt)
             else:
-                vector_to_add = self.get_values_of(parameter)
+                vector_to_add = self.get_column(parameter)
             result_matrix = vector_to_add if result_matrix is None else \
                 np.append(result_matrix, vector_to_add, axis=1)
 
@@ -101,7 +101,7 @@ class GeometricalCoordinates(Particles):
     def get_geometrical_coordinates_of(self, *parameters):
         return self.get_default_coordinates_of(*parameters)
 
-    def get_canonical_coordinates(self):
+    def transform_to_canonical_coordinates(self):
         parameters = self.mapping.keys()
         matrix = self.get_canonical_coordinates_of(*parameters)
         return CanonicalCoordinates(matrix, self.mapping)
@@ -119,17 +119,17 @@ class CanonicalCoordinates(Particles):
         for parameter in parameters:
             vector_to_add = None
             if parameter == Parameters.THETA_X or parameter == Parameters.THETA_Y:
-                vector_in_canonical_coordinates = self.get_values_of(parameter)
-                vector_of_pt = self.get_values_of(Parameters.PT)
+                vector_in_canonical_coordinates = self.get_column(parameter)
+                vector_of_pt = self.get_column(Parameters.PT)
                 vector_to_add = transform_to_geometrical_coordinates(vector_in_canonical_coordinates, vector_of_pt)
             else:
-                vector_to_add = self.get_values_of(parameter)
+                vector_to_add = self.get_column(parameter)
             result_matrix = vector_to_add if result_matrix is None else \
                 np.append(result_matrix, vector_to_add, axis=1)
 
         return result_matrix
 
-    def get_canonical_coordinates(self):
+    def transform_to_canonical_coordinates(self):
         return self
 
 
