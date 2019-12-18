@@ -1,0 +1,24 @@
+Hello,
+
+Before you start editing:
+
+Common problems- compilation. When you use different environments than me (fedora 31),
+ you probably have to change standard of c++ in makefile. Checked- on LXPLUS it is C++ 11,
+ SWAN needs C++ 17. Your local system? I don't know.
+
+Adding files:
+schema of adding files is presented in Makefile. Add file to first rootcint invoke, compile .o and later add rootcint
+and gcc invokes.
+
+What 'make shared' produce?
+.pcm files which are needed by ROOT to read in serialized class objects.
+library .so in the same aim.
+
+Where are also dependencies?
+File interface/FitCingLinkDef.h - here is list of classes used to generate FitCint.cc file.
+
+So two important files during compilation process:
+interface/FitCingLinkDef.h
+src/Makefile
+
+Good luck!

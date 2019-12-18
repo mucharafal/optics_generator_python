@@ -24,7 +24,7 @@ src/output_generation/internal_mag_pot.txt
 
 src/output_generation/log.madx
 
-root*
+root-*
 
 src/transporters/madx/__pycache__/
 src/transporters/madx/ptc_track/__pycache__/
