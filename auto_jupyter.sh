@@ -5,7 +5,7 @@ if [ "$#" -lt 1 ] || [ "$#" -lt 2 -a "$#" -gt 0 -a $1 = "0" ] || [ "$#" -lt 4 -a
     printf "What scripts should be executed (0 - only notebooks, 1 - only python scripts, 2 - both)\n"
     printf "Path to the optics generator folder\n"
     printf "Path to the xml file (only in case of running python scripts)\nPath to the output directory where results of python scripts will be saved"
-    printf " (only in case of running python scripts)"
+    printf " (only in case of running python scripts)\n"
     exit 2
 fi
 

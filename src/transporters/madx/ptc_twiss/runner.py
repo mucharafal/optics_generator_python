@@ -85,7 +85,7 @@ def __remove_duplicates(matrix_with_duplicate_rows):
 
 
 def get_initialized_madx(twiss_configuration):
-    return madx_object_generator.generate_madx_object(twiss_configuration.transport_configuration)
+    return madx_object_generator.generate_madx_object(twiss_configuration)
 
 
 def get_particles_object_from_output(ptc_twiss_like_output):
