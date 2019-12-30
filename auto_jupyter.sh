@@ -33,8 +33,7 @@ cd notebooks
 if [ $1 != "1" ]; then
   for i in *.ipynb
   do
-    runipy $i
-    exit
+    jupyter nbconvert --to notebook --execute "$i"
   done
 fi
 
