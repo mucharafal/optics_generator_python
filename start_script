@@ -37,7 +37,6 @@ if ! test -f "$MADX_PATH"; then
     wget -L http://madx.web.cern.ch/madx/releases/last-rel/madx-linux64-gnu
     mv madx-linux64-gnu ${MADX_PATH}
     chmod +700 ${MADX_PATH}
-    rm madx-linux64-gnu
 fi
 # Compile library
 if ! test -d "$path_to_root_libs"; then
