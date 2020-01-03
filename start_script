@@ -10,9 +10,19 @@ path_to_project="$( cd `dirname "${BASH_SOURCE[0]}"` && pwd )"
 # In case of SWAN this script is copied and invoked in different folder,
 # so variable path_to_project has to be set manually
 # In `env` variable SWAN_HOME is searched
-IF_IT_IS_SWAN=`env | grep SWAN | wc -l`
+IF_IT_IS_SWAN=`env | grep SWAN_HOME | wc -l`
 if [[ ${IF_IT_IS_SWAN} != 0 ]] ; then
     path_to_project=$CERNBOX_HOME/SWAN_Projects/optics_generator_python
+fi
+
+# If it is lxplus, prepare environment
+IF_IT_IS_LXPLUS=`env | grep lxplus | wc -l`
+if [[ ${IF_IT_IS_LXPLUS} != 0 ]] ; then
+    cd ${path_to_project}
+    if ! test -f ./lcg.sh ; then
+       ./lxplus_prepare_lcg.sh
+    fi
+    source lcg.sh
 fi
 
 path_to_root_libs=${path_to_project}/root_libs
@@ -36,13 +46,4 @@ if ! test -d "$path_to_root_libs"; then
     cd src/root_classes/src
     make shared &
     cd ${current_dir}
-fi
-# If it is lxplus, prepare environment
-IF_IT_IS_LXPLUS=`env | grep lxplus | wc -l`
-if [[ ${IF_IT_IS_LXPLUS} != 0 ]] ; then
-    cd ${path_to_project}
-    if ! test -f ./lcg.sh ; then
-       ./lxplus_prepare_lcg.sh
-    fi
-    source lcg.sh
 fi
