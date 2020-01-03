@@ -12,7 +12,7 @@ path_to_project="$( cd `dirname "${BASH_SOURCE[0]}"` && pwd )"
 # In `env` variable SWAN_HOME is searched
 IF_IT_IS_SWAN=`env | grep SWAN_HOME | wc -l`
 if [[ ${IF_IT_IS_SWAN} != 0 ]] ; then
-    path_to_project=$CERNBOX_HOME/SWAN_Projects/optics_generator_python
+    path_to_project=$CERNBOX_HOME/SWAN_projects/optics_generator_python
 fi
 
 # If it is lxplus, prepare environment
