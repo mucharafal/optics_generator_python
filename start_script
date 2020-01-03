@@ -6,9 +6,18 @@
 # Warning- this script have to be in folder optics_generator_python
 # Otherwise, below line would give bad result
 path_to_project="$( cd `dirname "${BASH_SOURCE[0]}"` && pwd )"
+
+# In case of SWAN this script is copied and invoked in different folder,
+# so variable path_to_project has to be set manually
+# In `env` variable SWAN_HOME is searched
+IF_IT_IS_SWAN=`env | grep SWAN | wc -l`
+if [[ ${IF_IT_IS_SWAN} != 0 ]] ; then
+    path_to_project=$CERNBOX_HOME/SWAN_Projects/optics_generator_python
+fi
+
 path_to_root_libs=${path_to_project}/root_libs
 export PATH=${path_to_project}:$PATH
-export PYTHONPATH=${PYTHONPATH}:${path_to_project}/optics_generator_python/src
+export PYTHONPATH=${PYTHONPATH}:${path_to_project}/src
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${path_to_root_libs}:
 source ${path_to_project}/commands_autocompletion.sh
 # Download madx
