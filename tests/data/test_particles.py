@@ -11,7 +11,7 @@ class TestParticles(TestCase):
         n = np.array([4, 5, 6]).reshape((-1, 1))
         array = np.append(k, l, axis=1)
         particles = Particles(array, {"x": 0, "y": 1})
-        self.assertTrue(np.allclose(particles.get_values_of("x"), k))
+        self.assertTrue(np.allclose(particles.get_column("x"), k))
 
     def test_constructor_should_copy_particles(self):
         k = np.array([1, 2, 3]).reshape((-1, 1))
@@ -19,16 +19,16 @@ class TestParticles(TestCase):
         array = np.append(k, l, axis=1)
         particles = Particles(array, {"x": 0, "y": 1})
         array[0][0] = 100
-        self.assertFalse(np.allclose(particles.get_values_of("x"), array.T[0].reshape((-1, 1))))
+        self.assertFalse(np.allclose(particles.get_column("x"), array.T[0].reshape((-1, 1))))
 
     def test_get_values_of_should_return_copy_of_vector(self):
         k = np.array([1, 2, 3]).reshape((-1, 1))
         l = np.array([2, 3, 4]).reshape((-1, 1))
         array = np.append(k, l, axis=1)
         particles = Particles(array, {"x": 0, "y": 1})
-        cp = particles.get_values_of("x")
+        cp = particles.get_column("x")
         cp[0][0] = 100
-        self.assertFalse(np.allclose(particles.get_values_of("x"), cp))
+        self.assertFalse(np.allclose(particles.get_column("x"), cp))
 
     def test_get_number_of_particles(self):
         k = np.array([1, 2, 3]).reshape((-1, 1))
@@ -113,7 +113,7 @@ class TestParticles(TestCase):
         array = np.append(k, l, axis=1)
         particles = Particles(array, {"x": 0, "y": 1})
         particles_with_shifted_y = particles.shift_parameter("y", 1)
-        assert np.allclose(particles_with_shifted_y.get_values_of("y"), l_shifted)
+        assert np.allclose(particles_with_shifted_y.get_column("y"), l_shifted)
 
     def test_add_column(self):
         k = np.array([1, 2, 3]).reshape((-1, 1))
@@ -122,7 +122,7 @@ class TestParticles(TestCase):
         array = np.append(k, l, axis=1)
         particles = Particles(array, {"x": 0, "y": 1})
         particles_with_m = particles.add_column("m", m)
-        self.assertTrue(np.allclose(particles_with_m.get_values_of("m"), m))
+        self.assertTrue(np.allclose(particles_with_m.get_column("m"), m))
 
     def test_add_columns(self):
         k = np.array([1, 2, 3]).reshape((-1, 1))
@@ -132,8 +132,8 @@ class TestParticles(TestCase):
         array = np.append(k, l, axis=1)
         particles = Particles(array, {"x": 0, "y": 1})
         particles_with_m_and_n = particles.add_column("m", m).add_column("n", n)
-        self.assertTrue(np.allclose(particles_with_m_and_n.get_values_of("m"), m))
-        self.assertTrue(np.allclose(particles_with_m_and_n.get_values_of("n"), n))
+        self.assertTrue(np.allclose(particles_with_m_and_n.get_column("m"), m))
+        self.assertTrue(np.allclose(particles_with_m_and_n.get_column("n"), n))
 
     def test_constructor(self):
         k = np.array([1, 2, 3]).reshape((-1, 1))
