@@ -24,7 +24,7 @@ def __get_header():
 def __get_ptc_track_definition(transport_configuration, number_of_particles):
     definition = __create_universe() + \
         __import_particles(number_of_particles) + \
-        __scoring_plane_placement(transport_configuration.get_scoring_place_names()) + \
+        __scoring_plane_placement(transport_configuration.observed_places_names) + \
         __track_and_end("track")    # todo it should not be hardcoded
     return definition
 

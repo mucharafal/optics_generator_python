@@ -1,0 +1,48 @@
+#!/bin/bash
+
+# Main idea of this script is to add source files from optics_generator_python/src to PYTHON_PATH
+# and folder root_libs to LD_LIBRARY_PATH. Other appended path are to fix bugs in SWAN environment or madx
+
+# Warning- this script have to be in folder optics_generator_python
+# Otherwise, below line would give bad result
+path_to_project="$( cd `dirname "${BASH_SOURCE[0]}"` && pwd )"
+
+# In case of SWAN this script is copied and invoked in different folder,
+# so variable path_to_project has to be set manually
+# In `env` variable SWAN_HOME is searched
+IF_IT_IS_SWAN=`env | grep SWAN_HOME | wc -l`
+if [[ ${IF_IT_IS_SWAN} != 0 ]] ; then
+    path_to_project=$CERNBOX_HOME/SWAN_projects/optics_generator_python
+fi
+
+# If it is lxplus, prepare environment
+IF_IT_IS_LXPLUS=`env | grep lxplus | wc -l`
+if [[ ${IF_IT_IS_LXPLUS} != 0 ]] ; then
+    cd ${path_to_project}
+    if ! test -f ./lcg.sh ; then
+       ./lxplus_prepare_lcg.sh
+    fi
+    source lcg.sh
+fi
+
+path_to_root_libs=${path_to_project}/root_libs
+export PATH=${path_to_project}:$PATH
+export PYTHONPATH=${PYTHONPATH}:${path_to_project}/src
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${path_to_root_libs}:
+source ${path_to_project}/commands_autocompletion.sh
+# Download madx
+MADX_PATH=${path_to_project}/madx
+if ! test -f "$MADX_PATH"; then
+    cd ${path_to_project}
+    wget -L http://madx.web.cern.ch/madx/releases/last-rel/madx-linux64-gnu
+    mv madx-linux64-gnu ${MADX_PATH}
+    chmod +700 ${MADX_PATH}
+fi
+# Compile library
+if ! test -d "$path_to_root_libs"; then
+    current_dir=`pwd`
+    cd ${path_to_project}
+    cd src/root_classes/src
+    make shared &
+    cd ${current_dir}
+fi

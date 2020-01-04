@@ -7,15 +7,12 @@ parser.add_argument("path to xml", metavar='path', type=str, help="Path to xml f
 parser.add_argument("-v", "--verbose", dest='logging-level', action='store_const', const=logging.DEBUG, default=logging.INFO, help="Verbosity of program, if set, logs from madx will be created")
 args = parser.parse_args()
 
-
 logger = logging.getLogger()
 logger.setLevel(getattr(args, "logging-level"))
-
 
 import models.train_model as trainer
 from ROOT import TObject, TFile
 import os
-import sys
 import xml_parser.approximator_training_configuration as xml_parser
 
 

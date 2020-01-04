@@ -6,7 +6,7 @@ class TransportConfiguration:
         self.end_place = end_place
         self.observed_places_names = observed_places_names
         self.madx_output_script_file_name = madx_output_script_file_name
-        self.madx_template_name = madx_input_script_file_name
+        self.madx_input_script_file_name = madx_input_script_file_name
 
     def get_scoring_place_names(self):
         return self.observed_places_names

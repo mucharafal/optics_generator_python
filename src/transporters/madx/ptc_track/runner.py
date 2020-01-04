@@ -1,10 +1,11 @@
 import os
+import uuid
+import time
 import subprocess
 import numpy as np
 import utils.working_directory as working_directory
 from concurrent.futures import ProcessPoolExecutor
-from datetime import date
-import time
+from datetime import date, datetime
 
 
 def compute_trajectory(particles, madx_configuration, number_of_workers):
@@ -70,7 +71,12 @@ def __run_worker(particles, working_directory_name, madx_configuration, shift):
     :param shift: shift of ordinal numbers of particles
     :return:
     """
-    path_to_working_directory = os.path.join(os.getcwd(), working_directory_name)
+    randomized_working_directory_name = working_directory_name + \
+                                        datetime.now().strftime("--%Y-%m-%d--%H:%M:%S--") + \
+                                        str(uuid.uuid4())
+
+    path_to_working_directory = os.path.join(os.getcwd(), randomized_working_directory_name)
+
     beginning_directory = working_directory.create_and_get_into(path_to_working_directory)
 
     __save_particles_to_file(particles)
