@@ -73,7 +73,7 @@ def __run_worker(particles, working_directory_name, madx_configuration, shift):
     """
     randomized_working_directory_name = working_directory_name + \
                                         datetime.now().strftime("--%Y-%m-%d--%H:%M:%S--") + \
-                                        uuid.uuid4()
+                                        str(uuid.uuid4())
 
     path_to_working_directory = os.path.join(os.getcwd(), randomized_working_directory_name)
 
