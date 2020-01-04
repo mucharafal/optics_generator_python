@@ -123,9 +123,9 @@ def __train_multidimensionalfitter(input_vectors, output_vector, parameter_confi
 
 def __initialize_multidimensionalfitter(parameters_number, max_pt_power):
     # Need initialized ROOT (previous invoking utils.root_initializer.initialise)
-    from ROOT import MultiDimensionalFitter
+    from ROOT import TMultiDimFet
 
-    approximator = MultiDimensionalFitter(parameters_number, 0, ROOT.option)
+    approximator = TMultiDimFet(parameters_number, 0, ROOT.option)
 
     ROOT.mPowers[0] = 2
     ROOT.mPowers[1] = 4
